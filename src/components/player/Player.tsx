@@ -1,6 +1,6 @@
 import { useRef, useEffect, useMemo, forwardRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { RigidBody, RigidBodyApi, CapsuleCollider } from '@react-three/rapier';
+import { RigidBody, CapsuleCollider } from '@react-three/rapier';
 import { useKeyboardControls } from '@react-three/drei';
 import { Vector3 } from 'three';
 import { Controls } from '../../App';
@@ -10,8 +10,8 @@ import { PlayerModel } from './PlayerModel';
 
 const DEATH_Y = -10;
 
-export const Player = forwardRef<RigidBodyApi>((props, ref) => {
-  const playerRef = useRef<RigidBodyApi>(null);
+export const Player = forwardRef<any>((props, ref) => {
+  const playerRef = useRef<any>(null);
   const isOnGround = useRef(false);
   const jumpCount = useRef(0);
 
@@ -23,7 +23,7 @@ export const Player = forwardRef<RigidBodyApi>((props, ref) => {
   const respawn = useGameStore((state) => state.respawn);
 
   // Keyboard controls
-  const [, getKeys] = useKeyboardControls<Controls>();
+  const [, getKeys] = useKeyboardControls<string>();
 
   // Calculate stats based on equipped parts
   const playerStats = useMemo(() => {

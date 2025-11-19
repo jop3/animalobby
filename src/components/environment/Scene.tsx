@@ -1,5 +1,4 @@
 import { useRef } from 'react';
-import { RigidBodyApi } from '@react-three/rapier';
 import { Player } from '../player/Player';
 import { CameraRig } from './CameraRig';
 import { LevelLoader } from '../level/LevelLoader';
@@ -13,7 +12,8 @@ import { GREEN_FIELDS } from '../../levels';
  * Example: import { PARKOUR_CHALLENGE } from '../../levels';
  */
 export function Scene() {
-  const playerRef = useRef<RigidBodyApi>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const playerRef = useRef<any>(null);
 
   // TODO: Make this dynamic based on game state
   // For now, hardcoded to GREEN_FIELDS

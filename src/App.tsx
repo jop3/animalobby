@@ -8,14 +8,14 @@ import { HUD } from './components/ui/HUD';
 import { PostProcessing } from './components/effects/PostProcessing';
 
 // Keyboard controls map
-export enum Controls {
-  forward = 'forward',
-  back = 'back',
-  left = 'left',
-  right = 'right',
-  jump = 'jump',
-  sprint = 'sprint',
-}
+export const Controls = {
+  forward: 'forward',
+  back: 'back',
+  left: 'left',
+  right: 'right',
+  jump: 'jump',
+  sprint: 'sprint',
+} as const;
 
 function App() {
   const isPaused = useGameStore((state) => state.isPaused);

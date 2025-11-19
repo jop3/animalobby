@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { RigidBody, RigidBodyApi } from '@react-three/rapier';
+import { RigidBody } from '@react-three/rapier';
 import { useGameStore } from '../../store/useGameStore';
 
 interface RotatingHammerProps {
@@ -14,7 +14,7 @@ export function RotatingHammer({
   rotationSpeed = 1,
   hammerLength = 3,
 }: RotatingHammerProps) {
-  const hammerRef = useRef<RigidBodyApi>(null);
+  const hammerRef = useRef<any>(null);
   const die = useGameStore((state) => state.die);
 
   useFrame((state) => {

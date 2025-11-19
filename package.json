@@ -15,6 +15,7 @@
     "@react-three/fiber": "^9.4.0",
     "@react-three/postprocessing": "^3.0.4",
     "@react-three/rapier": "^2.2.0",
+    "@tailwindcss/postcss": "^4.1.17",
     "@types/howler": "^2.2.12",
     "@types/three": "^0.181.0",
     "howler": "^2.2.4",
