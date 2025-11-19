@@ -1,11 +1,13 @@
 import { Canvas } from '@react-three/fiber';
 import { Physics } from '@react-three/rapier';
 import { KeyboardControls } from '@react-three/drei';
-import { Suspense } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { useGameStore } from './store/useGameStore';
 import { Scene } from './components/environment/Scene';
 import { HUD } from './components/ui/HUD';
 import { PostProcessing } from './components/effects/PostProcessing';
+import { WebGLFallback } from './components/ui/WebGLFallback';
+import { detectWebGL } from './utils/webglDetect';
 
 // Keyboard controls map
 export const Controls = {
@@ -20,6 +22,16 @@ export const Controls = {
 function App() {
   const isPaused = useGameStore((state) => state.isPaused);
   const quality = useGameStore((state) => state.quality);
+  const [webglStatus, setWebglStatus] = useState<{ available: boolean; error?: string } | null>(null);
+
+  useEffect(() => {
+    setWebglStatus(detectWebGL());
+  }, []);
+
+  // Show fallback if WebGL is not available
+  if (webglStatus && !webglStatus.available) {
+    return <WebGLFallback error={webglStatus.error || 'WebGL is not available'} />;
+  }
 
   return (
     <div className="w-full h-full">
