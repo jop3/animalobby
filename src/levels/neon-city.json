@@ -1,0 +1,182 @@
+{
+  "id": "neon_city",
+  "name": "Neon City",
+  "description": "Jump across glowing rooftops in a cyberpunk metropolis",
+  "difficulty": 4,
+  "theme": {
+    "skyColor": "#2C1B47",
+    "ambientColor": "#6A4C93"
+  },
+  "spawnPoint": [0, 2, 0],
+  "entities": [
+    {
+      "type": "platform",
+      "position": [0, 0, 0],
+      "size": [6, 0.5, 6],
+      "color": "#1A1A2E"
+    },
+    {
+      "type": "checkpoint",
+      "id": "neon_start",
+      "position": [0, 1, 0]
+    },
+    {
+      "type": "coin",
+      "id": "coin_1",
+      "position": [0, 1.5, 0],
+      "coinType": "speed"
+    },
+    {
+      "type": "platform",
+      "position": [5, 1, 4],
+      "size": [4, 0.5, 4],
+      "color": "#0F3460"
+    },
+    {
+      "type": "coin",
+      "id": "coin_2",
+      "position": [5, 2, 4],
+      "coinType": "gravity"
+    },
+    {
+      "type": "platform",
+      "position": [10, 2, 7],
+      "size": [5, 0.5, 5],
+      "color": "#1A1A2E"
+    },
+    {
+      "type": "zeus_lightning",
+      "id": "lightning_1",
+      "position": [10, 2, 7],
+      "radius": 2,
+      "interval": 3.5,
+      "warningDuration": 0.8
+    },
+    {
+      "type": "rotating_hammer",
+      "id": "hammer_1",
+      "position": [10, 5, 7],
+      "rotationSpeed": 1.8,
+      "hammerLength": 2.5
+    },
+    {
+      "type": "checkpoint",
+      "id": "neon_mid1",
+      "position": [12, 3, 7]
+    },
+    {
+      "type": "platform",
+      "position": [16, 3, 10],
+      "size": [4, 0.5, 4],
+      "color": "#0F3460"
+    },
+    {
+      "type": "spike",
+      "position": [16, 3.5, 10],
+      "size": 0.9
+    },
+    {
+      "type": "coin",
+      "id": "coin_3",
+      "position": [18, 4, 10],
+      "coinType": "speed"
+    },
+    {
+      "type": "platform",
+      "position": [21, 4, 13],
+      "size": [6, 0.5, 6],
+      "color": "#1A1A2E"
+    },
+    {
+      "type": "vine",
+      "id": "vine_1",
+      "position": [21, 4, 13],
+      "height": 5,
+      "attackInterval": 2.5,
+      "attackDuration": 1
+    },
+    {
+      "type": "vine",
+      "id": "vine_2",
+      "position": [24, 4, 16],
+      "height": 5,
+      "attackInterval": 2.8,
+      "attackDuration": 1
+    },
+    {
+      "type": "platform",
+      "position": [28, 5, 16],
+      "size": [5, 0.5, 5],
+      "color": "#0F3460"
+    },
+    {
+      "type": "zeus_lightning",
+      "id": "lightning_2",
+      "position": [28, 5, 16],
+      "radius": 2.5,
+      "interval": 3,
+      "warningDuration": 0.9
+    },
+    {
+      "type": "checkpoint",
+      "id": "neon_mid2",
+      "position": [30, 6, 16]
+    },
+    {
+      "type": "coin",
+      "id": "coin_4",
+      "position": [30, 6.5, 16],
+      "coinType": "gravity"
+    },
+    {
+      "type": "platform",
+      "position": [34, 6, 20],
+      "size": [4, 0.5, 4],
+      "color": "#1A1A2E"
+    },
+    {
+      "type": "lava",
+      "position": [31, 5, 20],
+      "size": [2, 0.3, 4]
+    },
+    {
+      "type": "rotating_hammer",
+      "id": "hammer_2",
+      "position": [34, 9, 20],
+      "rotationSpeed": 2,
+      "hammerLength": 3
+    },
+    {
+      "type": "platform",
+      "position": [40, 7, 24],
+      "size": [7, 0.5, 7],
+      "color": "#0F3460"
+    },
+    {
+      "type": "spike",
+      "position": [38, 7.5, 24],
+      "size": 0.8
+    },
+    {
+      "type": "spike",
+      "position": [42, 7.5, 24],
+      "size": 0.8
+    },
+    {
+      "type": "checkpoint",
+      "id": "neon_end",
+      "position": [40, 8, 24]
+    },
+    {
+      "type": "coin",
+      "id": "coin_5",
+      "position": [40, 8.5, 27],
+      "coinType": "speed"
+    },
+    {
+      "type": "end_goal",
+      "position": [40, 8, 30],
+      "modelType": "portal"
+    }
+  ]
+}

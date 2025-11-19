@@ -1,12 +1,26 @@
 import { LevelDefinition } from '../types/level.types';
 import greenFieldsData from '../levels/green-fields.json';
-import jungleChallengeData from '../levels/jungle-challenge.json';
 import skyIslandsData from '../levels/sky-islands.json';
+import desertRuinsData from '../levels/desert-ruins.json';
+import jungleChallengeData from '../levels/jungle-challenge.json';
+import iceCavernData from '../levels/ice-cavern.json';
+import mushroomForestData from '../levels/mushroom-forest.json';
+import lavaVolcanoData from '../levels/lava-volcano.json';
+import neonCityData from '../levels/neon-city.json';
+import underwaterTempleData from '../levels/underwater-temple.json';
+import spaceStationData from '../levels/space-station.json';
 
 // Cast JSON imports to LevelDefinition type
 const greenFields = greenFieldsData as LevelDefinition;
-const jungleChallenge = jungleChallengeData as LevelDefinition;
 const skyIslands = skyIslandsData as LevelDefinition;
+const desertRuins = desertRuinsData as LevelDefinition;
+const jungleChallenge = jungleChallengeData as LevelDefinition;
+const iceCavern = iceCavernData as LevelDefinition;
+const mushroomForest = mushroomForestData as LevelDefinition;
+const lavaVolcano = lavaVolcanoData as LevelDefinition;
+const neonCity = neonCityData as LevelDefinition;
+const underwaterTemple = underwaterTempleData as LevelDefinition;
+const spaceStation = spaceStationData as LevelDefinition;
 
 export interface LevelMetadata {
   level: LevelDefinition;
@@ -17,14 +31,42 @@ export interface LevelMetadata {
 export const LEVEL_REGISTRY: LevelMetadata[] = [
   {
     level: greenFields,
-    unlocked: true, // First level always unlocked
+    unlocked: true, // Always unlocked
   },
   {
     level: skyIslands,
     unlocked: true,
   },
   {
+    level: desertRuins,
+    unlocked: true,
+  },
+  {
     level: jungleChallenge,
+    unlocked: true,
+  },
+  {
+    level: iceCavern,
+    unlocked: true,
+  },
+  {
+    level: mushroomForest,
+    unlocked: true,
+  },
+  {
+    level: lavaVolcano,
+    unlocked: true,
+  },
+  {
+    level: neonCity,
+    unlocked: true,
+  },
+  {
+    level: underwaterTemple,
+    unlocked: true,
+  },
+  {
+    level: spaceStation,
     unlocked: true,
   },
 ];

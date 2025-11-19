@@ -1,0 +1,129 @@
+{
+  "id": "desert_ruins",
+  "name": "Desert Ruins",
+  "description": "Ancient platforms crumbling in the sandy wasteland",
+  "difficulty": 2,
+  "theme": {
+    "skyColor": "#FFB347",
+    "ambientColor": "#FFD27F"
+  },
+  "spawnPoint": [0, 2, 0],
+  "entities": [
+    {
+      "type": "platform",
+      "position": [0, 0, 0],
+      "size": [8, 0.5, 8],
+      "color": "#D2B48C"
+    },
+    {
+      "type": "checkpoint",
+      "id": "desert_start",
+      "position": [0, 1, 0]
+    },
+    {
+      "type": "coin",
+      "id": "coin_1",
+      "position": [0, 1.5, 3],
+      "coinType": "speed"
+    },
+    {
+      "type": "platform",
+      "position": [7, 1, 5],
+      "size": [5, 0.5, 5],
+      "color": "#C4A460"
+    },
+    {
+      "type": "coin",
+      "id": "coin_2",
+      "position": [7, 2, 5],
+      "coinType": "gravity"
+    },
+    {
+      "type": "spike",
+      "position": [9, 1.5, 5],
+      "size": 0.8
+    },
+    {
+      "type": "platform",
+      "position": [13, 2, 9],
+      "size": [6, 0.5, 6],
+      "color": "#D2B48C"
+    },
+    {
+      "type": "rotating_hammer",
+      "id": "hammer_1",
+      "position": [13, 5, 9],
+      "rotationSpeed": 1,
+      "hammerLength": 2.5
+    },
+    {
+      "type": "checkpoint",
+      "id": "desert_mid",
+      "position": [13, 3, 9]
+    },
+    {
+      "type": "platform",
+      "position": [20, 3, 12],
+      "size": [4, 0.5, 4],
+      "color": "#C4A460"
+    },
+    {
+      "type": "coin",
+      "id": "coin_3",
+      "position": [20, 4, 12],
+      "coinType": "speed"
+    },
+    {
+      "type": "platform",
+      "position": [25, 4, 15],
+      "size": [5, 0.5, 5],
+      "color": "#D2B48C"
+    },
+    {
+      "type": "spike",
+      "position": [25, 4.5, 13],
+      "size": 0.7
+    },
+    {
+      "type": "spike",
+      "position": [25, 4.5, 17],
+      "size": 0.7
+    },
+    {
+      "type": "coin",
+      "id": "coin_4",
+      "position": [27, 5, 15],
+      "coinType": "gravity"
+    },
+    {
+      "type": "platform",
+      "position": [31, 5, 18],
+      "size": [7, 0.5, 7],
+      "color": "#C4A460"
+    },
+    {
+      "type": "zeus_lightning",
+      "id": "lightning_1",
+      "position": [31, 5, 18],
+      "radius": 2,
+      "interval": 4.5,
+      "warningDuration": 1
+    },
+    {
+      "type": "checkpoint",
+      "id": "desert_end",
+      "position": [31, 6, 21]
+    },
+    {
+      "type": "coin",
+      "id": "coin_5",
+      "position": [31, 6.5, 21],
+      "coinType": "speed"
+    },
+    {
+      "type": "end_goal",
+      "position": [31, 6, 24],
+      "modelType": "dog_head"
+    }
+  ]
+}

@@ -1,0 +1,166 @@
+{
+  "id": "mushroom_forest",
+  "name": "Mushroom Forest",
+  "description": "Bounce through giant magical mushrooms and vines",
+  "difficulty": 3,
+  "theme": {
+    "skyColor": "#9B59B6",
+    "ambientColor": "#D8BFD8"
+  },
+  "spawnPoint": [0, 2, 0],
+  "entities": [
+    {
+      "type": "platform",
+      "position": [0, 0, 0],
+      "size": [7, 0.5, 7],
+      "color": "#8B4789"
+    },
+    {
+      "type": "checkpoint",
+      "id": "mushroom_start",
+      "position": [0, 1, 0]
+    },
+    {
+      "type": "coin",
+      "id": "coin_1",
+      "position": [0, 1.5, 3],
+      "coinType": "speed"
+    },
+    {
+      "type": "platform",
+      "position": [6, 1, 4],
+      "size": [5, 0.5, 5],
+      "color": "#9370DB"
+    },
+    {
+      "type": "vine",
+      "id": "vine_1",
+      "position": [6, 1, 4],
+      "height": 4,
+      "attackInterval": 3.5,
+      "attackDuration": 0.7
+    },
+    {
+      "type": "coin",
+      "id": "coin_2",
+      "position": [8, 2, 4],
+      "coinType": "gravity"
+    },
+    {
+      "type": "platform",
+      "position": [12, 2, 7],
+      "size": [6, 0.5, 6],
+      "color": "#8B4789"
+    },
+    {
+      "type": "spike",
+      "position": [12, 2.5, 9],
+      "size": 0.7
+    },
+    {
+      "type": "rotating_hammer",
+      "id": "hammer_1",
+      "position": [12, 5, 7],
+      "rotationSpeed": 1.2,
+      "hammerLength": 2.5
+    },
+    {
+      "type": "checkpoint",
+      "id": "mushroom_mid",
+      "position": [14, 3, 7]
+    },
+    {
+      "type": "platform",
+      "position": [18, 3, 11],
+      "size": [5, 0.5, 5],
+      "color": "#9370DB"
+    },
+    {
+      "type": "vine",
+      "id": "vine_2",
+      "position": [18, 3, 11],
+      "height": 5,
+      "attackInterval": 3,
+      "attackDuration": 0.8
+    },
+    {
+      "type": "coin",
+      "id": "coin_3",
+      "position": [20, 4, 11],
+      "coinType": "speed"
+    },
+    {
+      "type": "platform",
+      "position": [24, 4, 14],
+      "size": [4, 0.5, 4],
+      "color": "#8B4789"
+    },
+    {
+      "type": "zeus_lightning",
+      "id": "lightning_1",
+      "position": [24, 4, 14],
+      "radius": 2,
+      "interval": 4,
+      "warningDuration": 1
+    },
+    {
+      "type": "platform",
+      "position": [29, 5, 17],
+      "size": [6, 0.5, 6],
+      "color": "#9370DB"
+    },
+    {
+      "type": "spike",
+      "position": [27, 5.5, 17],
+      "size": 0.8
+    },
+    {
+      "type": "spike",
+      "position": [31, 5.5, 17],
+      "size": 0.8
+    },
+    {
+      "type": "coin",
+      "id": "coin_4",
+      "position": [29, 6, 20],
+      "coinType": "gravity"
+    },
+    {
+      "type": "platform",
+      "position": [34, 6, 21],
+      "size": [7, 0.5, 7],
+      "color": "#8B4789"
+    },
+    {
+      "type": "vine",
+      "id": "vine_3",
+      "position": [34, 6, 21],
+      "height": 5,
+      "attackInterval": 2.5,
+      "attackDuration": 0.9
+    },
+    {
+      "type": "rotating_hammer",
+      "id": "hammer_2",
+      "position": [37, 9, 21],
+      "rotationSpeed": 1.3,
+      "hammerLength": 3
+    },
+    {
+      "type": "checkpoint",
+      "id": "mushroom_end",
+      "position": [34, 7, 24]
+    },
+    {
+      "type": "coin",
+      "id": "coin_5",
+      "position": [34, 7.5, 24],
+      "coinType": "speed"
+    },
+    {
+      "type": "end_goal",
+      "position": [34, 7, 27],
+      "modelType": "trophy"
+    }
+  ]
+}

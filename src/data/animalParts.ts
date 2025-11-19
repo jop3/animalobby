@@ -56,6 +56,56 @@ export const ANIMAL_PARTS: Record<string, AnimalPart> = {
     color: '#FF6347', // Orange-red
   },
 
+  owl_head: {
+    id: 'owl_head',
+    name: 'Owl Head',
+    type: 'head',
+    statModifier: {
+      jumpForce: 0.15, // +15% jump
+    },
+    unlocked: false,
+    description: 'Wise and observant. Better aerial control.',
+    color: '#8B7355', // Brown
+  },
+
+  wolf_head: {
+    id: 'wolf_head',
+    name: 'Wolf Head',
+    type: 'head',
+    statModifier: {
+      speed: 0.10, // +10% speed
+      defense: 0.5, // Half defense point
+    },
+    unlocked: false,
+    description: 'Pack hunter instincts. Faster and tougher.',
+    color: '#696969', // Gray
+  },
+
+  shark_head: {
+    id: 'shark_head',
+    name: 'Shark Head',
+    type: 'head',
+    statModifier: {
+      speed: 0.15, // +15% speed
+    },
+    unlocked: false,
+    description: 'Apex predator. Relentless speed.',
+    color: '#4682B4', // Steel blue
+  },
+
+  rabbit_head: {
+    id: 'rabbit_head',
+    name: 'Rabbit Head',
+    type: 'head',
+    statModifier: {
+      jumpForce: 0.10, // +10% jump
+      speed: 0.05, // +5% speed
+    },
+    unlocked: false,
+    description: 'Quick and nimble. Balanced bonuses.',
+    color: '#DEB887', // Burlywood
+  },
+
   // BODY PARTS
   turtle_body: {
     id: 'turtle_body',
@@ -81,6 +131,72 @@ export const ANIMAL_PARTS: Record<string, AnimalPart> = {
     unlocked: false,
     description: 'Powerful core muscles for higher jumps.',
     color: '#555555', // Dark gray
+  },
+
+  bear_body: {
+    id: 'bear_body',
+    name: 'Bear Body',
+    type: 'body',
+    statModifier: {
+      defense: 1.5, // 1.5 hit protection
+      speed: -0.15, // -15% speed
+    },
+    unlocked: false,
+    description: 'Thick fur and muscle. Very defensive, but slow.',
+    color: '#8B4513', // Saddle brown
+  },
+
+  cheetah_body: {
+    id: 'cheetah_body',
+    name: 'Cheetah Body',
+    type: 'body',
+    statModifier: {
+      speed: 0.20, // +20% speed
+      defense: -0.5, // Less defense
+    },
+    unlocked: false,
+    description: 'Sleek and aerodynamic. Built for speed, not defense.',
+    color: '#DAA520', // Goldenrod
+  },
+
+  elephant_body: {
+    id: 'elephant_body',
+    name: 'Elephant Body',
+    type: 'body',
+    statModifier: {
+      defense: 2, // 2 hit protection
+      speed: -0.20, // -20% speed
+      jumpForce: -0.10, // -10% jump
+    },
+    unlocked: false,
+    description: 'Massive and tough. Maximum defense, minimum speed.',
+    color: '#A9A9A9', // Dark gray
+  },
+
+  monkey_body: {
+    id: 'monkey_body',
+    name: 'Monkey Body',
+    type: 'body',
+    statModifier: {
+      jumpForce: 0.10, // +10% jump
+      speed: 0.10, // +10% speed
+    },
+    unlocked: false,
+    description: 'Agile and nimble. Balanced mobility boost.',
+    color: '#CD853F', // Peru
+  },
+
+  rhino_body: {
+    id: 'rhino_body',
+    name: 'Rhino Body',
+    type: 'body',
+    statModifier: {
+      defense: 1, // 1 hit protection
+      speed: 0.10, // +10% speed when sprinting
+    },
+    unlocked: false,
+    description: 'Armored charger. Defensive with sprint power.',
+    color: '#778899', // Light slate gray
   },
 
   // LEG PARTS
@@ -119,6 +235,70 @@ export const ANIMAL_PARTS: Record<string, AnimalPart> = {
     unlocked: false,
     description: 'Balanced speed and jump power.',
     color: '#CD853F', // Tan
+  },
+
+  ostrich_legs: {
+    id: 'ostrich_legs',
+    name: 'Ostrich Legs',
+    type: 'legs',
+    statModifier: {
+      speed: 0.30, // +30% speed
+    },
+    unlocked: false,
+    description: 'Fastest land animal legs! Pure speed.',
+    color: '#D2691E', // Chocolate
+  },
+
+  grasshopper_legs: {
+    id: 'grasshopper_legs',
+    name: 'Grasshopper Legs',
+    type: 'legs',
+    statModifier: {
+      jumpForce: 0.35, // +35% jump
+      speed: -0.05, // -5% speed
+    },
+    ability: 'double_jump',
+    unlocked: false,
+    description: 'Insane jumping power! Enables double jump.',
+    color: '#228B22', // Forest green
+  },
+
+  spider_legs: {
+    id: 'spider_legs',
+    name: 'Spider Legs',
+    type: 'legs',
+    statModifier: {
+      speed: 0.15, // +15% speed
+      jumpForce: 0.05, // +5% jump
+    },
+    unlocked: false,
+    description: 'Eight legs worth of mobility. Great all-rounder.',
+    color: '#000000', // Black
+  },
+
+  horse_legs: {
+    id: 'horse_legs',
+    name: 'Horse Legs',
+    type: 'legs',
+    statModifier: {
+      speed: 0.20, // +20% speed
+      jumpForce: 0.10, // +10% jump
+    },
+    unlocked: false,
+    description: 'Galloping power. Excellent mobility.',
+    color: '#8B4513', // Saddle brown
+  },
+
+  gecko_legs: {
+    id: 'gecko_legs',
+    name: 'Gecko Legs',
+    type: 'legs',
+    statModifier: {
+      jumpForce: 0.20, // +20% jump
+    },
+    unlocked: false,
+    description: 'Sticky feet for better control and jumping.',
+    color: '#9ACD32', // Yellow green
   },
 
   // PRESTIGE PARTS

@@ -1,0 +1,157 @@
+{
+  "id": "lava_volcano",
+  "name": "Lava Volcano",
+  "description": "Navigate burning platforms above deadly molten lava",
+  "difficulty": 4,
+  "theme": {
+    "skyColor": "#FF4500",
+    "ambientColor": "#FF6347"
+  },
+  "spawnPoint": [0, 2, 0],
+  "entities": [
+    {
+      "type": "platform",
+      "position": [0, 0, 0],
+      "size": [6, 0.5, 6],
+      "color": "#2F1B0C"
+    },
+    {
+      "type": "checkpoint",
+      "id": "volcano_start",
+      "position": [0, 1, 0]
+    },
+    {
+      "type": "coin",
+      "id": "coin_1",
+      "position": [0, 1.5, 3],
+      "coinType": "speed"
+    },
+    {
+      "type": "platform",
+      "position": [8, 1, 2],
+      "size": [4, 0.5, 4],
+      "color": "#8B4513"
+    },
+    {
+      "type": "lava",
+      "position": [4, 0, 2],
+      "size": [3, 0.3, 4]
+    },
+    {
+      "type": "platform",
+      "position": [14, 2, 4],
+      "size": [5, 0.5, 5],
+      "color": "#2F1B0C"
+    },
+    {
+      "type": "spike",
+      "position": [14, 2.5, 4],
+      "size": 1
+    },
+    {
+      "type": "coin",
+      "id": "coin_2",
+      "position": [16, 3, 4],
+      "coinType": "gravity"
+    },
+    {
+      "type": "platform",
+      "position": [20, 3, 8],
+      "size": [4, 0.5, 4],
+      "color": "#8B4513"
+    },
+    {
+      "type": "lava",
+      "position": [17, 2, 8],
+      "size": [2, 0.3, 4]
+    },
+    {
+      "type": "rotating_hammer",
+      "id": "hammer_1",
+      "position": [20, 6, 8],
+      "rotationSpeed": 1.5,
+      "hammerLength": 2.5
+    },
+    {
+      "type": "checkpoint",
+      "id": "volcano_mid",
+      "position": [20, 4, 8]
+    },
+    {
+      "type": "platform",
+      "position": [26, 4, 12],
+      "size": [6, 0.5, 6],
+      "color": "#2F1B0C"
+    },
+    {
+      "type": "lava",
+      "position": [23, 3, 12],
+      "size": [2, 0.3, 6]
+    },
+    {
+      "type": "vine",
+      "id": "vine_1",
+      "position": [26, 4, 12],
+      "height": 5,
+      "attackInterval": 2.5,
+      "attackDuration": 0.9
+    },
+    {
+      "type": "coin",
+      "id": "coin_3",
+      "position": [29, 5, 12],
+      "coinType": "speed"
+    },
+    {
+      "type": "platform",
+      "position": [32, 5, 16],
+      "size": [5, 0.5, 5],
+      "color": "#8B4513"
+    },
+    {
+      "type": "zeus_lightning",
+      "id": "lightning_1",
+      "position": [32, 5, 16],
+      "radius": 2,
+      "interval": 4,
+      "warningDuration": 1
+    },
+    {
+      "type": "platform",
+      "position": [38, 6, 20],
+      "size": [7, 0.5, 7],
+      "color": "#2F1B0C"
+    },
+    {
+      "type": "lava",
+      "position": [35, 5, 20],
+      "size": [2, 0.3, 7]
+    },
+    {
+      "type": "spike",
+      "position": [36, 6.5, 20],
+      "size": 0.8
+    },
+    {
+      "type": "spike",
+      "position": [40, 6.5, 20],
+      "size": 0.8
+    },
+    {
+      "type": "checkpoint",
+      "id": "volcano_end",
+      "position": [38, 7, 20]
+    },
+    {
+      "type": "coin",
+      "id": "coin_4",
+      "position": [38, 7.5, 23],
+      "coinType": "gravity"
+    },
+    {
+      "type": "end_goal",
+      "position": [38, 7, 26],
+      "modelType": "trophy"
+    }
+  ]
+}

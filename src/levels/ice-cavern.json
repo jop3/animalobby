@@ -1,0 +1,145 @@
+{
+  "id": "ice_cavern",
+  "name": "Ice Cavern",
+  "description": "Slippery ice platforms and frozen hazards",
+  "difficulty": 3,
+  "theme": {
+    "skyColor": "#B0E0E6",
+    "ambientColor": "#E0FFFF"
+  },
+  "spawnPoint": [0, 2, 0],
+  "entities": [
+    {
+      "type": "platform",
+      "position": [0, 0, 0],
+      "size": [7, 0.5, 7],
+      "color": "#A0D6E8"
+    },
+    {
+      "type": "checkpoint",
+      "id": "ice_start",
+      "position": [0, 1, 0]
+    },
+    {
+      "type": "coin",
+      "id": "coin_1",
+      "position": [0, 1.5, 0],
+      "coinType": "speed"
+    },
+    {
+      "type": "platform",
+      "position": [6, 1, 4],
+      "size": [5, 0.5, 5],
+      "color": "#D1EDF2"
+    },
+    {
+      "type": "spike",
+      "position": [6, 1.5, 6],
+      "size": 0.7
+    },
+    {
+      "type": "coin",
+      "id": "coin_2",
+      "position": [8, 2, 4],
+      "coinType": "gravity"
+    },
+    {
+      "type": "platform",
+      "position": [12, 2, 7],
+      "size": [4, 0.5, 4],
+      "color": "#A0D6E8"
+    },
+    {
+      "type": "rotating_hammer",
+      "id": "hammer_1",
+      "position": [12, 5, 7],
+      "rotationSpeed": 1.2,
+      "hammerLength": 2.5
+    },
+    {
+      "type": "platform",
+      "position": [17, 3, 10],
+      "size": [6, 0.5, 6],
+      "color": "#D1EDF2"
+    },
+    {
+      "type": "checkpoint",
+      "id": "ice_mid",
+      "position": [17, 4, 10]
+    },
+    {
+      "type": "coin",
+      "id": "coin_3",
+      "position": [17, 4.5, 10],
+      "coinType": "speed"
+    },
+    {
+      "type": "platform",
+      "position": [24, 4, 13],
+      "size": [5, 0.5, 5],
+      "color": "#A0D6E8"
+    },
+    {
+      "type": "zeus_lightning",
+      "id": "lightning_1",
+      "position": [24, 4, 13],
+      "radius": 2.5,
+      "interval": 3.5,
+      "warningDuration": 1
+    },
+    {
+      "type": "platform",
+      "position": [30, 5, 16],
+      "size": [4, 0.5, 4],
+      "color": "#D1EDF2"
+    },
+    {
+      "type": "spike",
+      "position": [30, 5.5, 17],
+      "size": 0.8
+    },
+    {
+      "type": "coin",
+      "id": "coin_4",
+      "position": [32, 6, 16],
+      "coinType": "gravity"
+    },
+    {
+      "type": "platform",
+      "position": [35, 6, 19],
+      "size": [7, 0.5, 7],
+      "color": "#A0D6E8"
+    },
+    {
+      "type": "vine",
+      "id": "vine_1",
+      "position": [35, 6, 19],
+      "height": 4,
+      "attackInterval": 3,
+      "attackDuration": 0.8
+    },
+    {
+      "type": "rotating_hammer",
+      "id": "hammer_2",
+      "position": [38, 9, 19],
+      "rotationSpeed": 1,
+      "hammerLength": 3
+    },
+    {
+      "type": "checkpoint",
+      "id": "ice_end",
+      "position": [35, 7, 22]
+    },
+    {
+      "type": "coin",
+      "id": "coin_5",
+      "position": [35, 7.5, 22],
+      "coinType": "speed"
+    },
+    {
+      "type": "end_goal",
+      "position": [35, 7, 25],
+      "modelType": "portal"
+    }
+  ]
+}
