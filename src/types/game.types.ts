@@ -115,6 +115,7 @@ export interface GameState {
 
   // Current session
   currentBiome: string;
+  currentLevelId: string | null;
   checkpointPosition: [number, number, number];
   lastCheckpointId: string | null;
   playerPosition: [number, number, number] | null;
@@ -136,6 +137,8 @@ export interface GameState {
   die: () => void;
   respawn: () => void;
   winGame: () => void;
+  loadLevel: (levelId: string) => void;
+  resetLevel: () => void;
   prestigeReset: () => void;
   setQuality: (quality: 'low' | 'medium' | 'high') => void;
   toggleSound: () => void;

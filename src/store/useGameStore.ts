@@ -15,6 +15,7 @@ const INITIAL_STATE = {
   },
   prestigeLevel: 0,
   currentBiome: 'green_fields',
+  currentLevelId: null as string | null,
   checkpointPosition: [0, 2, 0] as [number, number, number],
   lastCheckpointId: null,
   playerPosition: null,
@@ -97,6 +98,30 @@ export const useGameStore = create<GameState>()(
       // Win condition
       winGame: () => {
         set({ hasWon: true });
+      },
+
+      // Level management
+      loadLevel: (levelId: string) => {
+        set({
+          currentLevelId: levelId,
+          isDead: false,
+          hasWon: false,
+          isPaused: false,
+          playerPosition: null,
+          checkpointPosition: [0, 2, 0], // Will be overwritten by level's spawn point
+          lastCheckpointId: null,
+        });
+      },
+
+      resetLevel: () => {
+        set({
+          isDead: false,
+          hasWon: false,
+          isPaused: false,
+          playerPosition: null,
+          checkpointPosition: [0, 2, 0], // Will be overwritten by level's spawn point
+          lastCheckpointId: null,
+        });
       },
 
       // Prestige system

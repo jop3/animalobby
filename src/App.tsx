@@ -8,6 +8,7 @@ import { HUD } from './components/ui/HUD';
 import { PostProcessing } from './components/effects/PostProcessing';
 import { WebGLFallback } from './components/ui/WebGLFallback';
 import { detectWebGL } from './utils/webglDetect';
+import { GameManager } from './components/GameManager';
 
 // Keyboard controls map
 export const Controls = {
@@ -34,57 +35,61 @@ function App() {
   }
 
   return (
-    <div className="w-full h-full">
-      <KeyboardControls
-        map={[
-          { name: Controls.forward, keys: ['ArrowUp', 'KeyW'] },
-          { name: Controls.back, keys: ['ArrowDown', 'KeyS'] },
-          { name: Controls.left, keys: ['ArrowLeft', 'KeyA'] },
-          { name: Controls.right, keys: ['ArrowRight', 'KeyD'] },
-          { name: Controls.jump, keys: ['Space'] },
-          { name: Controls.sprint, keys: ['ShiftLeft', 'ShiftRight'] },
-        ]}
-      >
-        <Canvas
-          shadows={quality !== 'low'}
-          camera={{ position: [0, 5, 10], fov: 60 }}
-          gl={{
-            antialias: quality === 'high',
-            powerPreference: 'high-performance',
-          }}
-        >
-          <Suspense fallback={null}>
-            <color attach="background" args={['#87CEEB']} />
+    <GameManager>
+      {(level) => (
+        <div className="w-full h-full">
+          <KeyboardControls
+            map={[
+              { name: Controls.forward, keys: ['ArrowUp', 'KeyW'] },
+              { name: Controls.back, keys: ['ArrowDown', 'KeyS'] },
+              { name: Controls.left, keys: ['ArrowLeft', 'KeyA'] },
+              { name: Controls.right, keys: ['ArrowRight', 'KeyD'] },
+              { name: Controls.jump, keys: ['Space'] },
+              { name: Controls.sprint, keys: ['ShiftLeft', 'ShiftRight'] },
+            ]}
+          >
+            <Canvas
+              shadows={quality !== 'low'}
+              camera={{ position: [0, 5, 10], fov: 60 }}
+              gl={{
+                antialias: quality === 'high',
+                powerPreference: 'high-performance',
+              }}
+            >
+              <Suspense fallback={null}>
+                <color attach="background" args={['#87CEEB']} />
 
-            {/* Lighting */}
-            <ambientLight intensity={0.6} color="#B3D9FF" />
-            <directionalLight
-              position={[10, 20, 10]}
-              intensity={0.8}
-              castShadow={quality !== 'low'}
-              shadow-mapSize-width={quality === 'high' ? 2048 : 1024}
-              shadow-mapSize-height={quality === 'high' ? 2048 : 1024}
-              shadow-camera-far={50}
-              shadow-camera-left={-20}
-              shadow-camera-right={20}
-              shadow-camera-top={20}
-              shadow-camera-bottom={-20}
-            />
+                {/* Lighting */}
+                <ambientLight intensity={0.6} color="#B3D9FF" />
+                <directionalLight
+                  position={[10, 20, 10]}
+                  intensity={0.8}
+                  castShadow={quality !== 'low'}
+                  shadow-mapSize-width={quality === 'high' ? 2048 : 1024}
+                  shadow-mapSize-height={quality === 'high' ? 2048 : 1024}
+                  shadow-camera-far={50}
+                  shadow-camera-left={-20}
+                  shadow-camera-right={20}
+                  shadow-camera-top={20}
+                  shadow-camera-bottom={-20}
+                />
 
-            <Physics paused={isPaused} gravity={[0, -20, 0]}>
-              <Scene />
-            </Physics>
+                <Physics paused={isPaused} gravity={[0, -20, 0]}>
+                  <Scene level={level} />
+                </Physics>
 
-            {/* Post-processing effects */}
-            <PostProcessing />
-          </Suspense>
-        </Canvas>
-      </KeyboardControls>
+                {/* Post-processing effects */}
+                <PostProcessing />
+              </Suspense>
+            </Canvas>
+          </KeyboardControls>
 
-      {/* UI Overlays */}
-      <HUD />
-      {/* <AnimalLab /> */}
-    </div>
+          {/* UI Overlays */}
+          <HUD />
+          {/* <AnimalLab /> */}
+        </div>
+      )}
+    </GameManager>
   );
 }
 

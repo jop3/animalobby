@@ -2,6 +2,7 @@ import { LevelEntity } from '../../types/level.types';
 import { Platform } from '../environment/Platform';
 import { Coin } from '../collectibles/Coin';
 import { Checkpoint } from '../collectibles/Checkpoint';
+import { EndGoal } from '../collectibles/EndGoal';
 import { Spike } from '../hazards/Spike';
 import { Lava } from '../hazards/Lava';
 import { RotatingHammer } from '../hazards/RotatingHammer';
@@ -114,14 +115,11 @@ export function EntityFactory({ entity, index }: EntityFactoryProps) {
       );
 
     case 'end_goal':
-      // TODO: Implement EndGoal component
-      console.warn('End goal not yet implemented');
       return (
-        <Platform
+        <EndGoal
           key={key}
           position={entity.position}
-          size={[4, 0.5, 4]}
-          color="#FFD700"
+          modelType={entity.modelType}
         />
       );
 

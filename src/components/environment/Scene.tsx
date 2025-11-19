@@ -2,22 +2,21 @@ import { useRef } from 'react';
 import { Player } from '../player/Player';
 import { CameraRig } from './CameraRig';
 import { LevelLoader } from '../level/LevelLoader';
-import { GREEN_FIELDS } from '../../levels';
+import { LevelDefinition } from '../../types/level.types';
 
 /**
  * Scene - Main game scene
- * Loads levels from JSON and renders player + camera
- *
- * To load a different level, import it from '../../levels' and pass to LevelLoader
- * Example: import { PARKOUR_CHALLENGE } from '../../levels';
+ * Renders player, camera, and level entities
  */
-export function Scene() {
+interface SceneProps {
+  level: LevelDefinition | null;
+}
+
+export function Scene({ level }: SceneProps) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const playerRef = useRef<any>(null);
 
-  // TODO: Make this dynamic based on game state
-  // For now, hardcoded to GREEN_FIELDS
-  const currentLevel = GREEN_FIELDS;
+  if (!level) return null;
 
   return (
     <>
@@ -28,7 +27,7 @@ export function Scene() {
       <Player ref={playerRef} />
 
       {/* Load level from JSON */}
-      <LevelLoader level={currentLevel} />
+      <LevelLoader level={level} />
     </>
   );
 }
