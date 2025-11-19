@@ -5,9 +5,7 @@ import { Suspense } from 'react';
 import { useGameStore } from './store/useGameStore';
 import { Scene } from './components/environment/Scene';
 import { HUD } from './components/ui/HUD';
-
-// Components (will be created)
-// import { AnimalLab } from './components/ui/AnimalLab';
+import { PostProcessing } from './components/effects/PostProcessing';
 
 // Keyboard controls map
 export enum Controls {
@@ -65,7 +63,8 @@ function App() {
               <Scene />
             </Physics>
 
-            {/* Post-processing will go here */}
+            {/* Post-processing effects */}
+            <PostProcessing />
           </Suspense>
         </Canvas>
       </KeyboardControls>

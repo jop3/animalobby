@@ -1,6 +1,10 @@
+import { useState } from 'react';
 import { useGameStore } from '../../store/useGameStore';
+import { AnimalLab } from './AnimalLab';
 
 export function HUD() {
+  const [isLabOpen, setIsLabOpen] = useState(false);
+
   const coins = useGameStore((state) => state.coins);
   const currentLoadout = useGameStore((state) => state.currentLoadout);
   const prestigeLevel = useGameStore((state) => state.prestigeLevel);
@@ -42,10 +46,7 @@ export function HUD() {
       <div className="absolute top-4 left-4 pointer-events-auto">
         <button
           className="bg-gradient-to-br from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 rounded-chunky px-6 py-3 shadow-lg border-4 border-green-800 transition-all hover:scale-105 active:scale-95"
-          onClick={() => {
-            // TODO: Open Animal Lab modal
-            console.log('Open Animal Lab');
-          }}
+          onClick={() => setIsLabOpen(true)}
         >
           <span className="text-xl font-game text-stroke text-white">
             🧪 Animal Lab
@@ -62,6 +63,9 @@ export function HUD() {
 
       {/* Center - Death/Respawn Message */}
       <DeathMessage />
+
+      {/* Animal Lab Modal */}
+      <AnimalLab isOpen={isLabOpen} onClose={() => setIsLabOpen(false)} />
     </div>
   );
 }

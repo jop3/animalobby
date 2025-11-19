@@ -4,6 +4,8 @@ import { RigidBody } from '@react-three/rapier';
 import { Mesh } from 'three';
 import { CoinType } from '../../types/game.types';
 import { useGameStore } from '../../store/useGameStore';
+import { CoinParticles } from '../effects/ParticleSystem';
+import { audioManager } from '../../utils/audioManager';
 
 interface CoinProps {
   id: string;
@@ -14,6 +16,7 @@ interface CoinProps {
 export function Coin({ id, position, type }: CoinProps) {
   const meshRef = useRef<Mesh>(null);
   const [collected, setCollected] = useState(false);
+  const [showParticles, setShowParticles] = useState(false);
   const collectCoin = useGameStore((state) => state.collectCoin);
 
   // Colors based on type
@@ -33,13 +36,15 @@ export function Coin({ id, position, type }: CoinProps) {
     if (collected) return;
 
     setCollected(true);
+    setShowParticles(true);
     collectCoin(type);
-
-    // TODO: Play sound effect
-    // TODO: Spawn particle effect
+    audioManager.playCoin();
   };
 
-  if (collected) return null;
+  if (collected) {
+    // Show particles briefly after collection
+    return showParticles ? <CoinParticles position={position} color={color} /> : null;
+  }
 
   return (
     <RigidBody
