@@ -28,6 +28,8 @@ export type EntityType =
   | 'spike'
   | 'lava'
   | 'rotating_hammer'
+  | 'zeus_lightning'
+  | 'vine'
   | 'moving_platform'
   | 'end_goal';
 
@@ -81,6 +83,22 @@ export interface RotatingHammerEntity extends BaseEntity {
   hammerLength?: number; // Arm length (default 3)
 }
 
+// Zeus Lightning
+export interface ZeusLightningEntity extends BaseEntity {
+  type: 'zeus_lightning';
+  radius?: number; // Strike radius (default 2)
+  interval?: number; // Seconds between strikes (default 5)
+  warningDuration?: number; // Warning time (default 1)
+}
+
+// Vine
+export interface VineEntity extends BaseEntity {
+  type: 'vine';
+  height?: number; // Vine height (default 4)
+  attackInterval?: number; // Seconds between attacks (default 3)
+  attackDuration?: number; // Attack duration (default 0.8)
+}
+
 // Moving Platform
 export interface MovingPlatformEntity extends BaseEntity {
   type: 'moving_platform';
@@ -105,6 +123,8 @@ export type LevelEntity =
   | SpikeEntity
   | LavaEntity
   | RotatingHammerEntity
+  | ZeusLightningEntity
+  | VineEntity
   | MovingPlatformEntity
   | EndGoalEntity;
 

@@ -5,6 +5,8 @@ import { Checkpoint } from '../collectibles/Checkpoint';
 import { Spike } from '../hazards/Spike';
 import { Lava } from '../hazards/Lava';
 import { RotatingHammer } from '../hazards/RotatingHammer';
+import { ZeusLightning } from '../hazards/ZeusLightning';
+import { Vine } from '../hazards/Vine';
 
 /**
  * EntityFactory - Maps JSON entity definitions to React components
@@ -74,6 +76,28 @@ export function EntityFactory({ entity, index }: EntityFactoryProps) {
           position={entity.position}
           rotationSpeed={entity.rotationSpeed}
           hammerLength={entity.hammerLength}
+        />
+      );
+
+    case 'zeus_lightning':
+      return (
+        <ZeusLightning
+          key={key}
+          position={entity.position}
+          radius={entity.radius}
+          interval={entity.interval}
+          warningDuration={entity.warningDuration}
+        />
+      );
+
+    case 'vine':
+      return (
+        <Vine
+          key={key}
+          position={entity.position}
+          height={entity.height}
+          attackInterval={entity.attackInterval}
+          attackDuration={entity.attackDuration}
         />
       );
 

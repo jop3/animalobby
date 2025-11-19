@@ -1,0 +1,139 @@
+{
+  "id": "sky_islands",
+  "name": "Sky Islands",
+  "description": "Hop across floating islands in the clouds",
+  "difficulty": 2,
+  "theme": {
+    "skyColor": "#87CEEB",
+    "ambientColor": "#E0F6FF"
+  },
+  "spawnPoint": [0, 2, 0],
+  "entities": [
+    {
+      "type": "platform",
+      "position": [0, 0, 0],
+      "size": [6, 0.5, 6],
+      "color": "#E8F4F8"
+    },
+    {
+      "type": "checkpoint",
+      "id": "sky_start",
+      "position": [0, 1, 0]
+    },
+    {
+      "type": "coin",
+      "id": "coin_1",
+      "position": [0, 1.5, 0],
+      "coinType": "speed"
+    },
+    {
+      "type": "platform",
+      "position": [5, 1, 5],
+      "size": [4, 0.5, 4],
+      "color": "#D4E8F0"
+    },
+    {
+      "type": "coin",
+      "id": "coin_2",
+      "position": [5, 2, 5],
+      "coinType": "gravity"
+    },
+    {
+      "type": "platform",
+      "position": [10, 2, 8],
+      "size": [5, 0.5, 5],
+      "color": "#C0DDE8"
+    },
+    {
+      "type": "spike",
+      "position": [10, 2.5, 8],
+      "size": 0.8
+    },
+    {
+      "type": "coin",
+      "id": "coin_3",
+      "position": [12, 3, 8],
+      "coinType": "speed"
+    },
+    {
+      "type": "platform",
+      "position": [15, 3, 12],
+      "size": [4, 0.5, 4],
+      "color": "#E8F4F8"
+    },
+    {
+      "type": "rotating_hammer",
+      "id": "hammer_1",
+      "position": [15, 6, 12],
+      "rotationSpeed": 1,
+      "hammerLength": 2.5
+    },
+    {
+      "type": "checkpoint",
+      "id": "sky_mid",
+      "position": [15, 4, 12]
+    },
+    {
+      "type": "platform",
+      "position": [20, 4, 15],
+      "size": [5, 0.5, 5],
+      "color": "#D4E8F0"
+    },
+    {
+      "type": "coin",
+      "id": "coin_4",
+      "position": [20, 5, 15],
+      "coinType": "gravity"
+    },
+    {
+      "type": "platform",
+      "position": [25, 5, 18],
+      "size": [4, 0.5, 4],
+      "color": "#C0DDE8"
+    },
+    {
+      "type": "coin",
+      "id": "coin_5",
+      "position": [25, 6, 18],
+      "coinType": "speed"
+    },
+    {
+      "type": "coin",
+      "id": "coin_6",
+      "position": [27, 6, 18],
+      "coinType": "speed"
+    },
+    {
+      "type": "platform",
+      "position": [30, 6, 20],
+      "size": [6, 0.5, 6],
+      "color": "#E8F4F8"
+    },
+    {
+      "type": "lava",
+      "position": [30, 6, 20],
+      "size": [3, 0.2, 3]
+    },
+    {
+      "type": "platform",
+      "position": [35, 7, 22],
+      "size": [7, 0.5, 7],
+      "color": "#D4E8F0"
+    },
+    {
+      "type": "checkpoint",
+      "id": "sky_end",
+      "position": [35, 8, 22]
+    },
+    {
+      "type": "coin",
+      "id": "coin_7",
+      "position": [35, 8.5, 22],
+      "coinType": "gravity"
+    },
+    {
+      "type": "end_goal",
+      "position": [35, 8, 26]
+    }
+  ]
+}

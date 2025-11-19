@@ -1,4 +1,4 @@
-import { useRef, useEffect, useMemo, forwardRef } from 'react';
+import { useRef, useEffect, useMemo, forwardRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { RigidBody, CapsuleCollider } from '@react-three/rapier';
 import { useKeyboardControls } from '@react-three/drei';
@@ -7,6 +7,7 @@ import { Controls } from '../../App';
 import { useGameStore } from '../../store/useGameStore';
 import { getPart } from '../../data/animalParts';
 import { PlayerModel } from './PlayerModel';
+import { DeathParticles } from '../effects/DeathParticles';
 
 const DEATH_Y = -10;
 
@@ -14,6 +15,8 @@ export const Player = forwardRef<any>((props, ref) => {
   const playerRef = useRef<any>(null);
   const isOnGround = useRef(false);
   const jumpCount = useRef(0);
+  const [showDeathParticles, setShowDeathParticles] = useState(false);
+  const [deathPosition, setDeathPosition] = useState<[number, number, number]>([0, 0, 0]);
 
   // Game state
   const currentLoadout = useGameStore((state) => state.currentLoadout);
@@ -21,6 +24,7 @@ export const Player = forwardRef<any>((props, ref) => {
   const isDead = useGameStore((state) => state.isDead);
   const die = useGameStore((state) => state.die);
   const respawn = useGameStore((state) => state.respawn);
+  const setPlayerPosition = useGameStore((state) => state.setPlayerPosition);
 
   // Keyboard controls
   const [, getKeys] = useKeyboardControls<string>();
@@ -60,10 +64,22 @@ export const Player = forwardRef<any>((props, ref) => {
     };
   }, [currentLoadout]);
 
+  // Death particles logic
+  useEffect(() => {
+    if (isDead && playerRef.current) {
+      // Capture death position and show particles
+      const pos = playerRef.current.translation();
+      setDeathPosition([pos.x, pos.y, pos.z]);
+      setShowDeathParticles(true);
+    } else {
+      setShowDeathParticles(false);
+    }
+  }, [isDead]);
+
   // Respawn logic
   useEffect(() => {
     if (isDead && playerRef.current) {
-      // Reset to checkpoint
+      // Reset to checkpoint after delay
       setTimeout(() => {
         playerRef.current?.setTranslation(
           { x: checkpointPosition[0], y: checkpointPosition[1], z: checkpointPosition[2] },
@@ -72,7 +88,7 @@ export const Player = forwardRef<any>((props, ref) => {
         playerRef.current?.setLinvel({ x: 0, y: 0, z: 0 }, true);
         playerRef.current?.setAngvel({ x: 0, y: 0, z: 0 }, true);
         respawn();
-      }, 500);
+      }, 1000); // Longer delay to show particles
     }
   }, [isDead, checkpointPosition, respawn]);
 
@@ -86,6 +102,9 @@ export const Player = forwardRef<any>((props, ref) => {
     // Get current velocity
     const velocity = body.linvel();
     const position = body.translation();
+
+    // Update global player position for hazards
+    setPlayerPosition([position.x, position.y, position.z]);
 
     // Check if on ground (simplified - check y velocity)
     isOnGround.current = Math.abs(velocity.y) < 0.5 && position.y > DEATH_Y + 1;
@@ -145,25 +164,35 @@ export const Player = forwardRef<any>((props, ref) => {
   });
 
   return (
-    <RigidBody
-      ref={(r) => {
-        playerRef.current = r;
-        if (typeof ref === 'function') {
-          ref(r);
-        } else if (ref) {
-          ref.current = r;
-        }
-      }}
-      colliders={false}
-      mass={1}
-      type="dynamic"
-      position={checkpointPosition}
-      enabledRotations={[false, false, false]} // Lock rotation
-      linearDamping={0.5}
-      angularDamping={1}
-    >
-      <CapsuleCollider args={[0.5, 0.5]} />
-      <PlayerModel loadout={currentLoadout} />
-    </RigidBody>
+    <>
+      <RigidBody
+        ref={(r) => {
+          playerRef.current = r;
+          if (typeof ref === 'function') {
+            ref(r);
+          } else if (ref) {
+            ref.current = r;
+          }
+        }}
+        colliders={false}
+        mass={1}
+        type="dynamic"
+        position={checkpointPosition}
+        enabledRotations={[false, false, false]} // Lock rotation
+        linearDamping={0.5}
+        angularDamping={1}
+      >
+        <CapsuleCollider args={[0.5, 0.5]} />
+        {!isDead && <PlayerModel loadout={currentLoadout} />}
+      </RigidBody>
+
+      {/* Death particles */}
+      {showDeathParticles && (
+        <DeathParticles
+          position={deathPosition}
+          onComplete={() => setShowDeathParticles(false)}
+        />
+      )}
+    </>
   );
 });

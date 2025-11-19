@@ -117,6 +117,7 @@ export interface GameState {
   currentBiome: string;
   checkpointPosition: [number, number, number];
   lastCheckpointId: string | null;
+  playerPosition: [number, number, number] | null;
   isDead: boolean;
   isPaused: boolean;
   hasWon: boolean;
@@ -131,6 +132,7 @@ export interface GameState {
   unlockPart: (partId: string) => void;
   equipPart: (partId: string, slot: PartType) => void;
   setCheckpoint: (position: [number, number, number], checkpointId: string) => void;
+  setPlayerPosition: (position: [number, number, number]) => void;
   die: () => void;
   respawn: () => void;
   winGame: () => void;

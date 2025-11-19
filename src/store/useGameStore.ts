@@ -17,6 +17,7 @@ const INITIAL_STATE = {
   currentBiome: 'green_fields',
   checkpointPosition: [0, 2, 0] as [number, number, number],
   lastCheckpointId: null,
+  playerPosition: null,
   isDead: false,
   isPaused: false,
   hasWon: false,
@@ -76,6 +77,11 @@ export const useGameStore = create<GameState>()(
           checkpointPosition: position,
           lastCheckpointId: checkpointId,
         });
+      },
+
+      // Player position tracking (for hazards)
+      setPlayerPosition: (position: [number, number, number]) => {
+        set({ playerPosition: position });
       },
 
       // Death and respawn
