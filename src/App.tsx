@@ -4,9 +4,9 @@ import { KeyboardControls } from '@react-three/drei';
 import { Suspense } from 'react';
 import { useGameStore } from './store/useGameStore';
 import { Scene } from './components/environment/Scene';
+import { HUD } from './components/ui/HUD';
 
 // Components (will be created)
-// import { HUD } from './components/ui/HUD';
 // import { AnimalLab } from './components/ui/AnimalLab';
 
 // Keyboard controls map
@@ -71,15 +71,8 @@ function App() {
       </KeyboardControls>
 
       {/* UI Overlays */}
-      {/* <HUD /> */}
+      <HUD />
       {/* <AnimalLab /> */}
-
-      {/* Dev info */}
-      <div className="absolute top-4 left-4 text-white font-game text-sm bg-black/50 p-2 rounded">
-        Animal Obby - MVP
-        <br />
-        Quality: {quality}
-      </div>
     </div>
   );
 }
