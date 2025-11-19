@@ -1,0 +1,190 @@
+{
+  "id": "green_fields",
+  "name": "Green Fields",
+  "description": "A peaceful tutorial level teaching the basics of movement, jumping, and collecting coins.",
+  "difficulty": 1,
+
+  "theme": {
+    "skyColor": "#87CEEB",
+    "ambientColor": "#B3D9FF"
+  },
+
+  "spawnPoint": [0, 2, 0],
+
+  "entities": [
+    {
+      "type": "platform",
+      "position": [0, 0, 0],
+      "size": [10, 0.5, 10],
+      "color": "#7FBF7F"
+    },
+    {
+      "type": "checkpoint",
+      "id": "checkpoint_1",
+      "position": [0, 1, 0]
+    },
+    {
+      "type": "coin",
+      "id": "coin_1",
+      "position": [3, 1.5, 0],
+      "coinType": "speed"
+    },
+    {
+      "type": "coin",
+      "id": "coin_2",
+      "position": [5, 1.5, 2],
+      "coinType": "gravity"
+    },
+    {
+      "type": "coin",
+      "id": "coin_3",
+      "position": [-3, 1.5, -2],
+      "coinType": "speed"
+    },
+    {
+      "type": "platform",
+      "position": [12, 1, 0],
+      "size": [6, 0.5, 4],
+      "color": "#D4A574"
+    },
+    {
+      "type": "spike",
+      "position": [10, 1.5, 0],
+      "size": 0.8
+    },
+    {
+      "type": "spike",
+      "position": [14, 1.5, 0],
+      "size": 0.8
+    },
+    {
+      "type": "coin",
+      "id": "coin_4",
+      "position": [12, 2.5, 0],
+      "coinType": "speed"
+    },
+    {
+      "type": "platform",
+      "position": [22, 2, 2],
+      "size": [4, 0.5, 4],
+      "color": "#FFD700"
+    },
+    {
+      "type": "coin",
+      "id": "coin_5",
+      "position": [22, 3, 2],
+      "coinType": "gravity"
+    },
+    {
+      "type": "lava",
+      "position": [30, 1, 0],
+      "size": [6, 0.3, 8]
+    },
+    {
+      "type": "platform",
+      "position": [38, 3, 0],
+      "size": [5, 0.5, 5],
+      "color": "#FF6347"
+    },
+    {
+      "type": "checkpoint",
+      "id": "checkpoint_2",
+      "position": [38, 3.5, 0]
+    },
+    {
+      "type": "coin",
+      "id": "coin_6",
+      "position": [38, 4.5, 0],
+      "coinType": "speed"
+    },
+    {
+      "type": "platform",
+      "position": [46, 3, 0],
+      "size": [8, 0.5, 6],
+      "color": "#8B7355"
+    },
+    {
+      "type": "rotating_hammer",
+      "position": [46, 5, 0],
+      "rotationSpeed": 1.5,
+      "hammerLength": 3
+    },
+    {
+      "type": "coin",
+      "id": "coin_7",
+      "position": [46, 4, 3],
+      "coinType": "gravity"
+    },
+    {
+      "type": "coin",
+      "id": "coin_8",
+      "position": [46, 4, -3],
+      "coinType": "speed"
+    },
+    {
+      "type": "platform",
+      "position": [54, 5, 0],
+      "size": [3, 0.5, 3],
+      "color": "#4A90E2"
+    },
+    {
+      "type": "platform",
+      "position": [58, 6.5, 2],
+      "size": [3, 0.5, 3],
+      "color": "#9B59B6"
+    },
+    {
+      "type": "platform",
+      "position": [62, 8, -1],
+      "size": [3, 0.5, 3],
+      "color": "#E74C3C"
+    },
+    {
+      "type": "coin",
+      "id": "coin_9",
+      "position": [54, 6, 0],
+      "coinType": "speed"
+    },
+    {
+      "type": "coin",
+      "id": "coin_10",
+      "position": [58, 7.5, 2],
+      "coinType": "gravity"
+    },
+    {
+      "type": "coin",
+      "id": "coin_11",
+      "position": [62, 9, -1],
+      "coinType": "speed"
+    },
+    {
+      "type": "platform",
+      "position": [68, 10, 0],
+      "size": [8, 0.5, 8],
+      "color": "#2ECC71"
+    },
+    {
+      "type": "checkpoint",
+      "id": "checkpoint_3",
+      "position": [68, 10.5, 0]
+    },
+    {
+      "type": "coin",
+      "id": "coin_12",
+      "position": [66, 11.5, 0],
+      "coinType": "gravity"
+    },
+    {
+      "type": "coin",
+      "id": "coin_13",
+      "position": [68, 12.5, 0],
+      "coinType": "speed"
+    },
+    {
+      "type": "coin",
+      "id": "coin_14",
+      "position": [70, 11.5, 0],
+      "coinType": "gravity"
+    }
+  ]
+}

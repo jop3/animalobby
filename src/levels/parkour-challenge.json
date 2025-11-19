@@ -1,0 +1,144 @@
+{
+  "id": "parkour_challenge",
+  "name": "Parkour Challenge",
+  "description": "Test your jumping skills with this vertical platforming challenge!",
+  "difficulty": 3,
+
+  "theme": {
+    "skyColor": "#1a1a2e",
+    "ambientColor": "#FFD700"
+  },
+
+  "spawnPoint": [0, 2, 0],
+
+  "entities": [
+    {
+      "type": "platform",
+      "position": [0, 0, 0],
+      "size": [6, 0.5, 6],
+      "color": "#3498db"
+    },
+    {
+      "type": "checkpoint",
+      "id": "start",
+      "position": [0, 1, 0]
+    },
+    {
+      "type": "coin",
+      "id": "coin_start",
+      "position": [0, 2, 0],
+      "coinType": "speed"
+    },
+    {
+      "type": "platform",
+      "position": [0, 3, 5],
+      "size": [3, 0.5, 3],
+      "color": "#e74c3c"
+    },
+    {
+      "type": "coin",
+      "id": "coin_1",
+      "position": [0, 4, 5],
+      "coinType": "gravity"
+    },
+    {
+      "type": "platform",
+      "position": [4, 5, 5],
+      "size": [2, 0.5, 2],
+      "color": "#9b59b6"
+    },
+    {
+      "type": "platform",
+      "position": [4, 7, 2],
+      "size": [2, 0.5, 2],
+      "color": "#f39c12"
+    },
+    {
+      "type": "coin",
+      "id": "coin_2",
+      "position": [4, 8, 2],
+      "coinType": "speed"
+    },
+    {
+      "type": "platform",
+      "position": [0, 9, 2],
+      "size": [2, 0.5, 2],
+      "color": "#1abc9c"
+    },
+    {
+      "type": "platform",
+      "position": [-4, 11, 2],
+      "size": [2, 0.5, 2],
+      "color": "#e67e22"
+    },
+    {
+      "type": "coin",
+      "id": "coin_3",
+      "position": [-4, 12, 2],
+      "coinType": "gravity"
+    },
+    {
+      "type": "platform",
+      "position": [-4, 13, -2],
+      "size": [3, 0.5, 3],
+      "color": "#2ecc71"
+    },
+    {
+      "type": "checkpoint",
+      "id": "mid",
+      "position": [-4, 13.5, -2]
+    },
+    {
+      "type": "platform",
+      "position": [0, 15, -2],
+      "size": [2, 0.5, 2],
+      "color": "#c0392b"
+    },
+    {
+      "type": "spike",
+      "position": [0, 15.5, -2],
+      "size": 0.5
+    },
+    {
+      "type": "platform",
+      "position": [3, 17, 0],
+      "size": [2, 0.5, 2],
+      "color": "#8e44ad"
+    },
+    {
+      "type": "coin",
+      "id": "coin_4",
+      "position": [3, 18, 0],
+      "coinType": "speed"
+    },
+    {
+      "type": "platform",
+      "position": [0, 20, 0],
+      "size": [5, 0.5, 5],
+      "color": "#f1c40f"
+    },
+    {
+      "type": "checkpoint",
+      "id": "victory",
+      "position": [0, 20.5, 0]
+    },
+    {
+      "type": "coin",
+      "id": "victory_coin_1",
+      "position": [-2, 21.5, 0],
+      "coinType": "gravity"
+    },
+    {
+      "type": "coin",
+      "id": "victory_coin_2",
+      "position": [0, 22.5, 0],
+      "coinType": "speed"
+    },
+    {
+      "type": "coin",
+      "id": "victory_coin_3",
+      "position": [2, 21.5, 0],
+      "coinType": "gravity"
+    }
+  ]
+}

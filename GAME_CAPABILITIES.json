@@ -1,0 +1,337 @@
+{
+  "game": {
+    "name": "Animal Obby",
+    "version": "1.0.0",
+    "description": "A 3D voxel platformer with physics-based movement and collectibles"
+  },
+
+  "physics": {
+    "defaultGravity": -20,
+    "playerSpeed": 5,
+    "playerJumpForce": 10,
+    "deathHeight": -10
+  },
+
+  "jumpDistances": {
+    "easy": "2-3 units",
+    "normal": "4-5 units",
+    "hard": "6-7 units",
+    "maxPossible": "7-8 units (requires sprint or power-ups)"
+  },
+
+  "entityTypes": [
+    {
+      "type": "platform",
+      "description": "Solid platform players can stand on",
+      "required": ["position", "size", "color"],
+      "optional": [],
+      "properties": {
+        "position": {
+          "type": "[number, number, number]",
+          "description": "[x, y, z] coordinates in 3D space",
+          "example": [0, 0, 0]
+        },
+        "size": {
+          "type": "[number, number, number]",
+          "description": "[width, height, depth] in units",
+          "example": [10, 0.5, 10],
+          "recommendations": {
+            "starting": [8, 0.5, 8],
+            "small": [2, 0.5, 2],
+            "medium": [4, 0.5, 4],
+            "large": [10, 0.5, 10]
+          }
+        },
+        "color": {
+          "type": "string",
+          "description": "Hex color code",
+          "example": "#7FBF7F"
+        }
+      }
+    },
+    {
+      "type": "coin",
+      "description": "Collectible rotating coin that glows and plays sound",
+      "required": ["id", "position", "coinType"],
+      "optional": [],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier",
+          "example": "coin_1"
+        },
+        "position": {
+          "type": "[number, number, number]",
+          "description": "[x, y, z] coordinates",
+          "example": [3, 1.5, 0],
+          "recommendation": "Place 1-2 units above platforms"
+        },
+        "coinType": {
+          "type": "string",
+          "enum": ["speed", "gravity"],
+          "description": "speed = yellow, gravity = purple"
+        }
+      }
+    },
+    {
+      "type": "checkpoint",
+      "description": "Save point with green glow and floating rings",
+      "required": ["id", "position"],
+      "optional": [],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique checkpoint identifier for respawn",
+          "example": "checkpoint_1"
+        },
+        "position": {
+          "type": "[number, number, number]",
+          "description": "[x, y, z] coordinates",
+          "example": [0, 1, 0],
+          "recommendation": "Place every 20-30 units or before difficult sections"
+        }
+      }
+    },
+    {
+      "type": "spike",
+      "description": "Deadly red voxel spike that kills on contact",
+      "required": ["position"],
+      "optional": ["size"],
+      "properties": {
+        "position": {
+          "type": "[number, number, number]",
+          "description": "[x, y, z] coordinates",
+          "example": [10, 1.5, 0],
+          "recommendation": "Place 0.5-1 unit above platform surface"
+        },
+        "size": {
+          "type": "number",
+          "description": "Scale multiplier",
+          "default": 1,
+          "example": 0.8
+        }
+      }
+    },
+    {
+      "type": "lava",
+      "description": "Deadly animated lava pool with bubbles",
+      "required": ["position"],
+      "optional": ["size"],
+      "properties": {
+        "position": {
+          "type": "[number, number, number]",
+          "description": "[x, y, z] center position",
+          "example": [20, 1, 0]
+        },
+        "size": {
+          "type": "[number, number, number]",
+          "description": "[width, height, depth]",
+          "default": [4, 0.2, 4],
+          "example": [6, 0.3, 8],
+          "recommendation": "Keep height 0.2-0.3 for best visual"
+        }
+      }
+    },
+    {
+      "type": "rotating_hammer",
+      "description": "Kinematic rotating obstacle with hammer head",
+      "required": ["position"],
+      "optional": ["rotationSpeed", "hammerLength"],
+      "properties": {
+        "position": {
+          "type": "[number, number, number]",
+          "description": "[x, y, z] pivot point",
+          "example": [30, 5, 0],
+          "recommendation": "Place 3-5 units above platform"
+        },
+        "rotationSpeed": {
+          "type": "number",
+          "description": "Rotation speed multiplier",
+          "default": 1,
+          "example": 1.5,
+          "recommendations": {
+            "easy": 0.8,
+            "normal": 1.2,
+            "hard": 1.8
+          }
+        },
+        "hammerLength": {
+          "type": "number",
+          "description": "Length of rotating arm in units",
+          "default": 3,
+          "example": 3,
+          "note": "Total swing diameter = hammerLength * 2"
+        }
+      }
+    },
+    {
+      "type": "moving_platform",
+      "description": "Platform that moves in a pattern (COMING SOON)",
+      "required": ["position", "size", "color", "pattern", "speed", "range"],
+      "optional": [],
+      "status": "not_implemented",
+      "properties": {
+        "position": {
+          "type": "[number, number, number]",
+          "description": "Starting position"
+        },
+        "size": {
+          "type": "[number, number, number]",
+          "description": "[width, height, depth]"
+        },
+        "color": {
+          "type": "string",
+          "description": "Hex color"
+        },
+        "pattern": {
+          "type": "string",
+          "enum": ["linear", "circular"],
+          "description": "Movement pattern"
+        },
+        "speed": {
+          "type": "number",
+          "description": "Movement speed"
+        },
+        "range": {
+          "type": "[number, number, number]",
+          "description": "Movement offset or radius"
+        }
+      }
+    },
+    {
+      "type": "end_goal",
+      "description": "Victory marker at level end (COMING SOON)",
+      "required": ["position"],
+      "optional": ["modelType"],
+      "status": "not_implemented",
+      "properties": {
+        "position": {
+          "type": "[number, number, number]",
+          "description": "Goal position"
+        },
+        "modelType": {
+          "type": "string",
+          "enum": ["dog_head", "trophy", "portal"],
+          "default": "trophy"
+        }
+      }
+    }
+  ],
+
+  "colorPalette": {
+    "safe": {
+      "green": ["#7FBF7F", "#2ECC71", "#27AE60"],
+      "blue": ["#4A90E2", "#3498DB", "#2980B9"],
+      "gold": ["#FFD700", "#F1C40F", "#F39C12"]
+    },
+    "neutral": {
+      "gray": ["#7F8C8D", "#95A5A6", "#BDC3C7"],
+      "brown": ["#8B7355", "#A0522D", "#D2691E"]
+    },
+    "challenge": {
+      "orange": ["#FF6347", "#E67E22", "#D35400"],
+      "purple": ["#9B59B6", "#8E44AD", "#7D3C98"]
+    },
+    "danger": {
+      "red": ["#FF4444", "#E74C3C", "#C0392B"],
+      "dark": ["#2C3E50", "#34495E", "#1C2833"]
+    }
+  },
+
+  "levelTemplate": {
+    "id": "level_id",
+    "name": "Level Name",
+    "description": "Optional description",
+    "difficulty": 1,
+    "theme": {
+      "skyColor": "#87CEEB",
+      "ambientColor": "#B3D9FF"
+    },
+    "spawnPoint": [0, 2, 0],
+    "entities": []
+  },
+
+  "guidelines": {
+    "platformSpacing": {
+      "easy": "2-3 units apart",
+      "medium": "4-5 units apart",
+      "hard": "6+ units apart"
+    },
+    "checkpointFrequency": "Every 20-30 units or before difficult sections",
+    "coinPlacement": "1-2 units above platforms for easy collection",
+    "hazardSafeZone": "Leave 1-2 unit gaps between consecutive hazards",
+    "difficultyProgression": {
+      "1": "Tutorial - Wide platforms, short jumps, few hazards",
+      "2": "Easy - Medium platforms, simple obstacles",
+      "3": "Medium - Smaller platforms, rotating hazards, precise jumps",
+      "4": "Hard - Small platforms, multiple hazards, long jumps",
+      "5": "Expert - Tiny platforms, dense hazards, requires power-ups"
+    }
+  },
+
+  "examples": {
+    "minimal": {
+      "description": "Bare minimum working level",
+      "json": {
+        "id": "test",
+        "name": "Test",
+        "difficulty": 1,
+        "theme": {"skyColor": "#87CEEB"},
+        "spawnPoint": [0, 2, 0],
+        "entities": [
+          {"type": "platform", "position": [0, 0, 0], "size": [8, 0.5, 8], "color": "#7FBF7F"},
+          {"type": "checkpoint", "id": "start", "position": [0, 1, 0]}
+        ]
+      }
+    },
+    "simple_jump": {
+      "description": "Two platforms with a jump gap",
+      "json": {
+        "id": "jump_test",
+        "name": "Simple Jump",
+        "difficulty": 1,
+        "theme": {"skyColor": "#87CEEB"},
+        "spawnPoint": [0, 2, 0],
+        "entities": [
+          {"type": "platform", "position": [0, 0, 0], "size": [6, 0.5, 6], "color": "#7FBF7F"},
+          {"type": "checkpoint", "id": "start", "position": [0, 1, 0]},
+          {"type": "coin", "id": "coin_1", "position": [0, 2, 0], "coinType": "speed"},
+          {"type": "platform", "position": [8, 1, 0], "size": [6, 0.5, 6], "color": "#FFD700"},
+          {"type": "checkpoint", "id": "end", "position": [8, 2, 0]}
+        ]
+      }
+    },
+    "spike_obstacle": {
+      "description": "Platform with spike obstacles",
+      "json": {
+        "id": "spike_test",
+        "name": "Spike Challenge",
+        "difficulty": 2,
+        "theme": {"skyColor": "#87CEEB"},
+        "spawnPoint": [0, 2, 0],
+        "entities": [
+          {"type": "platform", "position": [0, 0, 0], "size": [15, 0.5, 4], "color": "#7F8C8D"},
+          {"type": "checkpoint", "id": "start", "position": [0, 1, 0]},
+          {"type": "spike", "position": [3, 0.5, 0], "size": 0.8},
+          {"type": "spike", "position": [6, 0.5, 0], "size": 0.8},
+          {"type": "spike", "position": [9, 0.5, 0], "size": 0.8},
+          {"type": "checkpoint", "id": "end", "position": [13, 1, 0]}
+        ]
+      }
+    }
+  },
+
+  "usage": {
+    "description": "How to use this schema to create levels",
+    "steps": [
+      "1. Read this entire GAME_CAPABILITIES.json file",
+      "2. Understand the available entityTypes and their properties",
+      "3. Follow the levelTemplate structure",
+      "4. Use entityTypes to build the level",
+      "5. Apply guidelines for spacing and difficulty",
+      "6. Output valid JSON matching the levelTemplate",
+      "7. Validate using the examples as reference"
+    ],
+    "forLLMs": "When a user asks to create a level, use this schema to generate valid JSON. Output ONLY the JSON, no explanation needed unless asked."
+  }
+}
