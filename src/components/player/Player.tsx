@@ -16,8 +16,19 @@ export const Player = forwardRef<any>((props, ref) => {
   const isOnGround = useRef(false);
   const jumpCount = useRef(0);
   const wasJumpPressed = useRef(false); // Track if jump was pressed last frame
+
+  // Game feel improvements
+  const coyoteTimeRef = useRef(0); // Allow jumping shortly after leaving ground
+  const jumpBufferRef = useRef(0); // Queue jump input before landing
+  const isJumpingRef = useRef(false); // Track if currently in jump (for variable height)
+  const wasOnGroundRef = useRef(false); // Track previous frame's ground state (for landing detection)
+  const invincibilityTimeRef = useRef(0); // Invincibility frames after respawn
+  const [isInvincible, setIsInvincible] = useState(false);
+
   const [showDeathParticles, setShowDeathParticles] = useState(false);
   const [deathPosition, setDeathPosition] = useState<[number, number, number]>([0, 0, 0]);
+  const [showLandingParticles, setShowLandingParticles] = useState(false);
+  const [landingPosition, setLandingPosition] = useState<[number, number, number]>([0, 0, 0]);
 
   // Game state
   const currentLoadout = useGameStore((state) => state.currentLoadout);
@@ -89,12 +100,16 @@ export const Player = forwardRef<any>((props, ref) => {
         playerRef.current?.setLinvel({ x: 0, y: 0, z: 0 }, true);
         playerRef.current?.setAngvel({ x: 0, y: 0, z: 0 }, true);
         respawn();
+
+        // Grant invincibility frames after respawn
+        invincibilityTimeRef.current = 2.0; // 2 seconds of invincibility
+        setIsInvincible(true);
       }, 1000); // Longer delay to show particles
     }
   }, [isDead, checkpointPosition, respawn]);
 
   // Movement and physics
-  useFrame(() => {
+  useFrame((state, delta) => {
     if (!playerRef.current || isDead) return;
 
     const body = playerRef.current;
@@ -107,11 +122,40 @@ export const Player = forwardRef<any>((props, ref) => {
     // Update global player position for hazards
     setPlayerPosition([position.x, position.y, position.z]);
 
-    // Check if on ground (simplified - check y velocity)
+    // Better ground detection - check y velocity and position
+    const previousGroundState = isOnGround.current;
     isOnGround.current = Math.abs(velocity.y) < 0.5 && position.y > DEATH_Y + 1;
 
+    // Landing detection - trigger particles when transitioning from air to ground
+    if (!wasOnGroundRef.current && isOnGround.current && velocity.y < -2) {
+      setLandingPosition([position.x, position.y - 0.8, position.z]);
+      setShowLandingParticles(true);
+      setTimeout(() => setShowLandingParticles(false), 300);
+    }
+    wasOnGroundRef.current = isOnGround.current;
+
+    // Coyote time - allow jumping shortly after leaving platform
     if (isOnGround.current) {
+      coyoteTimeRef.current = 0.15; // 9 frames at 60fps
       jumpCount.current = 0;
+    } else {
+      coyoteTimeRef.current -= delta;
+    }
+
+    // Jump buffering - queue jump input if pressed before landing
+    const jumpPressed = jump && !wasJumpPressed.current; // Detect rising edge
+    if (jumpPressed) {
+      jumpBufferRef.current = 0.15; // 9 frames buffer window
+    } else {
+      jumpBufferRef.current = Math.max(0, jumpBufferRef.current - delta);
+    }
+
+    // Invincibility frames countdown
+    if (invincibilityTimeRef.current > 0) {
+      invincibilityTimeRef.current -= delta;
+      if (invincibilityTimeRef.current <= 0) {
+        setIsInvincible(false);
+      }
     }
 
     // Death check
@@ -139,11 +183,12 @@ export const Player = forwardRef<any>((props, ref) => {
       true
     );
 
-    // Jumping logic - only jump on button press (not hold)
-    const jumpPressed = jump && !wasJumpPressed.current; // Detect rising edge
+    // Jumping logic with coyote time and jump buffering
+    const canJump = coyoteTimeRef.current > 0 && jumpCount.current === 0;
+    const shouldJump = (jumpPressed || jumpBufferRef.current > 0) && canJump;
 
-    if (jumpPressed && isOnGround.current) {
-      // First jump (from ground)
+    if (shouldJump) {
+      // First jump (from ground or within coyote time)
       body.setLinvel(
         {
           x: velocity.x,
@@ -153,6 +198,9 @@ export const Player = forwardRef<any>((props, ref) => {
         true
       );
       jumpCount.current = 1;
+      jumpBufferRef.current = 0; // Consume the buffered input
+      coyoteTimeRef.current = 0; // Consume coyote time
+      isJumpingRef.current = true; // Start tracking for variable jump height
     } else if (jumpPressed && playerStats.canDoubleJump && jumpCount.current === 1) {
       // Double jump (in air, but only if you have the ability)
       body.setLinvel(
@@ -164,6 +212,25 @@ export const Player = forwardRef<any>((props, ref) => {
         true
       );
       jumpCount.current = 2;
+      isJumpingRef.current = true; // Track for variable height on double jump too
+    }
+
+    // Variable jump height - cut upward velocity if jump released early
+    if (isJumpingRef.current && !jump && velocity.y > 0) {
+      body.setLinvel(
+        {
+          x: velocity.x,
+          y: velocity.y * 0.5, // Cut jump short for responsive feel
+          z: velocity.z,
+        },
+        true
+      );
+      isJumpingRef.current = false;
+    }
+
+    // Reset jumping flag when falling
+    if (velocity.y < 0) {
+      isJumpingRef.current = false;
     }
 
     // Update jump button state for next frame
@@ -200,6 +267,59 @@ export const Player = forwardRef<any>((props, ref) => {
           onComplete={() => setShowDeathParticles(false)}
         />
       )}
+
+      {/* Landing particles */}
+      {showLandingParticles && (
+        <LandingParticles position={landingPosition} />
+      )}
     </>
   );
 });
+
+// Landing particles component - small dust clouds when landing
+function LandingParticles({ position }: { position: [number, number, number] }) {
+  const particlesRef = useRef<any>(null);
+
+  useFrame((state, delta) => {
+    if (!particlesRef.current) return;
+
+    const positions = particlesRef.current.geometry.attributes.position.array;
+    const opacity = particlesRef.current.material.opacity;
+
+    // Spread particles outward and fade
+    for (let i = 0; i < positions.length; i += 3) {
+      positions[i] += (Math.random() - 0.5) * 0.1; // x spread
+      positions[i + 1] += Math.random() * 0.05; // y rise
+      positions[i + 2] += (Math.random() - 0.5) * 0.1; // z spread
+    }
+
+    particlesRef.current.geometry.attributes.position.needsUpdate = true;
+    particlesRef.current.material.opacity = Math.max(0, opacity - delta * 3);
+  });
+
+  const particleCount = 8;
+  const positions = new Float32Array(particleCount * 3);
+
+  // Create particles in a circle around landing point
+  for (let i = 0; i < particleCount; i++) {
+    const angle = (i / particleCount) * Math.PI * 2;
+    const radius = 0.3;
+    positions[i * 3] = Math.cos(angle) * radius;
+    positions[i * 3 + 1] = 0;
+    positions[i * 3 + 2] = Math.sin(angle) * radius;
+  }
+
+  return (
+    <points ref={particlesRef} position={position}>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          count={particleCount}
+          array={positions}
+          itemSize={3}
+        />
+      </bufferGeometry>
+      <pointsMaterial size={0.15} color="#A0A0A0" transparent opacity={0.8} sizeAttenuation />
+    </points>
+  );
+}

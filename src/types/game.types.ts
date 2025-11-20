@@ -123,6 +123,7 @@ export interface GameState {
   checkpointPosition: [number, number, number];
   lastCheckpointId: string | null;
   playerPosition: [number, number, number] | null;
+  isInvincible: boolean;
   isDead: boolean;
   isPaused: boolean;
   hasWon: boolean;
@@ -139,6 +140,7 @@ export interface GameState {
   setCharacterBase: (base: CharacterBase) => void;
   setCheckpoint: (position: [number, number, number], checkpointId: string) => void;
   setPlayerPosition: (position: [number, number, number]) => void;
+  setInvincible: (invincible: boolean) => void;
   die: () => void;
   respawn: () => void;
   winGame: () => void;

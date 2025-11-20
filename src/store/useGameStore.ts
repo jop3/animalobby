@@ -29,6 +29,7 @@ const INITIAL_STATE = {
   checkpointPosition: [0, 2, 0] as [number, number, number],
   lastCheckpointId: null,
   playerPosition: null,
+  isInvincible: false,
   isDead: false,
   isPaused: false,
   hasWon: false,
@@ -100,13 +101,22 @@ export const useGameStore = create<GameState>()(
         set({ playerPosition: position });
       },
 
+      // Invincibility frames
+      setInvincible: (invincible: boolean) => {
+        set({ isInvincible: invincible });
+      },
+
       // Death and respawn
       die: () => {
+        const { isInvincible } = get();
+        // Don't die if invincible
+        if (isInvincible) return;
+
         set({ isDead: true });
       },
 
       respawn: () => {
-        set({ isDead: false });
+        set({ isDead: false, isInvincible: true });
         // Position is handled by the PlayerController component
       },
 
