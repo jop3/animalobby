@@ -55,6 +55,15 @@ export function LevelLoader({ level }: LevelLoaderProps) {
       {/* Ambient particles for atmosphere */}
       <AmbientParticles levelId={level.id} />
 
+      {/* Spawn portal at level start */}
+      <EntityFactory
+        entity={{
+          type: 'spawn_portal',
+          position: [level.spawnPoint[0], level.spawnPoint[1], level.spawnPoint[2]],
+        }}
+        index={-2}
+      />
+
       {/* Render all entities */}
       {level.entities.map((entity, index) => (
         <EntityFactory key={entity.id || `entity_${index}`} entity={entity} index={index} />

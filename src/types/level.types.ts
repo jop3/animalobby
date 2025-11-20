@@ -31,7 +31,8 @@ export type EntityType =
   | 'zeus_lightning'
   | 'vine'
   | 'moving_platform'
-  | 'end_goal';
+  | 'end_goal'
+  | 'spawn_portal';
 
 // Base entity (all entities extend this)
 export interface BaseEntity {
@@ -115,6 +116,11 @@ export interface EndGoalEntity extends BaseEntity {
   modelType?: 'dog_head' | 'trophy' | 'portal';
 }
 
+// Spawn Portal
+export interface SpawnPortalEntity extends BaseEntity {
+  type: 'spawn_portal';
+}
+
 // Union of all entity types
 export type LevelEntity =
   | PlatformEntity
@@ -126,7 +132,8 @@ export type LevelEntity =
   | ZeusLightningEntity
   | VineEntity
   | MovingPlatformEntity
-  | EndGoalEntity;
+  | EndGoalEntity
+  | SpawnPortalEntity;
 
 // ============================================================================
 // LEVEL DEFINITION

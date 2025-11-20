@@ -8,6 +8,7 @@ import { Lava } from '../hazards/Lava';
 import { RotatingHammer } from '../hazards/RotatingHammer';
 import { ZeusLightning } from '../hazards/ZeusLightning';
 import { Vine } from '../hazards/Vine';
+import { SpawnPortal } from '../entities/SpawnPortal';
 
 /**
  * EntityFactory - Maps JSON entity definitions to React components
@@ -120,6 +121,14 @@ export function EntityFactory({ entity, index }: EntityFactoryProps) {
           key={key}
           position={entity.position}
           modelType={entity.modelType}
+        />
+      );
+
+    case 'spawn_portal':
+      return (
+        <SpawnPortal
+          key={key}
+          position={entity.position}
         />
       );
 
