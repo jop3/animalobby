@@ -15,6 +15,7 @@ export const Player = forwardRef<any>((props, ref) => {
   const playerRef = useRef<any>(null);
   const isOnGround = useRef(false);
   const jumpCount = useRef(0);
+  const wasJumpPressed = useRef(false); // Track if jump was pressed last frame
   const [showDeathParticles, setShowDeathParticles] = useState(false);
   const [deathPosition, setDeathPosition] = useState<[number, number, number]>([0, 0, 0]);
 
@@ -138,8 +139,11 @@ export const Player = forwardRef<any>((props, ref) => {
       true
     );
 
-    // Jumping logic
-    if (jump && isOnGround.current) {
+    // Jumping logic - only jump on button press (not hold)
+    const jumpPressed = jump && !wasJumpPressed.current; // Detect rising edge
+
+    if (jumpPressed && isOnGround.current) {
+      // First jump (from ground)
       body.setLinvel(
         {
           x: velocity.x,
@@ -149,8 +153,8 @@ export const Player = forwardRef<any>((props, ref) => {
         true
       );
       jumpCount.current = 1;
-    } else if (jump && playerStats.canDoubleJump && jumpCount.current === 1) {
-      // Double jump
+    } else if (jumpPressed && playerStats.canDoubleJump && jumpCount.current === 1) {
+      // Double jump (in air, but only if you have the ability)
       body.setLinvel(
         {
           x: velocity.x,
@@ -161,6 +165,9 @@ export const Player = forwardRef<any>((props, ref) => {
       );
       jumpCount.current = 2;
     }
+
+    // Update jump button state for next frame
+    wasJumpPressed.current = jump;
   });
 
   return (
