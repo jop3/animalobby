@@ -34,7 +34,7 @@ const INITIAL_STATE = {
   isDead: false,
   isPaused: false,
   hasWon: false,
-  quality: 'medium' as const,
+  quality: 'low' as const, // Default to low for better performance
   soundEnabled: true,
   musicEnabled: true,
 };

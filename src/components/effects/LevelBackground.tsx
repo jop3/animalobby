@@ -1,6 +1,7 @@
 import { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { useGameStore } from '../../store/useGameStore';
 
 interface LevelBackgroundProps {
   levelId: string;
@@ -9,34 +10,38 @@ interface LevelBackgroundProps {
 
 export function LevelBackground({ levelId, skyColor }: LevelBackgroundProps) {
   const backgroundGroupRef = useRef<THREE.Group>(null);
+  const quality = useGameStore((state) => state.quality);
+
+  // Particle count multipliers based on quality
+  const particleMultiplier = quality === 'low' ? 0.2 : quality === 'medium' ? 0.5 : 1.0;
 
   // Generate background based on level theme
   const backgroundElements = useMemo(() => {
     switch (levelId) {
       case 'space_station':
-        return <SpaceBackground />;
+        return <SpaceBackground particleMultiplier={particleMultiplier} />;
       case 'lava_volcano':
-        return <VolcanoBackground />;
+        return <VolcanoBackground particleMultiplier={particleMultiplier} />;
       case 'ice_cavern':
-        return <IceCavernBackground />;
+        return <IceCavernBackground particleMultiplier={particleMultiplier} />;
       case 'desert_ruins':
         return <DesertBackground />;
       case 'neon_city':
         return <NeonCityBackground />;
       case 'mushroom_forest':
-        return <MushroomForestBackground />;
+        return <MushroomForestBackground particleMultiplier={particleMultiplier} />;
       case 'underwater_temple':
-        return <UnderwaterBackground />;
+        return <UnderwaterBackground particleMultiplier={particleMultiplier} />;
       case 'green_fields':
         return <GreenFieldsBackground />;
       case 'parkour_challenge':
         return <TrainingFacilityBackground />;
       case 'unicorn_castle':
-        return <UnicornCastleBackground />;
+        return <UnicornCastleBackground particleMultiplier={particleMultiplier} />;
       default:
         return null;
     }
-  }, [levelId]);
+  }, [levelId, particleMultiplier]);
 
   return (
     <>
@@ -52,15 +57,16 @@ export function LevelBackground({ levelId, skyColor }: LevelBackgroundProps) {
 }
 
 // Space Station Background - Starfield with nebula
-function SpaceBackground() {
+function SpaceBackground({ particleMultiplier = 1.0 }: { particleMultiplier?: number }) {
   const starsRef = useRef<THREE.Points>(null);
   const nebulaMaterialRef = useRef<THREE.ShaderMaterial>(null);
   const planetRef = useRef<THREE.Mesh>(null);
   const starSizesRef = useRef<Float32Array | null>(null);
 
-  // Create starfield
+  // Create starfield - reduced for performance
   const stars = useMemo(() => {
-    const count = 2000;
+    const baseCount = 500; // Reduced from 2000
+    const count = Math.floor(baseCount * particleMultiplier);
     const positions = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
     const sizes = new Float32Array(count);
@@ -85,7 +91,7 @@ function SpaceBackground() {
 
     starSizesRef.current = sizes;
     return { positions, colors, sizes };
-  }, []);
+  }, [particleMultiplier]);
 
   // Animate stars with twinkling
   useFrame((state) => {
@@ -234,7 +240,7 @@ function ShootingStars() {
 }
 
 // Volcano Background - Fiery sky with mountain silhouettes
-function VolcanoBackground() {
+function VolcanoBackground({ particleMultiplier = 1.0 }: { particleMultiplier?: number }) {
   const smokeRef = useRef<THREE.Points>(null);
   const lavaGlowRef = useRef<THREE.Mesh>(null);
   const emberRefs = useRef<(THREE.Mesh | null)[]>([]);
@@ -333,7 +339,7 @@ function VolcanoBackground() {
 }
 
 // Ice Cavern Background - Cave ceiling with aurora
-function IceCavernBackground() {
+function IceCavernBackground({ particleMultiplier = 1.0 }: { particleMultiplier?: number }) {
   const auroraMaterialRef = useRef<THREE.ShaderMaterial>(null);
 
   useFrame((state) => {
@@ -563,7 +569,7 @@ function NeonCityBackground() {
 }
 
 // Mushroom Forest Background - Giant mushroom silhouettes
-function MushroomForestBackground() {
+function MushroomForestBackground({ particleMultiplier = 1.0 }: { particleMultiplier?: number }) {
   return (
     <>
       {/* Giant mushroom silhouettes */}
@@ -614,7 +620,7 @@ function MushroomForestBackground() {
 }
 
 // Underwater Background - Ocean gradient with caustics
-function UnderwaterBackground() {
+function UnderwaterBackground({ particleMultiplier = 1.0 }: { particleMultiplier?: number }) {
   const causticsMaterialRef = useRef<THREE.ShaderMaterial>(null);
 
   useFrame((state) => {
@@ -796,16 +802,17 @@ function TrainingFacilityBackground() {
 }
 
 // Unicorn Castle Background - Magical pink sky with sparkles and rainbows
-function UnicornCastleBackground() {
+function UnicornCastleBackground({ particleMultiplier = 1.0 }: { particleMultiplier?: number }) {
   const sparklesRef = useRef<THREE.Points>(null);
   const heartsRef = useRef<(THREE.Mesh | null)[]>([]);
   const castlesRef = useRef<(THREE.Mesh | null)[]>([]);
   const rainbowRef = useRef<THREE.Mesh>(null);
   const sparkleData = useRef<{ sizes: Float32Array; speeds: Float32Array } | null>(null);
 
-  // Create magical sparkles
+  // Create magical sparkles - drastically reduced count for performance
   const sparkles = useMemo(() => {
-    const count = 1500;
+    const baseCount = 200; // Reduced from 1500!
+    const count = Math.floor(baseCount * particleMultiplier);
     const positions = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
     const sizes = new Float32Array(count);
@@ -835,7 +842,7 @@ function UnicornCastleBackground() {
 
     sparkleData.current = { sizes, speeds };
     return { positions, colors, sizes };
-  }, []);
+  }, [particleMultiplier]);
 
   // Animate sparkles with twinkling
   useFrame((state) => {
