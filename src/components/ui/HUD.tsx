@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useGameStore } from '../../store/useGameStore';
 import { AnimalLab } from './AnimalLab';
+import { PauseMenu } from './PauseMenu';
 
 export function HUD() {
   const [isLabOpen, setIsLabOpen] = useState(false);
@@ -69,6 +70,9 @@ export function HUD() {
 
       {/* Animal Lab Modal */}
       <AnimalLab isOpen={isLabOpen} onClose={() => setIsLabOpen(false)} />
+
+      {/* Pause Menu */}
+      <PauseMenu />
     </div>
   );
 }
