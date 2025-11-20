@@ -120,6 +120,46 @@ export function AnimalLab({ isOpen, onClose }: AnimalLabProps) {
               <h3 className="text-xl font-game text-white mb-2">👤 Character Base</h3>
               <div className="grid grid-cols-2 gap-2">
                 <CharacterBaseButton
+                  base="princess"
+                  label="Princess"
+                  emoji="👑"
+                  color="#FF69B4"
+                  isSelected={characterBase === 'princess'}
+                  onClick={() => setCharacterBase('princess')}
+                />
+                <CharacterBaseButton
+                  base="kitty"
+                  label="Kitty"
+                  emoji="🐱"
+                  color="#FFB6C1"
+                  isSelected={characterBase === 'kitty'}
+                  onClick={() => setCharacterBase('kitty')}
+                />
+                <CharacterBaseButton
+                  base="bunny"
+                  label="Bunny"
+                  emoji="🐰"
+                  color="#F0F8FF"
+                  isSelected={characterBase === 'bunny'}
+                  onClick={() => setCharacterBase('bunny')}
+                />
+                <CharacterBaseButton
+                  base="fairy"
+                  label="Fairy"
+                  emoji="🧚"
+                  color="#DDA0DD"
+                  isSelected={characterBase === 'fairy'}
+                  onClick={() => setCharacterBase('fairy')}
+                />
+                <CharacterBaseButton
+                  base="unicorn"
+                  label="Unicorn"
+                  emoji="🦄"
+                  color="#F8F8FF"
+                  isSelected={characterBase === 'unicorn'}
+                  onClick={() => setCharacterBase('unicorn')}
+                />
+                <CharacterBaseButton
                   base="human"
                   label="Human"
                   emoji="👤"
