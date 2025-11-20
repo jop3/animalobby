@@ -97,8 +97,8 @@ export function EntityFactory({ entity, index }: EntityFactoryProps) {
           key={key}
           position={entity.position}
           height={entity.height}
-          attackInterval={entity.attackInterval}
-          attackDuration={entity.attackDuration}
+          swingSpeed={entity.swingSpeed}
+          swingAngle={entity.swingAngle}
         />
       );
 

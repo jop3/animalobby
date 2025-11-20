@@ -94,9 +94,9 @@ export interface ZeusLightningEntity extends BaseEntity {
 // Vine
 export interface VineEntity extends BaseEntity {
   type: 'vine';
-  height?: number; // Vine height (default 4)
-  attackInterval?: number; // Seconds between attacks (default 3)
-  attackDuration?: number; // Attack duration (default 0.8)
+  height?: number; // Vine height (default 6)
+  swingSpeed?: number; // Speed of the swing (default 1.2)
+  swingAngle?: number; // Maximum swing angle in radians (default 0.8)
 }
 
 // Moving Platform
