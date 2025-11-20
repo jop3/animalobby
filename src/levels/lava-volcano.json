@@ -7,7 +7,7 @@
     "skyColor": "#8B0000",
     "ambientColor": "#FF4500"
   },
-  "spawnPoint": [0, 2, 0],
+  "spawnPoint": [0, 2.5, 0],
   "entities": [
     {
       "type": "platform",
@@ -18,7 +18,7 @@
     {
       "type": "checkpoint",
       "id": "volcano_base",
-      "position": [0, 1.5, 0]
+      "position": [0, 3, 0]
     },
     {
       "type": "lava",
@@ -98,7 +98,7 @@
     },
     {
       "type": "vine",
-      "position": [-8, 12, 4],
+      "position": [-8, 17, 4],
       "height": 4,
       "attackInterval": 2,
       "attackDuration": 0.7

@@ -7,7 +7,7 @@
     "skyColor": "#003D5B",
     "ambientColor": "#1B7DA1"
   },
-  "spawnPoint": [0, 2, 0],
+  "spawnPoint": [0, 2.7, 0],
   "entities": [
     {
       "type": "platform",
@@ -18,7 +18,7 @@
     {
       "type": "checkpoint",
       "id": "temple_entrance",
-      "position": [0, 1.5, 0]
+      "position": [0, 3.2, 0]
     },
     {
       "type": "platform",
@@ -149,7 +149,7 @@
     },
     {
       "type": "vine",
-      "position": [7, 2, 40],
+      "position": [7, 9, 40],
       "height": 6,
       "attackInterval": 2.2,
       "attackDuration": 1

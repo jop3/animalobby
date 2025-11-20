@@ -24,7 +24,7 @@ export function Vine({
   const playerPosition = useGameStore((state) => state.playerPosition);
   const die = useGameStore((state) => state.die);
 
-  const segments = 12; // Number of vine segments
+  const segments = 6; // Reduced from 12 for better performance
   const segmentHeight = height / segments;
 
   useFrame((state, delta) => {
@@ -129,7 +129,7 @@ export function Vine({
         })}
 
         {/* Leaves scattered along vine */}
-        {Array.from({ length: 6 }).map((_, i) => {
+        {Array.from({ length: 3 }).map((_, i) => {
           const yPos = -(i * (height / 6) + 0.5);
           const angle = (i * Math.PI * 2) / 6;
 
@@ -181,7 +181,7 @@ export function Vine({
         })}
 
         {/* Thorny vines at bottom (danger indicator) */}
-        {Array.from({ length: 5 }).map((_, i) => (
+        {Array.from({ length: 3 }).map((_, i) => (
           <mesh
             key={`thorn-${i}`}
             position={[
@@ -239,7 +239,7 @@ function VineParticles({ height, swingAngle }: { height: number; swingAngle: num
 
   return (
     <group ref={particlesRef}>
-      {Array.from({ length: 8 }).map((_, i) => (
+      {Array.from({ length: 4 }).map((_, i) => (
         <LeafParticle
           key={i}
           yOffset={-height * 0.6 - (i / 8) * height * 0.4}

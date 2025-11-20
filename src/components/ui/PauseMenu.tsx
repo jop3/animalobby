@@ -44,7 +44,7 @@ export function PauseMenu({ onResume, onRestart, onMainMenu }: PauseMenuProps) {
   if (!isPaused) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/70 backdrop-blur-sm z-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-black/70 backdrop-blur-sm z-50 pointer-events-auto">
       <div className="bg-gray-800 rounded-2xl shadow-2xl p-8 max-w-md w-full mx-4 border-2 border-gray-600">
         {/* Header */}
         <div className="text-center mb-6">

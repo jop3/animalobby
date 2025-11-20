@@ -35,7 +35,7 @@
     {
       "type": "vine",
       "id": "vine_1",
-      "position": [0, 0, 10],
+      "position": [0, 8, 10],
       "height": 5,
       "attackInterval": 3,
       "attackDuration": 0.8
@@ -110,7 +110,7 @@
     {
       "type": "vine",
       "id": "vine_2",
-      "position": [25, 3, 25],
+      "position": [25, 9, 25],
       "height": 6,
       "attackInterval": 2.5,
       "attackDuration": 1

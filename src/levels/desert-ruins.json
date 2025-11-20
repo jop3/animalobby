@@ -7,7 +7,7 @@
     "skyColor": "#F4A460",
     "ambientColor": "#FFD699"
   },
-  "spawnPoint": [0, 2, 0],
+  "spawnPoint": [0, 3.5, 0],
   "entities": [
     {
       "type": "platform",
@@ -18,7 +18,7 @@
     {
       "type": "checkpoint",
       "id": "ruins_start",
-      "position": [0, 2.5, 0]
+      "position": [0, 4.5, 0]
     },
     {
       "type": "coin",
@@ -105,7 +105,7 @@
     },
     {
       "type": "vine",
-      "position": [26, 3, 24],
+      "position": [26, 10, 24],
       "height": 6,
       "attackInterval": 4,
       "attackDuration": 1.2

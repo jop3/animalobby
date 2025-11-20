@@ -7,7 +7,7 @@
     "skyColor": "#6B2C91",
     "ambientColor": "#BA90C6"
   },
-  "spawnPoint": [0, 2, 0],
+  "spawnPoint": [0, 3, 0],
   "entities": [
     {
       "type": "platform",
@@ -18,7 +18,7 @@
     {
       "type": "checkpoint",
       "id": "mushroom_ground",
-      "position": [0, 2, 0]
+      "position": [0, 3.5, 0]
     },
     {
       "type": "coin",
@@ -34,7 +34,7 @@
     },
     {
       "type": "vine",
-      "position": [7, 4, 3],
+      "position": [7, 12, 3],
       "height": 7,
       "attackInterval": 3,
       "attackDuration": 0.9
@@ -112,7 +112,7 @@
     },
     {
       "type": "vine",
-      "position": [10, 5, 26],
+      "position": [10, 12, 26],
       "height": 6,
       "attackInterval": 2.8,
       "attackDuration": 1

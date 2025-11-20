@@ -92,7 +92,7 @@
     },
     {
       "type": "vine",
-      "position": [15, 11, 16],
+      "position": [15, 15, 16],
       "height": 3,
       "attackInterval": 1.8,
       "attackDuration": 0.6

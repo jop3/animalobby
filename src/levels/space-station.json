@@ -7,7 +7,7 @@
     "skyColor": "#000000",
     "ambientColor": "#4A00E0"
   },
-  "spawnPoint": [0, 2, 0],
+  "spawnPoint": [0, 2.3, 0],
   "entities": [
     {
       "type": "platform",
@@ -70,7 +70,7 @@
     },
     {
       "type": "vine",
-      "position": [0, 8, 14],
+      "position": [0, 13, 14],
       "height": 4,
       "attackInterval": 1.8,
       "attackDuration": 0.8
@@ -162,7 +162,7 @@
     },
     {
       "type": "vine",
-      "position": [0, 20, -14],
+      "position": [0, 25, -14],
       "height": 4,
       "attackInterval": 2,
       "attackDuration": 0.9
