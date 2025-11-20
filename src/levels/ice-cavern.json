@@ -1,144 +1,196 @@
 {
   "id": "ice_cavern",
   "name": "Ice Cavern",
-  "description": "Slippery ice platforms and frozen hazards",
+  "description": "Descend into the frozen depths then climb back out",
   "difficulty": 3,
   "theme": {
-    "skyColor": "#B0E0E6",
-    "ambientColor": "#E0FFFF"
+    "skyColor": "#1C3A52",
+    "ambientColor": "#5FA8D3"
   },
   "spawnPoint": [0, 2, 0],
   "entities": [
     {
       "type": "platform",
       "position": [0, 0, 0],
-      "size": [7, 0.5, 7],
-      "color": "#A0D6E8"
+      "size": [6, 0.5, 8],
+      "color": "#A5D8FF"
     },
     {
       "type": "checkpoint",
-      "id": "ice_start",
+      "id": "ice_entrance",
       "position": [0, 1, 0]
+    },
+    {
+      "type": "platform",
+      "position": [-8, -1, 3],
+      "size": [4, 1.2, 4],
+      "color": "#74C0FC"
     },
     {
       "type": "coin",
       "id": "coin_1",
-      "position": [0, 1.5, 0],
+      "position": [-8, 1, 3],
       "coinType": "speed"
     },
     {
       "type": "platform",
-      "position": [6, 1, 4],
-      "size": [5, 0.5, 5],
-      "color": "#D1EDF2"
+      "position": [-12, -3, 8],
+      "size": [5, 0.6, 3],
+      "color": "#4DABF7"
     },
     {
       "type": "spike",
-      "position": [6, 1.5, 6],
-      "size": 0.7
-    },
-    {
-      "type": "coin",
-      "id": "coin_2",
-      "position": [8, 2, 4],
-      "coinType": "gravity"
+      "position": [-12, -2, 9],
+      "size": 0.8
     },
     {
       "type": "platform",
-      "position": [12, 2, 7],
-      "size": [4, 0.5, 4],
-      "color": "#A0D6E8"
+      "position": [-16, -5, 12],
+      "size": [3, 1, 3],
+      "color": "#A5D8FF"
     },
     {
       "type": "rotating_hammer",
-      "id": "hammer_1",
-      "position": [12, 5, 7],
-      "rotationSpeed": 1.2,
+      "position": [-16, -2, 12],
+      "rotationSpeed": 1.5,
       "hammerLength": 2.5
     },
     {
       "type": "platform",
-      "position": [17, 3, 10],
-      "size": [6, 0.5, 6],
-      "color": "#D1EDF2"
+      "position": [-14, -7, 18],
+      "size": [6, 0.8, 6],
+      "color": "#74C0FC"
     },
     {
       "type": "checkpoint",
-      "id": "ice_mid",
-      "position": [17, 4, 10]
+      "id": "ice_bottom",
+      "position": [-14, -6, 18]
     },
     {
       "type": "coin",
-      "id": "coin_3",
-      "position": [17, 4.5, 10],
-      "coinType": "speed"
-    },
-    {
-      "type": "platform",
-      "position": [24, 4, 13],
-      "size": [5, 0.5, 5],
-      "color": "#A0D6E8"
-    },
-    {
-      "type": "zeus_lightning",
-      "id": "lightning_1",
-      "position": [24, 4, 13],
-      "radius": 2.5,
-      "interval": 3.5,
-      "warningDuration": 1
-    },
-    {
-      "type": "platform",
-      "position": [30, 5, 16],
-      "size": [4, 0.5, 4],
-      "color": "#D1EDF2"
-    },
-    {
-      "type": "spike",
-      "position": [30, 5.5, 17],
-      "size": 0.8
-    },
-    {
-      "type": "coin",
-      "id": "coin_4",
-      "position": [32, 6, 16],
+      "id": "coin_2",
+      "position": [-14, -5, 18],
       "coinType": "gravity"
     },
     {
       "type": "platform",
-      "position": [35, 6, 19],
-      "size": [7, 0.5, 7],
-      "color": "#A0D6E8"
+      "position": [-8, -6, 22],
+      "size": [2.5, 0.5, 2.5],
+      "color": "#4DABF7"
     },
     {
       "type": "vine",
-      "id": "vine_1",
-      "position": [35, 6, 19],
-      "height": 4,
-      "attackInterval": 3,
-      "attackDuration": 0.8
+      "position": [-8, -6, 22],
+      "height": 5,
+      "attackInterval": 3.5,
+      "attackDuration": 1
     },
     {
-      "type": "rotating_hammer",
-      "id": "hammer_2",
-      "position": [38, 9, 19],
-      "rotationSpeed": 1,
-      "hammerLength": 3
+      "type": "platform",
+      "position": [-2, -5, 26],
+      "size": [3.5, 0.7, 3.5],
+      "color": "#A5D8FF"
+    },
+    {
+      "type": "coin",
+      "id": "coin_3",
+      "position": [-2, -3.5, 26],
+      "coinType": "speed"
+    },
+    {
+      "type": "platform",
+      "position": [4, -3, 28],
+      "size": [4, 1, 4],
+      "color": "#74C0FC"
+    },
+    {
+      "type": "zeus_lightning",
+      "position": [4, -3, 28],
+      "radius": 2,
+      "interval": 4,
+      "warningDuration": 1.2
+    },
+    {
+      "type": "platform",
+      "position": [10, -1, 32],
+      "size": [3, 0.6, 3],
+      "color": "#4DABF7"
+    },
+    {
+      "type": "spike",
+      "position": [10, 0, 33],
+      "size": 0.7
+    },
+    {
+      "type": "platform",
+      "position": [14, 1, 36],
+      "size": [5, 0.8, 5],
+      "color": "#A5D8FF"
     },
     {
       "type": "checkpoint",
-      "id": "ice_end",
-      "position": [35, 7, 22]
+      "id": "ice_climb",
+      "position": [14, 2, 36]
+    },
+    {
+      "type": "rotating_hammer",
+      "position": [14, 4, 36],
+      "rotationSpeed": 1.2,
+      "hammerLength": 3
+    },
+    {
+      "type": "platform",
+      "position": [18, 3, 40],
+      "size": [2.5, 0.5, 2.5],
+      "color": "#74C0FC"
+    },
+    {
+      "type": "platform",
+      "position": [20, 5, 44],
+      "size": [3, 0.6, 3],
+      "color": "#4DABF7"
+    },
+    {
+      "type": "coin",
+      "id": "coin_4",
+      "position": [20, 6.5, 44],
+      "coinType": "gravity"
+    },
+    {
+      "type": "platform",
+      "position": [24, 7, 46],
+      "size": [7, 1, 7],
+      "color": "#A5D8FF"
+    },
+    {
+      "type": "vine",
+      "position": [22, 7, 46],
+      "height": 4,
+      "attackInterval": 2.5,
+      "attackDuration": 0.9
+    },
+    {
+      "type": "vine",
+      "position": [26, 7, 46],
+      "height": 4,
+      "attackInterval": 2.8,
+      "attackDuration": 0.9
     },
     {
       "type": "coin",
       "id": "coin_5",
-      "position": [35, 7.5, 22],
+      "position": [24, 9, 44],
       "coinType": "speed"
     },
     {
+      "type": "coin",
+      "id": "coin_6",
+      "position": [24, 9, 48],
+      "coinType": "gravity"
+    },
+    {
       "type": "end_goal",
-      "position": [35, 7, 25],
+      "position": [24, 8, 46],
       "modelType": "portal"
     }
   ]
