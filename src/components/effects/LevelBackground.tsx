@@ -31,6 +31,8 @@ export function LevelBackground({ levelId, skyColor }: LevelBackgroundProps) {
         return <GreenFieldsBackground />;
       case 'parkour_challenge':
         return <TrainingFacilityBackground />;
+      case 'unicorn_castle':
+        return <UnicornCastleBackground />;
       default:
         return null;
     }
@@ -789,6 +791,250 @@ function TrainingFacilityBackground() {
           <meshBasicMaterial color="#FFA500" transparent opacity={0.5} />
         </mesh>
       ))}
+    </>
+  );
+}
+
+// Unicorn Castle Background - Magical pink sky with sparkles and rainbows
+function UnicornCastleBackground() {
+  const sparklesRef = useRef<THREE.Points>(null);
+  const heartsRef = useRef<(THREE.Mesh | null)[]>([]);
+  const castlesRef = useRef<(THREE.Mesh | null)[]>([]);
+  const rainbowRef = useRef<THREE.Mesh>(null);
+  const sparkleData = useRef<{ sizes: Float32Array; speeds: Float32Array } | null>(null);
+
+  // Create magical sparkles
+  const sparkles = useMemo(() => {
+    const count = 1500;
+    const positions = new Float32Array(count * 3);
+    const colors = new Float32Array(count * 3);
+    const sizes = new Float32Array(count);
+    const speeds = new Float32Array(count);
+
+    for (let i = 0; i < count; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 300;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 200;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 100;
+
+      // Rainbow sparkle colors
+      const rand = Math.random();
+      const color = new THREE.Color();
+      if (rand < 0.3) color.setHex(0xFF69B4); // Pink
+      else if (rand < 0.5) color.setHex(0xFFD1DC); // Light pink
+      else if (rand < 0.7) color.setHex(0xDDA0DD); // Plum
+      else if (rand < 0.85) color.setHex(0xFFD700); // Gold
+      else color.setHex(0xFFFFFF); // White
+
+      colors[i * 3] = color.r;
+      colors[i * 3 + 1] = color.g;
+      colors[i * 3 + 2] = color.b;
+
+      sizes[i] = Math.random() * 3 + 1;
+      speeds[i] = Math.random() * 0.5 + 0.5;
+    }
+
+    sparkleData.current = { sizes, speeds };
+    return { positions, colors, sizes };
+  }, []);
+
+  // Animate sparkles with twinkling
+  useFrame((state) => {
+    if (sparklesRef.current && sparkleData.current) {
+      sparklesRef.current.rotation.y = state.clock.elapsedTime * 0.02;
+
+      // Magical twinkling
+      const geometry = sparklesRef.current.geometry;
+      const sizes = geometry.attributes.size.array as Float32Array;
+      const originalSizes = sparkleData.current.sizes;
+      const speeds = sparkleData.current.speeds;
+
+      for (let i = 0; i < sizes.length; i++) {
+        const twinkle = Math.sin(state.clock.elapsedTime * 4 * speeds[i] + i * 0.1) * 0.5 + 0.5;
+        sizes[i] = originalSizes[i] * (0.3 + twinkle * 0.7);
+      }
+      geometry.attributes.size.needsUpdate = true;
+    }
+
+    // Animate floating hearts
+    heartsRef.current.forEach((heart, i) => {
+      if (!heart) return;
+      const time = state.clock.elapsedTime;
+      const heartTime = time + i * 0.5;
+
+      heart.position.y = 20 + Math.sin(heartTime * 0.8) * 15;
+      heart.position.x = Math.sin(heartTime * 0.5 + i) * 30;
+      heart.rotation.y = time * 0.5 + i;
+
+      const scale = 0.8 + Math.sin(heartTime * 2) * 0.2;
+      heart.scale.setScalar(scale);
+    });
+
+    // Animate castles (gentle sway)
+    castlesRef.current.forEach((castle, i) => {
+      if (!castle) return;
+      castle.position.y = Math.sin(state.clock.elapsedTime * 0.3 + i * 2) * 2;
+    });
+
+    // Rainbow shimmer
+    if (rainbowRef.current) {
+      const material = rainbowRef.current.material as THREE.MeshBasicMaterial;
+      const shimmer = Math.sin(state.clock.elapsedTime * 2) * 0.2 + 0.6;
+      material.opacity = shimmer;
+    }
+  });
+
+  return (
+    <>
+      {/* Magical sparkles */}
+      <points ref={sparklesRef}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            count={sparkles.positions.length / 3}
+            array={sparkles.positions}
+            itemSize={3}
+          />
+          <bufferAttribute
+            attach="attributes-color"
+            count={sparkles.colors.length / 3}
+            array={sparkles.colors}
+            itemSize={3}
+          />
+          <bufferAttribute
+            attach="attributes-size"
+            count={sparkles.sizes.length}
+            array={sparkles.sizes}
+            itemSize={1}
+          />
+        </bufferGeometry>
+        <pointsMaterial
+          size={2}
+          vertexColors
+          transparent
+          opacity={0.8}
+          sizeAttenuation
+        />
+      </points>
+
+      {/* Floating hearts */}
+      {Array.from({ length: 8 }).map((_, i) => {
+        const angle = (i / 8) * Math.PI * 2;
+        const radius = 60;
+        return (
+          <mesh
+            key={`heart-${i}`}
+            ref={(el) => (heartsRef.current[i] = el)}
+            position={[Math.cos(angle) * radius, 20, Math.sin(angle) * radius - 20]}
+          >
+            <sphereGeometry args={[3, 16, 16]} />
+            <meshBasicMaterial color="#FF69B4" transparent opacity={0.4} />
+          </mesh>
+        );
+      })}
+
+      {/* Princess castle silhouettes */}
+      {[-80, -40, 40, 80].map((x, i) => (
+        <mesh
+          key={`castle-${i}`}
+          ref={(el) => (castlesRef.current[i] = el)}
+          position={[x, -25, -50]}
+        >
+          <boxGeometry args={[15, 40, 10]} />
+          <meshBasicMaterial color="#DDA0DD" transparent opacity={0.3} />
+          {/* Castle towers */}
+          <mesh position={[-6, 22, 0]}>
+            <cylinderGeometry args={[2, 2, 8, 8]} />
+            <meshBasicMaterial color="#DDA0DD" transparent opacity={0.3} />
+            <mesh position={[0, 5, 0]}>
+              <coneGeometry args={[3, 6, 8]} />
+              <meshBasicMaterial color="#FF69B4" transparent opacity={0.3} />
+            </mesh>
+          </mesh>
+          <mesh position={[6, 22, 0]}>
+            <cylinderGeometry args={[2, 2, 8, 8]} />
+            <meshBasicMaterial color="#DDA0DD" transparent opacity={0.3} />
+            <mesh position={[0, 5, 0]}>
+              <coneGeometry args={[3, 6, 8]} />
+              <meshBasicMaterial color="#FF69B4" transparent opacity={0.3} />
+            </mesh>
+          </mesh>
+        </mesh>
+      ))}
+
+      {/* Rainbow arc */}
+      <mesh ref={rainbowRef} position={[0, 40, -60]} rotation={[0, 0, Math.PI / 2]}>
+        <torusGeometry args={[60, 4, 16, 64, Math.PI]} />
+        <meshBasicMaterial
+          color="#FFD700"
+          transparent
+          opacity={0.6}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+
+      {/* Rainbow layers */}
+      {[
+        { radius: 54, color: '#FF69B4' }, // Pink
+        { radius: 58, color: '#DDA0DD' }, // Purple
+        { radius: 62, color: '#87CEEB' }, // Blue
+        { radius: 66, color: '#98FB98' }, // Green
+      ].map((layer, i) => (
+        <mesh
+          key={`rainbow-${i}`}
+          position={[0, 40, -60]}
+          rotation={[0, 0, Math.PI / 2]}
+        >
+          <torusGeometry args={[layer.radius, 2, 16, 64, Math.PI]} />
+          <meshBasicMaterial
+            color={layer.color}
+            transparent
+            opacity={0.4}
+            side={THREE.DoubleSide}
+          />
+        </mesh>
+      ))}
+
+      {/* Glowing clouds */}
+      {Array.from({ length: 6 }).map((_, i) => {
+        const x = (i - 2.5) * 40;
+        return (
+          <mesh key={`cloud-${i}`} position={[x, 30 + Math.sin(i) * 10, -40]}>
+            <sphereGeometry args={[8, 16, 16]} />
+            <meshBasicMaterial color="#FFE6F0" transparent opacity={0.5} />
+            <mesh position={[6, 0, 0]}>
+              <sphereGeometry args={[6, 16, 16]} />
+              <meshBasicMaterial color="#FFE6F0" transparent opacity={0.5} />
+            </mesh>
+            <mesh position={[-6, 0, 0]}>
+              <sphereGeometry args={[6, 16, 16]} />
+              <meshBasicMaterial color="#FFE6F0" transparent opacity={0.5} />
+            </mesh>
+          </mesh>
+        );
+      })}
+
+      {/* Sparkle bursts */}
+      {Array.from({ length: 12 }).map((_, i) => {
+        const angle = (i / 12) * Math.PI * 2;
+        const radius = 70;
+        return (
+          <mesh
+            key={`burst-${i}`}
+            position={[
+              Math.cos(angle) * radius,
+              15 + Math.sin(i * 2) * 10,
+              Math.sin(angle) * radius - 30,
+            ]}
+          >
+            <octahedronGeometry args={[2, 0]} />
+            <meshBasicMaterial
+              color={i % 2 === 0 ? '#FFD700' : '#FF69B4'}
+              transparent
+              opacity={0.6}
+            />
+          </mesh>
+        );
+      })}
     </>
   );
 }

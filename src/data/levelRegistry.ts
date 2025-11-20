@@ -1,5 +1,6 @@
 import { LevelDefinition } from '../types/level.types';
 import greenFieldsData from '../levels/green-fields.json';
+import unicornCastleData from '../levels/unicorn-castle.json';
 import skyIslandsData from '../levels/sky-islands.json';
 import desertRuinsData from '../levels/desert-ruins.json';
 import jungleChallengeData from '../levels/jungle-challenge.json';
@@ -12,6 +13,7 @@ import spaceStationData from '../levels/space-station.json';
 
 // Cast JSON imports to LevelDefinition type
 const greenFields = greenFieldsData as LevelDefinition;
+const unicornCastle = unicornCastleData as LevelDefinition;
 const skyIslands = skyIslandsData as LevelDefinition;
 const desertRuins = desertRuinsData as LevelDefinition;
 const jungleChallenge = jungleChallengeData as LevelDefinition;
@@ -32,6 +34,10 @@ export const LEVEL_REGISTRY: LevelMetadata[] = [
   {
     level: greenFields,
     unlocked: true, // Always unlocked
+  },
+  {
+    level: unicornCastle,
+    unlocked: true,
   },
   {
     level: skyIslands,

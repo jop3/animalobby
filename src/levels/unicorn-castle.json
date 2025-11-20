@@ -1,0 +1,412 @@
+{
+  "id": "unicorn_castle",
+  "name": "🦄 Unicorn Castle 🦄",
+  "description": "A magical princess castle filled with sparkles, rainbows, and unicorn magic! Collect all the glittery coins!",
+  "difficulty": 2,
+
+  "theme": {
+    "skyColor": "#FFB6D9",
+    "ambientColor": "#FFE6F0"
+  },
+
+  "spawnPoint": [0, 2, 0],
+
+  "entities": [
+    {
+      "type": "platform",
+      "position": [0, 0, 0],
+      "size": [10, 0.5, 10],
+      "color": "#FFB6C1"
+    },
+    {
+      "type": "checkpoint",
+      "id": "castle_entrance",
+      "position": [0, 1, 0]
+    },
+    {
+      "type": "coin",
+      "id": "sparkle_1",
+      "position": [3, 2, 0],
+      "coinType": "speed"
+    },
+    {
+      "type": "coin",
+      "id": "sparkle_2",
+      "position": [-3, 2, 0],
+      "coinType": "gravity"
+    },
+    {
+      "type": "coin",
+      "id": "sparkle_3",
+      "position": [0, 3, 3],
+      "coinType": "speed"
+    },
+    {
+      "type": "platform",
+      "position": [12, 2, 0],
+      "size": [5, 0.5, 5],
+      "color": "#FF69B4"
+    },
+    {
+      "type": "coin",
+      "id": "sparkle_4",
+      "position": [12, 3, 0],
+      "coinType": "gravity"
+    },
+    {
+      "type": "platform",
+      "position": [20, 3, 2],
+      "size": [4, 0.5, 4],
+      "color": "#FFD1DC"
+    },
+    {
+      "type": "platform",
+      "position": [20, 3, -2],
+      "size": [4, 0.5, 4],
+      "color": "#DDA0DD"
+    },
+    {
+      "type": "coin",
+      "id": "sparkle_5",
+      "position": [20, 4, 2],
+      "coinType": "speed"
+    },
+    {
+      "type": "coin",
+      "id": "sparkle_6",
+      "position": [20, 4, -2],
+      "coinType": "gravity"
+    },
+    {
+      "type": "platform",
+      "position": [28, 5, 0],
+      "size": [6, 0.5, 8],
+      "color": "#FF91A4"
+    },
+    {
+      "type": "checkpoint",
+      "id": "rainbow_bridge",
+      "position": [28, 5.5, 0]
+    },
+    {
+      "type": "coin",
+      "id": "sparkle_7",
+      "position": [26, 6.5, 0],
+      "coinType": "speed"
+    },
+    {
+      "type": "coin",
+      "id": "sparkle_8",
+      "position": [30, 6.5, 0],
+      "coinType": "gravity"
+    },
+    {
+      "type": "platform",
+      "position": [36, 6, 3],
+      "size": [3, 0.5, 3],
+      "color": "#FFD700"
+    },
+    {
+      "type": "platform",
+      "position": [40, 7, 0],
+      "size": [3, 0.5, 3],
+      "color": "#FF69B4"
+    },
+    {
+      "type": "platform",
+      "position": [36, 6, -3],
+      "size": [3, 0.5, 3],
+      "color": "#FFD700"
+    },
+    {
+      "type": "coin",
+      "id": "sparkle_9",
+      "position": [36, 7, 3],
+      "coinType": "speed"
+    },
+    {
+      "type": "coin",
+      "id": "sparkle_10",
+      "position": [40, 8, 0],
+      "coinType": "gravity"
+    },
+    {
+      "type": "coin",
+      "id": "sparkle_11",
+      "position": [36, 7, -3],
+      "coinType": "speed"
+    },
+    {
+      "type": "platform",
+      "position": [48, 8, 0],
+      "size": [8, 0.5, 10],
+      "color": "#DDA0DD"
+    },
+    {
+      "type": "coin",
+      "id": "sparkle_12",
+      "position": [45, 9.5, 0],
+      "coinType": "gravity"
+    },
+    {
+      "type": "coin",
+      "id": "sparkle_13",
+      "position": [48, 10.5, 0],
+      "coinType": "speed"
+    },
+    {
+      "type": "coin",
+      "id": "sparkle_14",
+      "position": [51, 9.5, 0],
+      "coinType": "gravity"
+    },
+    {
+      "type": "spike",
+      "position": [54, 8.5, 3],
+      "size": 0.7,
+      "popInterval": 3,
+      "stayUpDuration": 1
+    },
+    {
+      "type": "spike",
+      "position": [54, 8.5, -3],
+      "size": 0.7,
+      "popInterval": 3.5,
+      "stayUpDuration": 1
+    },
+    {
+      "type": "platform",
+      "position": [58, 10, 0],
+      "size": [5, 0.5, 5],
+      "color": "#FF91A4"
+    },
+    {
+      "type": "checkpoint",
+      "id": "castle_tower",
+      "position": [58, 10.5, 0]
+    },
+    {
+      "type": "coin",
+      "id": "sparkle_15",
+      "position": [58, 11.5, 0],
+      "coinType": "speed"
+    },
+    {
+      "type": "platform",
+      "position": [66, 11, 3],
+      "size": [4, 0.5, 4],
+      "color": "#FFD1DC"
+    },
+    {
+      "type": "platform",
+      "position": [70, 12, 0],
+      "size": [4, 0.5, 4],
+      "color": "#FFB6C1"
+    },
+    {
+      "type": "platform",
+      "position": [66, 11, -3],
+      "size": [4, 0.5, 4],
+      "color": "#FFD1DC"
+    },
+    {
+      "type": "coin",
+      "id": "sparkle_16",
+      "position": [66, 12, 3],
+      "coinType": "gravity"
+    },
+    {
+      "type": "coin",
+      "id": "sparkle_17",
+      "position": [70, 13, 0],
+      "coinType": "speed"
+    },
+    {
+      "type": "coin",
+      "id": "sparkle_18",
+      "position": [66, 12, -3],
+      "coinType": "gravity"
+    },
+    {
+      "type": "platform",
+      "position": [78, 13, 0],
+      "size": [6, 0.5, 8],
+      "color": "#DDA0DD"
+    },
+    {
+      "type": "coin",
+      "id": "sparkle_19",
+      "position": [76, 14.5, 0],
+      "coinType": "speed"
+    },
+    {
+      "type": "coin",
+      "id": "sparkle_20",
+      "position": [80, 14.5, 0],
+      "coinType": "gravity"
+    },
+    {
+      "type": "rotating_hammer",
+      "position": [78, 16, 0],
+      "rotationSpeed": 1.2,
+      "hammerLength": 3,
+      "radius": 2.5
+    },
+    {
+      "type": "platform",
+      "position": [86, 14, 0],
+      "size": [5, 0.5, 6],
+      "color": "#FF69B4"
+    },
+    {
+      "type": "coin",
+      "id": "sparkle_21",
+      "position": [86, 15.5, 2],
+      "coinType": "speed"
+    },
+    {
+      "type": "coin",
+      "id": "sparkle_22",
+      "position": [86, 15.5, -2],
+      "coinType": "gravity"
+    },
+    {
+      "type": "platform",
+      "position": [94, 15, 2],
+      "size": [3, 0.5, 3],
+      "color": "#FFD700"
+    },
+    {
+      "type": "platform",
+      "position": [98, 16, 0],
+      "size": [3, 0.5, 3],
+      "color": "#FF91A4"
+    },
+    {
+      "type": "platform",
+      "position": [94, 15, -2],
+      "size": [3, 0.5, 3],
+      "color": "#FFD700"
+    },
+    {
+      "type": "coin",
+      "id": "sparkle_23",
+      "position": [94, 16, 2],
+      "coinType": "gravity"
+    },
+    {
+      "type": "coin",
+      "id": "sparkle_24",
+      "position": [98, 17, 0],
+      "coinType": "speed"
+    },
+    {
+      "type": "coin",
+      "id": "sparkle_25",
+      "position": [94, 16, -2],
+      "coinType": "gravity"
+    },
+    {
+      "type": "platform",
+      "position": [106, 17, 0],
+      "size": [8, 0.5, 10],
+      "color": "#FFB6C1"
+    },
+    {
+      "type": "checkpoint",
+      "id": "throne_room",
+      "position": [106, 17.5, 0]
+    },
+    {
+      "type": "coin",
+      "id": "sparkle_26",
+      "position": [103, 18.5, 0],
+      "coinType": "speed"
+    },
+    {
+      "type": "coin",
+      "id": "sparkle_27",
+      "position": [106, 19.5, 0],
+      "coinType": "gravity"
+    },
+    {
+      "type": "coin",
+      "id": "sparkle_28",
+      "position": [109, 18.5, 0],
+      "coinType": "speed"
+    },
+    {
+      "type": "spike",
+      "position": [110, 17.5, 3],
+      "size": 0.7,
+      "popInterval": 2.5,
+      "stayUpDuration": 1
+    },
+    {
+      "type": "spike",
+      "position": [110, 17.5, -3],
+      "size": 0.7,
+      "popInterval": 3,
+      "stayUpDuration": 1
+    },
+    {
+      "type": "platform",
+      "position": [116, 19, 0],
+      "size": [6, 0.5, 6],
+      "color": "#DDA0DD"
+    },
+    {
+      "type": "coin",
+      "id": "sparkle_29",
+      "position": [114, 20.5, 0],
+      "coinType": "gravity"
+    },
+    {
+      "type": "coin",
+      "id": "sparkle_30",
+      "position": [118, 20.5, 0],
+      "coinType": "speed"
+    },
+    {
+      "type": "platform",
+      "position": [124, 20, 0],
+      "size": [10, 0.5, 12],
+      "color": "#FF69B4"
+    },
+    {
+      "type": "coin",
+      "id": "rainbow_coin_1",
+      "position": [120, 21.5, 0],
+      "coinType": "gravity"
+    },
+    {
+      "type": "coin",
+      "id": "rainbow_coin_2",
+      "position": [122, 22.5, 2],
+      "coinType": "speed"
+    },
+    {
+      "type": "coin",
+      "id": "rainbow_coin_3",
+      "position": [124, 23.5, 0],
+      "coinType": "gravity"
+    },
+    {
+      "type": "coin",
+      "id": "rainbow_coin_4",
+      "position": [126, 22.5, -2],
+      "coinType": "speed"
+    },
+    {
+      "type": "coin",
+      "id": "rainbow_coin_5",
+      "position": [128, 21.5, 0],
+      "coinType": "gravity"
+    },
+    {
+      "type": "end_goal",
+      "position": [124, 21, 0],
+      "modelType": "trophy"
+    }
+  ]
+}
