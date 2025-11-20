@@ -255,6 +255,7 @@ export const Player = forwardRef<any>((props, ref) => {
         enabledRotations={[false, false, false]} // Lock rotation
         linearDamping={0.5}
         angularDamping={1}
+        ccd={true} // Continuous Collision Detection - prevents tunneling through platforms
       >
         <CapsuleCollider args={[0.5, 0.5]} />
         {!isDead && <PlayerModel loadout={currentLoadout} />}

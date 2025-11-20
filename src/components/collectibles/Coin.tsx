@@ -18,6 +18,7 @@ export function Coin({ id, position, type }: CoinProps) {
   const [collected, setCollected] = useState(false);
   const [showParticles, setShowParticles] = useState(false);
   const collectCoin = useGameStore((state) => state.collectCoin);
+  const quality = useGameStore((state) => state.quality);
 
   // Colors based on type
   const color = type === 'speed' ? '#F1C40F' : '#9B59B6';

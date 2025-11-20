@@ -14,6 +14,7 @@ export function Checkpoint({ id, position }: CheckpointProps) {
   const [activated, setActivated] = useState(false);
   const setCheckpoint = useGameStore((state) => state.setCheckpoint);
   const lastCheckpointId = useGameStore((state) => state.lastCheckpointId);
+  const quality = useGameStore((state) => state.quality);
 
   const isActive = lastCheckpointId === id;
 
@@ -79,13 +80,15 @@ export function Checkpoint({ id, position }: CheckpointProps) {
         />
       </mesh>
 
-      {/* Point light for extra visibility */}
-      <pointLight
-        position={[0, 4.5, 0]}
-        intensity={isActive ? 2 : 0.5}
-        distance={15}
-        color={isActive ? '#F1C40F' : '#AAAAAA'}
-      />
+      {/* Point light for extra visibility - disabled on low quality */}
+      {quality !== 'low' && (
+        <pointLight
+          position={[0, 4.5, 0]}
+          intensity={isActive ? 2 : 0.5}
+          distance={15}
+          color={isActive ? '#F1C40F' : '#AAAAAA'}
+        />
+      )}
 
       {/* Activation sensor */}
       <RigidBody

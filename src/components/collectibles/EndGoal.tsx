@@ -16,6 +16,7 @@ export function EndGoal({ position, modelType = 'trophy' }: EndGoalProps) {
   const playerPosition = useGameStore((state) => state.playerPosition);
   const hasWon = useGameStore((state) => state.hasWon);
   const winGame = useGameStore((state) => state.winGame);
+  const quality = useGameStore((state) => state.quality);
 
   useFrame((state) => {
     // Rotate trophy/portal for visual interest
@@ -54,8 +55,10 @@ export function EndGoal({ position, modelType = 'trophy' }: EndGoalProps) {
         <meshStandardMaterial color="#FFD700" flatShading emissive="#FFD700" emissiveIntensity={0.5} />
       </mesh>
 
-      {/* Point light for extra visibility */}
-      <pointLight position={[0, 2, 0]} intensity={3} distance={20} color="#FFD700" />
+      {/* Point light for extra visibility - disabled on low quality */}
+      {quality !== 'low' && (
+        <pointLight position={[0, 2, 0]} intensity={3} distance={20} color="#FFD700" />
+      )}
 
       {/* Visual indicator based on type */}
       <group ref={baseRef}>

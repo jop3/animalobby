@@ -23,6 +23,7 @@ export function RotatingHammer({
   const trailRefs = useRef<(Mesh | null)[]>([]);
 
   const die = useGameStore((state) => state.die);
+  const quality = useGameStore((state) => state.quality);
 
   useFrame((state) => {
     if (!groupRef.current) return;
@@ -186,13 +187,15 @@ export function RotatingHammer({
               />
             </mesh>
 
-            {/* Danger light */}
-            <pointLight
-              position={[0, 0, 0]}
-              intensity={2}
-              distance={8}
-              color="#E74C3C"
-            />
+            {/* Danger light - disabled on low quality */}
+            {quality !== 'low' && (
+              <pointLight
+                position={[0, 0, 0]}
+                intensity={2}
+                distance={8}
+                color="#E74C3C"
+              />
+            )}
 
             {/* Impact sparks at edges */}
             <ImpactSparks />
@@ -225,13 +228,15 @@ export function RotatingHammer({
         />
       </mesh>
 
-      {/* Rotation center glow */}
-      <pointLight
-        position={[0, 0, 0]}
-        intensity={1}
-        distance={6}
-        color="#5D6D7E"
-      />
+      {/* Rotation center glow - disabled on low quality */}
+      {quality !== 'low' && (
+        <pointLight
+          position={[0, 0, 0]}
+          intensity={1}
+          distance={6}
+          color="#5D6D7E"
+        />
+      )}
     </group>
   );
 }
