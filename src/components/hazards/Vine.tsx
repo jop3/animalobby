@@ -95,17 +95,31 @@ export function Vine({
 
   return (
     <group position={position}>
-      {/* Visual vine */}
+      {/* Visual vine - more visible */}
       <mesh ref={vineRef} position={[0, height / 2, 0]}>
-        <boxGeometry args={[0.4, height, 0.4]} />
-        <meshStandardMaterial color="#2D5016" flatShading />
+        <boxGeometry args={[0.5, height, 0.5]} />
+        <meshStandardMaterial
+          color="#2D5016"
+          flatShading
+          emissive="#4A7C2E"
+          emissiveIntensity={isAttacking ? 0.4 : 0.1}
+        />
       </mesh>
 
-      {/* Ground indicator (always visible) */}
+      {/* Ground indicator (always visible) - more prominent */}
       <mesh position={[0, 0.01, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <circleGeometry args={[0.8, 16]} />
-        <meshBasicMaterial color="#4A7C2E" transparent opacity={0.4} />
+        <circleGeometry args={[1, 16]} />
+        <meshBasicMaterial
+          color={isAttacking ? "#8FBC8F" : "#4A7C2E"}
+          transparent
+          opacity={isAttacking ? 0.7 : 0.4}
+        />
       </mesh>
+
+      {/* Point light when attacking */}
+      {isAttacking && (
+        <pointLight position={[0, height / 2, 0]} intensity={1} distance={6} color="#4A7C2E" />
+      )}
     </group>
   );
 }

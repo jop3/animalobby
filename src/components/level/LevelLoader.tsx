@@ -27,10 +27,28 @@ export function LevelLoader({ level }: LevelLoaderProps) {
       {/* Background color */}
       <color attach="background" args={[level.theme.skyColor]} />
 
+      {/* Fog for atmosphere - different density based on difficulty */}
+      <fog attach="fog" args={[level.theme.skyColor, 20, 100]} />
+
       {/* Optional custom lighting based on theme */}
       {level.theme.ambientColor && (
         <ambientLight intensity={0.6} color={level.theme.ambientColor} />
       )}
+
+      {/* Directional light with theme-based color */}
+      <directionalLight
+        position={[10, 20, 10]}
+        intensity={1}
+        color={level.theme.ambientColor || '#ffffff'}
+        castShadow
+        shadow-mapSize-width={2048}
+        shadow-mapSize-height={2048}
+        shadow-camera-far={50}
+        shadow-camera-left={-30}
+        shadow-camera-right={30}
+        shadow-camera-top={30}
+        shadow-camera-bottom={-30}
+      />
 
       {/* Render all entities */}
       {level.entities.map((entity, index) => (

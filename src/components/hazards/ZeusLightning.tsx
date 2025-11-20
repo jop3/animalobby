@@ -111,22 +111,29 @@ export function ZeusLightning({
 
       {/* Lightning bolt */}
       {isStriking && (
-        <mesh ref={boltRef} position={[0, 10, 0]}>
-          <boxGeometry args={[0.3, 20, 0.3]} />
-          <meshBasicMaterial color="#FFFF00" transparent />
-        </mesh>
+        <>
+          <mesh ref={boltRef} position={[0, 10, 0]}>
+            <boxGeometry args={[0.5, 20, 0.5]} />
+            <meshBasicMaterial color="#FFFF00" transparent />
+          </mesh>
+          {/* Bright flash of light during strike */}
+          <pointLight position={[0, 5, 0]} intensity={10} distance={15} color="#FFFF00" />
+        </>
       )}
 
-      {/* Cloud indicator (always visible) */}
+      {/* Cloud indicator (always visible) - more prominent */}
       <mesh position={[0, 12, 0]}>
-        <boxGeometry args={[1.5, 0.8, 1]} />
+        <boxGeometry args={[2, 1, 1.5]} />
         <meshStandardMaterial
           color="#4A4A4A"
           flatShading
-          emissive="#888888"
-          emissiveIntensity={0.3}
+          emissive={isWarning ? '#FFD700' : '#888888'}
+          emissiveIntensity={isWarning ? 0.5 : 0.3}
         />
       </mesh>
+
+      {/* Small point light on cloud */}
+      <pointLight position={[0, 12, 0]} intensity={isWarning ? 1 : 0.3} distance={8} color="#888888" />
     </group>
   );
 }

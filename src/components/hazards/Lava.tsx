@@ -50,6 +50,9 @@ export function Lava({ position, size = [4, 0.2, 4] }: LavaProps) {
       <LavaBubble offset={[0.5, 0.15, 0.3]} delay={0} />
       <LavaBubble offset={[-0.4, 0.15, -0.5]} delay={1} />
       <LavaBubble offset={[0.2, 0.15, -0.4]} delay={2} />
+
+      {/* Point light for lava glow */}
+      <pointLight position={[0, size[1] + 0.2, 0]} intensity={2} distance={10} color="#FF6600" />
     </RigidBody>
   );
 }

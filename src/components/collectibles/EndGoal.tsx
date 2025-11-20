@@ -48,11 +48,14 @@ export function EndGoal({ position, modelType = 'trophy' }: EndGoalProps) {
 
   return (
     <group position={position}>
-      {/* Platform base */}
+      {/* Platform base - larger and more prominent */}
       <mesh position={[0, -0.5, 0]}>
-        <boxGeometry args={[4, 0.5, 4]} />
-        <meshStandardMaterial color="#FFD700" flatShading emissive="#FFD700" emissiveIntensity={0.3} />
+        <boxGeometry args={[6, 0.8, 6]} />
+        <meshStandardMaterial color="#FFD700" flatShading emissive="#FFD700" emissiveIntensity={0.5} />
       </mesh>
+
+      {/* Point light for extra visibility */}
+      <pointLight position={[0, 2, 0]} intensity={3} distance={20} color="#FFD700" />
 
       {/* Visual indicator based on type */}
       <group ref={baseRef}>
@@ -133,11 +136,33 @@ export function EndGoal({ position, modelType = 'trophy' }: EndGoalProps) {
         )}
       </group>
 
-      {/* Glow ring on ground */}
+      {/* Glow ring on ground - larger and more visible */}
       <mesh position={[0, 0.02, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <ringGeometry args={[1.5, 2, 32]} />
-        <meshBasicMaterial color="#FFD700" transparent opacity={0.3} />
+        <ringGeometry args={[3, 4, 32]} />
+        <meshBasicMaterial color="#FFD700" transparent opacity={0.6} />
       </mesh>
+
+      {/* Animated pulsing rings */}
+      <PulsingRing />
     </group>
+  );
+}
+
+function PulsingRing() {
+  const ringRef = useRef<Mesh>(null);
+
+  useFrame((state) => {
+    if (ringRef.current) {
+      const scale = 1 + Math.sin(state.clock.elapsedTime * 2) * 0.3;
+      ringRef.current.scale.set(scale, 1, scale);
+      ringRef.current.rotation.z += 0.01;
+    }
+  });
+
+  return (
+    <mesh ref={ringRef} position={[0, 0.05, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+      <ringGeometry args={[2.5, 3.5, 32]} />
+      <meshBasicMaterial color="#FFA500" transparent opacity={0.4} />
+    </mesh>
   );
 }

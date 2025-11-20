@@ -139,6 +139,11 @@
       "id": "victory_coin_3",
       "position": [2, 21.5, 0],
       "coinType": "gravity"
+    },
+    {
+      "type": "end_goal",
+      "position": [0, 23, 0],
+      "modelType": "trophy"
     }
   ]
 }

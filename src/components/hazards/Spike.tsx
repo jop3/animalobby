@@ -1,4 +1,7 @@
+import { useRef } from 'react';
+import { useFrame } from '@react-three/fiber';
 import { RigidBody } from '@react-three/rapier';
+import { Mesh } from 'three';
 import { useGameStore } from '../../store/useGameStore';
 
 interface SpikeProps {
@@ -7,7 +10,16 @@ interface SpikeProps {
 }
 
 export function Spike({ position, size = 1 }: SpikeProps) {
+  const tipRef = useRef<Mesh>(null);
   const die = useGameStore((state) => state.die);
+
+  // Pulsing animation for danger visibility
+  useFrame((state) => {
+    if (tipRef.current) {
+      const pulse = 0.5 + Math.sin(state.clock.elapsedTime * 3) * 0.3;
+      (tipRef.current.material as any).emissiveIntensity = pulse;
+    }
+  });
 
   const handleCollision = () => {
     die();
@@ -56,15 +68,18 @@ export function Spike({ position, size = 1 }: SpikeProps) {
         </mesh>
 
         {/* Danger glow at tip */}
-        <mesh position={[0, 0.85 * size, 0]}>
+        <mesh ref={tipRef} position={[0, 0.85 * size, 0]}>
           <boxGeometry args={[0.15 * size, 0.15 * size, 0.15 * size]} />
           <meshStandardMaterial
             color="#FF0000"
             emissive="#FF0000"
-            emissiveIntensity={0.5}
+            emissiveIntensity={0.8}
             flatShading
           />
         </mesh>
+
+        {/* Point light for danger visibility */}
+        <pointLight position={[0, 0.85 * size, 0]} intensity={1} distance={5} color="#FF0000" />
       </group>
     </RigidBody>
   );

@@ -88,11 +88,16 @@ export function RotatingHammer({
           <boxGeometry args={[0.82, 0.3, 1.02]} />
           <meshStandardMaterial
             color="#F1C40F"
+            emissive="#F39C12"
+            emissiveIntensity={0.3}
             roughness={0.8}
             metalness={0.1}
             flatShading
           />
         </mesh>
+
+        {/* Point light on hammer head for visibility */}
+        <pointLight position={[hammerLength, 0, 0]} intensity={1.5} distance={8} color="#E74C3C" />
       </RigidBody>
     </group>
   );
