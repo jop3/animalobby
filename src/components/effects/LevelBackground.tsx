@@ -53,12 +53,15 @@ export function LevelBackground({ levelId, skyColor }: LevelBackgroundProps) {
 function SpaceBackground() {
   const starsRef = useRef<THREE.Points>(null);
   const nebulaMaterialRef = useRef<THREE.ShaderMaterial>(null);
+  const planetRef = useRef<THREE.Mesh>(null);
+  const starSizesRef = useRef<Float32Array | null>(null);
 
   // Create starfield
   const stars = useMemo(() => {
     const count = 2000;
     const positions = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
+    const sizes = new Float32Array(count);
 
     for (let i = 0; i < count; i++) {
       positions[i * 3] = (Math.random() - 0.5) * 300;
@@ -74,18 +77,37 @@ function SpaceBackground() {
       colors[i * 3] = color.r;
       colors[i * 3 + 1] = color.g;
       colors[i * 3 + 2] = color.b;
+
+      sizes[i] = Math.random() * 2 + 0.5;
     }
 
-    return { positions, colors };
+    starSizesRef.current = sizes;
+    return { positions, colors, sizes };
   }, []);
 
-  // Animate stars
+  // Animate stars with twinkling
   useFrame((state) => {
     if (starsRef.current) {
       starsRef.current.rotation.y = state.clock.elapsedTime * 0.01;
+
+      // Twinkling effect
+      const geometry = starsRef.current.geometry;
+      const sizes = geometry.attributes.size.array as Float32Array;
+
+      for (let i = 0; i < sizes.length; i++) {
+        const twinkle = Math.sin(state.clock.elapsedTime * 3 + i) * 0.5 + 0.5;
+        sizes[i] = (starSizesRef.current![i] || 1) * (0.5 + twinkle * 0.5);
+      }
+      geometry.attributes.size.needsUpdate = true;
     }
+
     if (nebulaMaterialRef.current) {
       nebulaMaterialRef.current.uniforms.time.value = state.clock.elapsedTime;
+    }
+
+    // Slowly rotating planet
+    if (planetRef.current) {
+      planetRef.current.rotation.y = state.clock.elapsedTime * 0.1;
     }
   });
 
@@ -124,7 +146,7 @@ function SpaceBackground() {
 
   return (
     <>
-      {/* Stars */}
+      {/* Stars with twinkling */}
       <points ref={starsRef}>
         <bufferGeometry>
           <bufferAttribute
@@ -139,33 +161,114 @@ function SpaceBackground() {
             array={stars.colors}
             itemSize={3}
           />
+          <bufferAttribute
+            attach="attributes-size"
+            count={stars.sizes.length}
+            array={stars.sizes}
+            itemSize={1}
+          />
         </bufferGeometry>
         <pointsMaterial size={2} vertexColors sizeAttenuation transparent />
       </points>
 
-      {/* Nebula backdrop */}
+      {/* Animated nebula backdrop */}
       <mesh position={[0, 0, -50]}>
         <planeGeometry args={[200, 150]} />
         <shaderMaterial ref={nebulaMaterialRef} {...nebulaShader} transparent />
       </mesh>
 
-      {/* Distant planet */}
-      <mesh position={[60, 30, -40]}>
+      {/* Rotating distant planet */}
+      <mesh ref={planetRef} position={[60, 30, -40]}>
         <sphereGeometry args={[15, 32, 32]} />
         <meshBasicMaterial color="#8B4513" />
       </mesh>
+
+      {/* Shooting stars */}
+      <ShootingStars />
     </>
+  );
+}
+
+// Shooting stars effect for space
+function ShootingStars() {
+  const starRefs = useRef<(THREE.Mesh | null)[]>([]);
+
+  useFrame((state) => {
+    const time = state.clock.elapsedTime;
+
+    starRefs.current.forEach((star, i) => {
+      if (!star) return;
+
+      const starTime = (time * 0.5 + i * 3) % 6;
+
+      if (starTime < 1) {
+        // Shooting star is visible
+        const progress = starTime;
+        star.position.x = -100 + progress * 200;
+        star.position.y = 50 - progress * 100;
+        star.scale.x = 10 + progress * 20;
+        (star.material as any).opacity = (1 - progress) * 0.8;
+      } else {
+        // Hidden
+        (star.material as any).opacity = 0;
+      }
+    });
+  });
+
+  return (
+    <group>
+      {Array.from({ length: 3 }).map((_, i) => (
+        <mesh
+          key={i}
+          ref={(el) => (starRefs.current[i] = el)}
+          position={[-100, 50, -30]}
+        >
+          <planeGeometry args={[1, 0.1]} />
+          <meshBasicMaterial color="#FFFFFF" transparent />
+        </mesh>
+      ))}
+    </group>
   );
 }
 
 // Volcano Background - Fiery sky with mountain silhouettes
 function VolcanoBackground() {
   const smokeRef = useRef<THREE.Points>(null);
+  const lavaGlowRef = useRef<THREE.Mesh>(null);
+  const emberRefs = useRef<(THREE.Mesh | null)[]>([]);
 
   useFrame((state) => {
     if (smokeRef.current) {
       smokeRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.3) * 0.1;
+
+      // Animate smoke rising
+      const positions = smokeRef.current.geometry.attributes.position.array as Float32Array;
+      for (let i = 0; i < positions.length; i += 3) {
+        positions[i + 1] += 0.1; // Rise
+        if (positions[i + 1] > 40) {
+          positions[i + 1] = -20 + Math.random() * 20; // Reset
+        }
+      }
+      smokeRef.current.geometry.attributes.position.needsUpdate = true;
     }
+
+    // Pulsing lava glow
+    if (lavaGlowRef.current) {
+      const pulse = Math.sin(state.clock.elapsedTime * 2) * 0.1 + 0.4;
+      (lavaGlowRef.current.material as any).opacity = pulse;
+    }
+
+    // Animate floating embers
+    emberRefs.current.forEach((ember, i) => {
+      if (!ember) return;
+      const time = state.clock.elapsedTime + i;
+      ember.position.y = -30 + ((time * 2) % 60);
+      ember.position.x = Math.sin(time) * 20;
+      ember.position.z = Math.cos(time) * 10;
+
+      const opacity = 1 - ((time * 2) % 60) / 60;
+      (ember.material as any).opacity = opacity * 0.8;
+    });
   });
 
   return (
@@ -186,13 +289,13 @@ function VolcanoBackground() {
         <meshBasicMaterial color="#160800" />
       </mesh>
 
-      {/* Lava glow from below */}
-      <mesh position={[0, -50, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+      {/* Pulsing lava glow from below */}
+      <mesh ref={lavaGlowRef} position={[0, -50, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[300, 100]} />
-        <meshBasicMaterial color="#ff4500" transparent opacity={0.3} />
+        <meshBasicMaterial color="#ff4500" transparent opacity={0.4} />
       </mesh>
 
-      {/* Volcanic smoke particles */}
+      {/* Rising volcanic smoke */}
       <points ref={smokeRef}>
         <bufferGeometry>
           <bufferAttribute
@@ -211,6 +314,18 @@ function VolcanoBackground() {
         </bufferGeometry>
         <pointsMaterial size={8} color="#3a1a0a" transparent opacity={0.4} />
       </points>
+
+      {/* Floating embers */}
+      {Array.from({ length: 15 }).map((_, i) => (
+        <mesh
+          key={i}
+          ref={(el) => (emberRefs.current[i] = el)}
+          position={[0, -30, 0]}
+        >
+          <boxGeometry args={[0.3, 0.3, 0.3]} />
+          <meshBasicMaterial color="#FF6600" transparent />
+        </mesh>
+      ))}
     </>
   );
 }
