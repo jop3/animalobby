@@ -1,0 +1,679 @@
+import { useMemo, useRef } from 'react';
+import { useFrame } from '@react-three/fiber';
+import * as THREE from 'three';
+
+interface LevelBackgroundProps {
+  levelId: string;
+  skyColor: string;
+}
+
+export function LevelBackground({ levelId, skyColor }: LevelBackgroundProps) {
+  const backgroundGroupRef = useRef<THREE.Group>(null);
+
+  // Generate background based on level theme
+  const backgroundElements = useMemo(() => {
+    switch (levelId) {
+      case 'space_station':
+        return <SpaceBackground />;
+      case 'lava_volcano':
+        return <VolcanoBackground />;
+      case 'ice_cavern':
+        return <IceCavernBackground />;
+      case 'desert_ruins':
+        return <DesertBackground />;
+      case 'neon_city':
+        return <NeonCityBackground />;
+      case 'mushroom_forest':
+        return <MushroomForestBackground />;
+      case 'underwater_temple':
+        return <UnderwaterBackground />;
+      case 'green_fields':
+        return <GreenFieldsBackground />;
+      case 'parkour_challenge':
+        return <TrainingFacilityBackground />;
+      default:
+        return null;
+    }
+  }, [levelId]);
+
+  return (
+    <>
+      {/* Base sky color */}
+      <color attach="background" args={[skyColor]} />
+
+      {/* Themed background elements */}
+      <group ref={backgroundGroupRef} position={[0, 0, -80]}>
+        {backgroundElements}
+      </group>
+    </>
+  );
+}
+
+// Space Station Background - Starfield with nebula
+function SpaceBackground() {
+  const starsRef = useRef<THREE.Points>(null);
+  const nebulaMaterialRef = useRef<THREE.ShaderMaterial>(null);
+
+  // Create starfield
+  const stars = useMemo(() => {
+    const count = 2000;
+    const positions = new Float32Array(count * 3);
+    const colors = new Float32Array(count * 3);
+
+    for (let i = 0; i < count; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 300;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 300;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 100;
+
+      const color = new THREE.Color();
+      const rand = Math.random();
+      if (rand < 0.7) color.setHex(0xFFFFFF);
+      else if (rand < 0.85) color.setHex(0x00D9FF);
+      else color.setHex(0x4A00E0);
+
+      colors[i * 3] = color.r;
+      colors[i * 3 + 1] = color.g;
+      colors[i * 3 + 2] = color.b;
+    }
+
+    return { positions, colors };
+  }, []);
+
+  // Animate stars
+  useFrame((state) => {
+    if (starsRef.current) {
+      starsRef.current.rotation.y = state.clock.elapsedTime * 0.01;
+    }
+    if (nebulaMaterialRef.current) {
+      nebulaMaterialRef.current.uniforms.time.value = state.clock.elapsedTime;
+    }
+  });
+
+  // Nebula shader
+  const nebulaShader = useMemo(() => ({
+    uniforms: {
+      time: { value: 0 },
+    },
+    vertexShader: `
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      uniform float time;
+      varying vec2 vUv;
+
+      void main() {
+        vec2 uv = vUv;
+
+        // Create nebula clouds
+        float n = sin(uv.x * 3.0 + time * 0.1) * sin(uv.y * 2.0 + time * 0.15);
+        n = smoothstep(0.3, 0.7, n);
+
+        vec3 color1 = vec3(0.29, 0.0, 0.88); // Purple
+        vec3 color2 = vec3(0.0, 0.85, 1.0); // Cyan
+        vec3 nebula = mix(color1, color2, n);
+
+        float alpha = n * 0.3;
+        gl_FragColor = vec4(nebula, alpha);
+      }
+    `,
+  }), []);
+
+  return (
+    <>
+      {/* Stars */}
+      <points ref={starsRef}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            count={stars.positions.length / 3}
+            array={stars.positions}
+            itemSize={3}
+          />
+          <bufferAttribute
+            attach="attributes-color"
+            count={stars.colors.length / 3}
+            array={stars.colors}
+            itemSize={3}
+          />
+        </bufferGeometry>
+        <pointsMaterial size={2} vertexColors sizeAttenuation transparent />
+      </points>
+
+      {/* Nebula backdrop */}
+      <mesh position={[0, 0, -50]}>
+        <planeGeometry args={[200, 150]} />
+        <shaderMaterial ref={nebulaMaterialRef} {...nebulaShader} transparent />
+      </mesh>
+
+      {/* Distant planet */}
+      <mesh position={[60, 30, -40]}>
+        <sphereGeometry args={[15, 32, 32]} />
+        <meshBasicMaterial color="#8B4513" />
+      </mesh>
+    </>
+  );
+}
+
+// Volcano Background - Fiery sky with mountain silhouettes
+function VolcanoBackground() {
+  const smokeRef = useRef<THREE.Points>(null);
+
+  useFrame((state) => {
+    if (smokeRef.current) {
+      smokeRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.3) * 0.1;
+    }
+  });
+
+  return (
+    <>
+      {/* Volcanic mountain silhouettes */}
+      <mesh position={[-40, -30, 0]}>
+        <coneGeometry args={[30, 60, 4]} />
+        <meshBasicMaterial color="#1a0a00" />
+      </mesh>
+
+      <mesh position={[30, -25, -10]}>
+        <coneGeometry args={[25, 50, 4]} />
+        <meshBasicMaterial color="#0d0500" />
+      </mesh>
+
+      <mesh position={[-10, -28, -5]}>
+        <coneGeometry args={[35, 55, 4]} />
+        <meshBasicMaterial color="#160800" />
+      </mesh>
+
+      {/* Lava glow from below */}
+      <mesh position={[0, -50, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[300, 100]} />
+        <meshBasicMaterial color="#ff4500" transparent opacity={0.3} />
+      </mesh>
+
+      {/* Volcanic smoke particles */}
+      <points ref={smokeRef}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            count={200}
+            array={new Float32Array(
+              Array.from({ length: 600 }, (_, i) => {
+                const idx = Math.floor(i / 3);
+                if (i % 3 === 0) return (Math.random() - 0.5) * 80;
+                if (i % 3 === 1) return -20 + Math.random() * 40;
+                return (Math.random() - 0.5) * 60;
+              })
+            )}
+            itemSize={3}
+          />
+        </bufferGeometry>
+        <pointsMaterial size={8} color="#3a1a0a" transparent opacity={0.4} />
+      </points>
+    </>
+  );
+}
+
+// Ice Cavern Background - Cave ceiling with aurora
+function IceCavernBackground() {
+  const auroraMaterialRef = useRef<THREE.ShaderMaterial>(null);
+
+  useFrame((state) => {
+    if (auroraMaterialRef.current) {
+      auroraMaterialRef.current.uniforms.time.value = state.clock.elapsedTime;
+    }
+  });
+
+  const auroraShader = useMemo(() => ({
+    uniforms: {
+      time: { value: 0 },
+    },
+    vertexShader: `
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      uniform float time;
+      varying vec2 vUv;
+
+      void main() {
+        vec2 uv = vUv;
+
+        // Aurora effect
+        float wave1 = sin(uv.x * 5.0 + time * 0.5) * 0.5 + 0.5;
+        float wave2 = sin(uv.x * 3.0 - time * 0.3 + uv.y * 2.0) * 0.5 + 0.5;
+
+        vec3 color1 = vec3(0.0, 1.0, 0.8); // Cyan
+        vec3 color2 = vec3(0.5, 0.0, 1.0); // Purple
+        vec3 aurora = mix(color1, color2, wave1) * wave2;
+
+        float alpha = wave2 * 0.4;
+        gl_FragColor = vec4(aurora, alpha);
+      }
+    `,
+  }), []);
+
+  return (
+    <>
+      {/* Aurora borealis effect */}
+      <mesh position={[0, 40, -20]} rotation={[-0.3, 0, 0]}>
+        <planeGeometry args={[200, 80]} />
+        <shaderMaterial ref={auroraMaterialRef} {...auroraShader} transparent />
+      </mesh>
+
+      {/* Ice stalactites */}
+      {Array.from({ length: 15 }).map((_, i) => (
+        <mesh
+          key={i}
+          position={[
+            (Math.random() - 0.5) * 150,
+            30 + Math.random() * 20,
+            (Math.random() - 0.5) * 40,
+          ]}
+        >
+          <coneGeometry args={[1 + Math.random() * 2, 5 + Math.random() * 10, 6]} />
+          <meshBasicMaterial color="#a5d8ff" transparent opacity={0.7} />
+        </mesh>
+      ))}
+
+      {/* Cave ceiling */}
+      <mesh position={[0, 50, 0]} rotation={[0, 0, 0]}>
+        <planeGeometry args={[300, 200]} />
+        <meshBasicMaterial color="#1a1a2e" />
+      </mesh>
+    </>
+  );
+}
+
+// Desert Background - Sandy sky with sun and heat haze
+function DesertBackground() {
+  const heatHazeMaterialRef = useRef<THREE.ShaderMaterial>(null);
+
+  useFrame((state) => {
+    if (heatHazeMaterialRef.current) {
+      heatHazeMaterialRef.current.uniforms.time.value = state.clock.elapsedTime;
+    }
+  });
+
+  const heatHazeShader = useMemo(() => ({
+    uniforms: {
+      time: { value: 0 },
+    },
+    vertexShader: `
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      uniform float time;
+      varying vec2 vUv;
+
+      void main() {
+        vec2 uv = vUv;
+
+        // Heat haze distortion
+        float distortion = sin(uv.y * 10.0 + time * 2.0) * 0.02;
+        uv.x += distortion;
+
+        // Gradient from tan to orange
+        vec3 color = mix(vec3(0.87, 0.72, 0.53), vec3(1.0, 0.65, 0.0), uv.y * 0.3);
+
+        float alpha = 0.3;
+        gl_FragColor = vec4(color, alpha);
+      }
+    `,
+  }), []);
+
+  return (
+    <>
+      {/* Sun */}
+      <mesh position={[50, 40, -30]}>
+        <sphereGeometry args={[12, 32, 32]} />
+        <meshBasicMaterial color="#FDB813" />
+      </mesh>
+
+      {/* Sun glow */}
+      <mesh position={[50, 40, -30]}>
+        <sphereGeometry args={[18, 32, 32]} />
+        <meshBasicMaterial color="#FFA500" transparent opacity={0.3} />
+      </mesh>
+
+      {/* Heat haze */}
+      <mesh position={[0, -10, 0]}>
+        <planeGeometry args={[300, 100]} />
+        <shaderMaterial ref={heatHazeMaterialRef} {...heatHazeShader} transparent />
+      </mesh>
+
+      {/* Distant pyramid silhouettes */}
+      <mesh position={[-60, -20, -20]}>
+        <coneGeometry args={[15, 25, 4]} />
+        <meshBasicMaterial color="#8B4513" transparent opacity={0.3} />
+      </mesh>
+
+      <mesh position={[40, -18, -25]}>
+        <coneGeometry args={[12, 20, 4]} />
+        <meshBasicMaterial color="#A0522D" transparent opacity={0.25} />
+      </mesh>
+
+      {/* Sand dunes silhouettes */}
+      <mesh position={[0, -35, -10]} rotation={[0, 0, 0]}>
+        <cylinderGeometry args={[50, 50, 20, 32, 1, false, 0, Math.PI]} />
+        <meshBasicMaterial color="#DEB887" transparent opacity={0.4} side={THREE.DoubleSide} />
+      </mesh>
+    </>
+  );
+}
+
+// Neon City Background - Cyberpunk cityscape
+function NeonCityBackground() {
+  const scanlinesMaterialRef = useRef<THREE.ShaderMaterial>(null);
+
+  useFrame((state) => {
+    if (scanlinesMaterialRef.current) {
+      scanlinesMaterialRef.current.uniforms.time.value = state.clock.elapsedTime;
+    }
+  });
+
+  const scanlinesShader = useMemo(() => ({
+    uniforms: {
+      time: { value: 0 },
+    },
+    vertexShader: `
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      uniform float time;
+      varying vec2 vUv;
+
+      void main() {
+        vec2 uv = vUv;
+
+        // Scanlines
+        float scanline = sin(uv.y * 100.0 + time * 5.0) * 0.5 + 0.5;
+
+        vec3 color = vec3(0.53, 0.0, 1.0) * scanline;
+
+        float alpha = 0.1;
+        gl_FragColor = vec4(color, alpha);
+      }
+    `,
+  }), []);
+
+  return (
+    <>
+      {/* City buildings */}
+      {Array.from({ length: 20 }).map((_, i) => {
+        const height = 30 + Math.random() * 40;
+        const width = 8 + Math.random() * 8;
+        const xPos = (i - 10) * 15;
+
+        return (
+          <group key={i} position={[xPos, -30 + height / 2, -20 - Math.random() * 20]}>
+            {/* Building */}
+            <mesh>
+              <boxGeometry args={[width, height, width]} />
+              <meshBasicMaterial color={i % 3 === 0 ? '#8B00FF' : i % 3 === 1 ? '#FF006E' : '#00D9FF'} transparent opacity={0.4} />
+            </mesh>
+
+            {/* Window lights */}
+            {Array.from({ length: 5 }).map((_, j) => (
+              <mesh key={j} position={[0, (j - 2) * 8, width / 2 + 0.1]}>
+                <planeGeometry args={[width * 0.8, 2]} />
+                <meshBasicMaterial color="#FFFF00" />
+              </mesh>
+            ))}
+          </group>
+        );
+      })}
+
+      {/* Scanlines overlay */}
+      <mesh position={[0, 0, 0]}>
+        <planeGeometry args={[300, 200]} />
+        <shaderMaterial ref={scanlinesMaterialRef} {...scanlinesShader} transparent />
+      </mesh>
+    </>
+  );
+}
+
+// Mushroom Forest Background - Giant mushroom silhouettes
+function MushroomForestBackground() {
+  return (
+    <>
+      {/* Giant mushroom silhouettes */}
+      {Array.from({ length: 8 }).map((_, i) => {
+        const xPos = (Math.random() - 0.5) * 150;
+        const scale = 0.5 + Math.random() * 0.8;
+
+        return (
+          <group key={i} position={[xPos, -30, -15 - Math.random() * 15]} scale={scale}>
+            {/* Stem */}
+            <mesh position={[0, 10, 0]}>
+              <cylinderGeometry args={[2, 3, 20, 12]} />
+              <meshBasicMaterial color="#5a3e2b" transparent opacity={0.6} />
+            </mesh>
+
+            {/* Cap */}
+            <mesh position={[0, 22, 0]}>
+              <sphereGeometry args={[12, 16, 16, 0, Math.PI * 2, 0, Math.PI / 2]} />
+              <meshBasicMaterial color={i % 2 === 0 ? '#9775fa' : '#ff6b9d'} transparent opacity={0.5} />
+            </mesh>
+
+            {/* Glow under cap */}
+            <pointLight position={[0, 18, 0]} color={i % 2 === 0 ? '#9775fa' : '#ff6b9d'} intensity={0.5} distance={20} />
+          </group>
+        );
+      })}
+
+      {/* Bioluminescent spores floating */}
+      <points>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            count={300}
+            array={new Float32Array(
+              Array.from({ length: 900 }, (_, i) => {
+                if (i % 3 === 0) return (Math.random() - 0.5) * 150;
+                if (i % 3 === 1) return Math.random() * 80 - 20;
+                return (Math.random() - 0.5) * 60;
+              })
+            )}
+            itemSize={3}
+          />
+        </bufferGeometry>
+        <pointsMaterial size={1.5} color="#9775fa" transparent opacity={0.6} />
+      </points>
+    </>
+  );
+}
+
+// Underwater Background - Ocean gradient with caustics
+function UnderwaterBackground() {
+  const causticsMaterialRef = useRef<THREE.ShaderMaterial>(null);
+
+  useFrame((state) => {
+    if (causticsMaterialRef.current) {
+      causticsMaterialRef.current.uniforms.time.value = state.clock.elapsedTime;
+    }
+  });
+
+  const causticsShader = useMemo(() => ({
+    uniforms: {
+      time: { value: 0 },
+    },
+    vertexShader: `
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      uniform float time;
+      varying vec2 vUv;
+
+      void main() {
+        vec2 uv = vUv;
+
+        // Caustic light patterns
+        float c1 = sin(uv.x * 10.0 + time) * sin(uv.y * 10.0 + time * 0.7);
+        float c2 = sin((uv.x + 0.5) * 8.0 - time * 0.8) * sin((uv.y + 0.3) * 8.0 + time);
+
+        float caustics = (c1 + c2) * 0.5 + 0.5;
+        caustics = smoothstep(0.4, 0.8, caustics);
+
+        vec3 color = vec3(0.4, 0.7, 1.0) * caustics;
+
+        float alpha = caustics * 0.3;
+        gl_FragColor = vec4(color, alpha);
+      }
+    `,
+  }), []);
+
+  return (
+    <>
+      {/* Caustic light patterns from surface */}
+      <mesh position={[0, 30, -10]} rotation={[-0.5, 0, 0]}>
+        <planeGeometry args={[200, 150]} />
+        <shaderMaterial ref={causticsMaterialRef} {...causticsShader} transparent />
+      </mesh>
+
+      {/* Fish silhouettes */}
+      {Array.from({ length: 12 }).map((_, i) => (
+        <mesh
+          key={i}
+          position={[
+            (Math.random() - 0.5) * 100,
+            Math.random() * 60 - 10,
+            (Math.random() - 0.5) * 50,
+          ]}
+          rotation={[0, Math.random() * Math.PI * 2, 0]}
+        >
+          <boxGeometry args={[3, 1, 1]} />
+          <meshBasicMaterial color="#1e3a5f" transparent opacity={0.4} />
+        </mesh>
+      ))}
+
+      {/* Underwater ruins/temple columns in distance */}
+      {Array.from({ length: 6 }).map((_, i) => (
+        <mesh
+          key={i}
+          position={[(i - 3) * 25, -30, -30]}
+        >
+          <cylinderGeometry args={[3, 3, 40, 8]} />
+          <meshBasicMaterial color="#1a4d2e" transparent opacity={0.3} />
+        </mesh>
+      ))}
+
+      {/* Depth gradient overlay */}
+      <mesh position={[0, -40, 0]}>
+        <planeGeometry args={[300, 100]} />
+        <meshBasicMaterial color="#001a33" transparent opacity={0.5} />
+      </mesh>
+    </>
+  );
+}
+
+// Green Fields Background - Sky with clouds and sun
+function GreenFieldsBackground() {
+  const cloudsRef = useRef<THREE.Group>(null);
+
+  useFrame((state) => {
+    if (cloudsRef.current) {
+      cloudsRef.current.position.x = Math.sin(state.clock.elapsedTime * 0.1) * 10;
+    }
+  });
+
+  return (
+    <>
+      {/* Sun */}
+      <mesh position={[60, 50, -40]}>
+        <sphereGeometry args={[10, 32, 32]} />
+        <meshBasicMaterial color="#FFEB3B" />
+      </mesh>
+
+      {/* Sun glow */}
+      <mesh position={[60, 50, -40]}>
+        <sphereGeometry args={[15, 32, 32]} />
+        <meshBasicMaterial color="#FFD700" transparent opacity={0.3} />
+      </mesh>
+
+      {/* Clouds */}
+      <group ref={cloudsRef}>
+        {Array.from({ length: 8 }).map((_, i) => (
+          <group key={i} position={[(i - 4) * 40, 30 + Math.random() * 20, -30 - Math.random() * 20]}>
+            <mesh position={[0, 0, 0]}>
+              <sphereGeometry args={[8, 16, 16]} />
+              <meshBasicMaterial color="#FFFFFF" transparent opacity={0.7} />
+            </mesh>
+            <mesh position={[6, 0, 0]}>
+              <sphereGeometry args={[6, 16, 16]} />
+              <meshBasicMaterial color="#FFFFFF" transparent opacity={0.7} />
+            </mesh>
+            <mesh position={[-6, 0, 0]}>
+              <sphereGeometry args={[6, 16, 16]} />
+              <meshBasicMaterial color="#FFFFFF" transparent opacity={0.7} />
+            </mesh>
+          </group>
+        ))}
+      </group>
+
+      {/* Distant hills */}
+      <mesh position={[0, -25, -20]} rotation={[0, 0, 0]}>
+        <cylinderGeometry args={[80, 80, 20, 32, 1, false, 0, Math.PI]} />
+        <meshBasicMaterial color="#4CAF50" transparent opacity={0.5} side={THREE.DoubleSide} />
+      </mesh>
+    </>
+  );
+}
+
+// Training Facility Background - Grid and geometric shapes
+function TrainingFacilityBackground() {
+  return (
+    <>
+      {/* Grid floor extending to horizon */}
+      <mesh position={[0, -40, -20]} rotation={[-Math.PI / 3, 0, 0]}>
+        <planeGeometry args={[300, 200, 20, 20]} />
+        <meshBasicMaterial color="#333333" wireframe transparent opacity={0.3} />
+      </mesh>
+
+      {/* Geometric training obstacles in background */}
+      {Array.from({ length: 10 }).map((_, i) => (
+        <mesh
+          key={i}
+          position={[
+            (Math.random() - 0.5) * 100,
+            -20 + Math.random() * 20,
+            -30 - Math.random() * 20,
+          ]}
+        >
+          {i % 3 === 0 ? (
+            <boxGeometry args={[8, 8, 8]} />
+          ) : i % 3 === 1 ? (
+            <cylinderGeometry args={[4, 4, 12, 8]} />
+          ) : (
+            <coneGeometry args={[5, 10, 4]} />
+          )}
+          <meshBasicMaterial color="#666666" transparent opacity={0.3} wireframe />
+        </mesh>
+      ))}
+
+      {/* Measurement markers */}
+      {Array.from({ length: 6 }).map((_, i) => (
+        <mesh key={i} position={[-60 + i * 24, -30, -10]}>
+          <cylinderGeometry args={[0.5, 0.5, 15, 8]} />
+          <meshBasicMaterial color="#FFA500" transparent opacity={0.5} />
+        </mesh>
+      ))}
+    </>
+  );
+}

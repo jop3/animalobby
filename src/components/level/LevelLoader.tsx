@@ -3,6 +3,7 @@ import { LevelDefinition } from '../../types/level.types';
 import { EntityFactory } from './EntityFactory';
 import { useGameStore } from '../../store/useGameStore';
 import { AmbientParticles } from '../effects/AmbientParticles';
+import { LevelBackground } from '../effects/LevelBackground';
 
 interface LevelLoaderProps {
   level: LevelDefinition;
@@ -25,8 +26,8 @@ export function LevelLoader({ level }: LevelLoaderProps) {
 
   return (
     <>
-      {/* Background color */}
-      <color attach="background" args={[level.theme.skyColor]} />
+      {/* Theme-appropriate background */}
+      <LevelBackground levelId={level.id} skyColor={level.theme.skyColor} />
 
       {/* Fog for atmosphere - different density based on difficulty */}
       <fog attach="fog" args={[level.theme.skyColor, 20, 100]} />
