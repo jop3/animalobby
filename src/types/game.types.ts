@@ -102,6 +102,9 @@ export interface PlatformData {
   restitution?: number;
 }
 
+// Character Base Types
+export type CharacterBase = 'human' | 'robot' | 'slime' | 'blocky' | 'smooth';
+
 // Game State (for Zustand Store)
 export interface GameState {
   // Player progression
@@ -111,6 +114,7 @@ export interface GameState {
   };
   unlockedParts: string[];
   currentLoadout: Loadout;
+  characterBase: CharacterBase;
   prestigeLevel: number;
 
   // Current session
@@ -132,6 +136,7 @@ export interface GameState {
   collectCoin: (type: CoinType) => void;
   unlockPart: (partId: string) => void;
   equipPart: (partId: string, slot: PartType) => void;
+  setCharacterBase: (base: CharacterBase) => void;
   setCheckpoint: (position: [number, number, number], checkpointId: string) => void;
   setPlayerPosition: (position: [number, number, number]) => void;
   die: () => void;

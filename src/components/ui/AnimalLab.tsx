@@ -3,7 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { useGameStore } from '../../store/useGameStore';
 import { getPartsByType, getPart, ANIMAL_PARTS } from '../../data/animalParts';
-import { AnimalPart, PartType } from '../../types/game.types';
+import { AnimalPart, PartType, CharacterBase } from '../../types/game.types';
 import { PlayerModel } from '../player/PlayerModel';
 
 interface AnimalLabProps {
@@ -18,6 +18,8 @@ export function AnimalLab({ isOpen, onClose }: AnimalLabProps) {
   const unlockedParts = useGameStore((state) => state.unlockedParts);
   const equipPart = useGameStore((state) => state.equipPart);
   const coins = useGameStore((state) => state.coins);
+  const characterBase = useGameStore((state) => state.characterBase);
+  const setCharacterBase = useGameStore((state) => state.setCharacterBase);
 
   if (!isOpen) return null;
 
@@ -111,6 +113,53 @@ export function AnimalLab({ isOpen, onClose }: AnimalLabProps) {
                 color="from-green-400 to-emerald-500"
                 icon="🛡️"
               />
+            </div>
+
+            {/* Character Base Selector */}
+            <div className="mt-4">
+              <h3 className="text-xl font-game text-white mb-2">👤 Character Base</h3>
+              <div className="grid grid-cols-2 gap-2">
+                <CharacterBaseButton
+                  base="human"
+                  label="Human"
+                  emoji="👤"
+                  color="#FFD1A3"
+                  isSelected={characterBase === 'human'}
+                  onClick={() => setCharacterBase('human')}
+                />
+                <CharacterBaseButton
+                  base="robot"
+                  label="Robot"
+                  emoji="🤖"
+                  color="#7F8C8D"
+                  isSelected={characterBase === 'robot'}
+                  onClick={() => setCharacterBase('robot')}
+                />
+                <CharacterBaseButton
+                  base="slime"
+                  label="Slime"
+                  emoji="💧"
+                  color="#2ECC71"
+                  isSelected={characterBase === 'slime'}
+                  onClick={() => setCharacterBase('slime')}
+                />
+                <CharacterBaseButton
+                  base="blocky"
+                  label="Blocky"
+                  emoji="📦"
+                  color="#F39C12"
+                  isSelected={characterBase === 'blocky'}
+                  onClick={() => setCharacterBase('blocky')}
+                />
+                <CharacterBaseButton
+                  base="smooth"
+                  label="Smooth"
+                  emoji="✨"
+                  color="#9B59B6"
+                  isSelected={characterBase === 'smooth'}
+                  onClick={() => setCharacterBase('smooth')}
+                />
+              </div>
             </div>
           </div>
 
@@ -287,5 +336,47 @@ function PartCard({ part, isUnlocked, isEquipped, onEquip, coins }: PartCardProp
         </div>
       )}
     </div>
+  );
+}
+
+interface CharacterBaseButtonProps {
+  base: CharacterBase;
+  label: string;
+  emoji: string;
+  color: string;
+  isSelected: boolean;
+  onClick: () => void;
+}
+
+function CharacterBaseButton({
+  base,
+  label,
+  emoji,
+  color,
+  isSelected,
+  onClick,
+}: CharacterBaseButtonProps) {
+  return (
+    <button
+      onClick={onClick}
+      className={`rounded-chunky border-4 p-3 transition-all font-game ${
+        isSelected
+          ? 'border-yellow-400 bg-yellow-900/40 scale-105'
+          : 'border-purple-500 bg-purple-900/40 hover:border-purple-400 hover:scale-105'
+      }`}
+    >
+      <div className="flex flex-col items-center gap-2">
+        <div
+          className="w-12 h-12 rounded-lg border-2 border-white/30 flex items-center justify-center text-2xl"
+          style={{ backgroundColor: color }}
+        >
+          {emoji}
+        </div>
+        <span className="text-white text-sm">{label}</span>
+        {isSelected && (
+          <div className="text-yellow-400 text-xs">✓ ACTIVE</div>
+        )}
+      </div>
+    </button>
   );
 }

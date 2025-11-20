@@ -13,6 +13,7 @@ const INITIAL_STATE = {
     body: 'default_body',
     legs: 'default_legs',
   },
+  characterBase: 'human' as const,
   prestigeLevel: 0,
   currentBiome: 'green_fields',
   currentLevelId: null as string | null,
@@ -70,6 +71,11 @@ export const useGameStore = create<GameState>()(
             [slot]: partId,
           },
         }));
+      },
+
+      // Character base selection
+      setCharacterBase: (base) => {
+        set({ characterBase: base });
       },
 
       // Checkpoint system
@@ -167,6 +173,7 @@ export const useGameStore = create<GameState>()(
         coins: state.coins,
         unlockedParts: state.unlockedParts,
         currentLoadout: state.currentLoadout,
+        characterBase: state.characterBase,
         prestigeLevel: state.prestigeLevel,
         quality: state.quality,
         soundEnabled: state.soundEnabled,
