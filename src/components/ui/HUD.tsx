@@ -64,6 +64,9 @@ export function HUD() {
       {/* Center - Death/Respawn Message */}
       <DeathMessage />
 
+      {/* Center - Checkpoint Saved Message */}
+      <CheckpointMessage />
+
       {/* Animal Lab Modal */}
       <AnimalLab isOpen={isLabOpen} onClose={() => setIsLabOpen(false)} />
     </div>
@@ -84,6 +87,25 @@ function DeathMessage() {
         <p className="text-xl font-game text-white text-center">
           Respawning...
         </p>
+      </div>
+    </div>
+  );
+}
+
+function CheckpointMessage() {
+  const checkpointJustSaved = useGameStore((state) => state.checkpointJustSaved);
+
+  if (!checkpointJustSaved) return null;
+
+  return (
+    <div className="absolute top-1/4 left-1/2 -translate-x-1/2 pointer-events-none animate-bounce">
+      <div className="bg-green-500/90 rounded-chunky px-8 py-4 shadow-2xl border-4 border-green-700">
+        <div className="flex items-center gap-3">
+          <span className="text-4xl">✅</span>
+          <h2 className="text-3xl font-game text-stroke text-white">
+            Checkpoint Saved!
+          </h2>
+        </div>
       </div>
     </div>
   );

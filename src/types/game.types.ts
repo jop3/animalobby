@@ -122,6 +122,7 @@ export interface GameState {
   currentLevelId: string | null;
   checkpointPosition: [number, number, number];
   lastCheckpointId: string | null;
+  checkpointJustSaved: boolean;
   playerPosition: [number, number, number] | null;
   isInvincible: boolean;
   isDead: boolean;

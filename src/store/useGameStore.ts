@@ -28,6 +28,7 @@ const INITIAL_STATE = {
   currentLevelId: null as string | null,
   checkpointPosition: [0, 2, 0] as [number, number, number],
   lastCheckpointId: null,
+  checkpointJustSaved: false,
   playerPosition: null,
   isInvincible: false,
   isDead: false,
@@ -93,7 +94,13 @@ export const useGameStore = create<GameState>()(
         set({
           checkpointPosition: position,
           lastCheckpointId: checkpointId,
+          checkpointJustSaved: true,
         });
+
+        // Clear notification after 2 seconds
+        setTimeout(() => {
+          set({ checkpointJustSaved: false });
+        }, 2000);
       },
 
       // Player position tracking (for hazards)

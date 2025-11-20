@@ -60,16 +60,7 @@ export function LevelLoader({ level }: LevelLoaderProps) {
         <EntityFactory key={entity.id || `entity_${index}`} entity={entity} index={index} />
       ))}
 
-      {/* Death plane (large platform far below) */}
-      <EntityFactory
-        entity={{
-          type: 'platform',
-          position: [0, -20, 0],
-          size: [500, 1, 500],
-          color: '#34495E',
-        }}
-        index={-1}
-      />
+      {/* Death detection handled by Player.tsx at y < -10 */}
     </>
   );
 }
