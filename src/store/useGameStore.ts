@@ -7,7 +7,16 @@ const INITIAL_STATE = {
     speed: 0,
     gravity: 0,
   },
-  unlockedParts: ['default_head', 'default_body', 'default_legs'], // Start with default parts
+  unlockedParts: [
+    // Default parts
+    'default_head', 'default_body', 'default_legs',
+    // Heads - unlocked by default for fun
+    'eagle_head', 'fox_head', 'owl_head', 'wolf_head', 'rabbit_head',
+    // Bodies - unlocked by default for variety
+    'turtle_body', 'gorilla_body', 'bear_body', 'cheetah_body', 'monkey_body',
+    // Legs - unlocked by default for experimentation
+    'cheetah_legs', 'frog_legs', 'kangaroo_legs', 'ostrich_legs', 'grasshopper_legs', 'spider_legs', 'horse_legs',
+  ],
   currentLoadout: {
     head: 'default_head',
     body: 'default_body',

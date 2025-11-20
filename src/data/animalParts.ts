@@ -39,7 +39,7 @@ export const ANIMAL_PARTS: Record<string, AnimalPart> = {
       jumpForce: 0.1, // +10% vision/jump arc
     },
     ability: 'glide',
-    unlocked: false,
+    unlocked: true,
     description: 'Sharp eyes see further. Slight glide when falling.',
     color: '#8B4513', // Brown
   },
@@ -51,7 +51,7 @@ export const ANIMAL_PARTS: Record<string, AnimalPart> = {
     statModifier: {
       speed: 0.05, // +5% speed
     },
-    unlocked: false,
+    unlocked: true,
     description: 'Cunning and quick-witted.',
     color: '#FF6347', // Orange-red
   },
@@ -63,7 +63,7 @@ export const ANIMAL_PARTS: Record<string, AnimalPart> = {
     statModifier: {
       jumpForce: 0.15, // +15% jump
     },
-    unlocked: false,
+    unlocked: true,
     description: 'Wise and observant. Better aerial control.',
     color: '#8B7355', // Brown
   },
@@ -76,7 +76,7 @@ export const ANIMAL_PARTS: Record<string, AnimalPart> = {
       speed: 0.10, // +10% speed
       defense: 0.5, // Half defense point
     },
-    unlocked: false,
+    unlocked: true,
     description: 'Pack hunter instincts. Faster and tougher.',
     color: '#696969', // Gray
   },
@@ -101,7 +101,7 @@ export const ANIMAL_PARTS: Record<string, AnimalPart> = {
       jumpForce: 0.10, // +10% jump
       speed: 0.05, // +5% speed
     },
-    unlocked: false,
+    unlocked: true,
     description: 'Quick and nimble. Balanced bonuses.',
     color: '#DEB887', // Burlywood
   },
@@ -116,7 +116,7 @@ export const ANIMAL_PARTS: Record<string, AnimalPart> = {
       speed: -0.1, // -10% speed
     },
     ability: 'shield',
-    unlocked: false,
+    unlocked: true,
     description: 'Protects from one hazard hit. Slows you down.',
     color: '#2ECC71', // Green
   },
@@ -128,7 +128,7 @@ export const ANIMAL_PARTS: Record<string, AnimalPart> = {
     statModifier: {
       jumpForce: 0.15, // +15% jump
     },
-    unlocked: false,
+    unlocked: true,
     description: 'Powerful core muscles for higher jumps.',
     color: '#555555', // Dark gray
   },
@@ -141,7 +141,7 @@ export const ANIMAL_PARTS: Record<string, AnimalPart> = {
       defense: 1.5, // 1.5 hit protection
       speed: -0.15, // -15% speed
     },
-    unlocked: false,
+    unlocked: true,
     description: 'Thick fur and muscle. Very defensive, but slow.',
     color: '#8B4513', // Saddle brown
   },
@@ -154,7 +154,7 @@ export const ANIMAL_PARTS: Record<string, AnimalPart> = {
       speed: 0.20, // +20% speed
       defense: -0.5, // Less defense
     },
-    unlocked: false,
+    unlocked: true,
     description: 'Sleek and aerodynamic. Built for speed, not defense.',
     color: '#DAA520', // Goldenrod
   },
@@ -181,7 +181,7 @@ export const ANIMAL_PARTS: Record<string, AnimalPart> = {
       jumpForce: 0.10, // +10% jump
       speed: 0.10, // +10% speed
     },
-    unlocked: false,
+    unlocked: true,
     description: 'Agile and nimble. Balanced mobility boost.',
     color: '#CD853F', // Peru
   },
@@ -207,7 +207,7 @@ export const ANIMAL_PARTS: Record<string, AnimalPart> = {
     statModifier: {
       speed: 0.25, // +25% speed
     },
-    unlocked: false,
+    unlocked: true,
     description: 'Lightning-fast sprinter legs!',
     color: '#F4A300', // Golden yellow
   },
@@ -219,7 +219,7 @@ export const ANIMAL_PARTS: Record<string, AnimalPart> = {
     statModifier: {
       jumpForce: 0.25, // +25% jump
     },
-    unlocked: false,
+    unlocked: true,
     description: 'Springy legs for massive jumps!',
     color: '#7FFF00', // Chartreuse green
   },
@@ -232,7 +232,7 @@ export const ANIMAL_PARTS: Record<string, AnimalPart> = {
       jumpForce: 0.15, // +15% jump
       speed: 0.15, // +15% speed
     },
-    unlocked: false,
+    unlocked: true,
     description: 'Balanced speed and jump power.',
     color: '#CD853F', // Tan
   },
@@ -244,7 +244,7 @@ export const ANIMAL_PARTS: Record<string, AnimalPart> = {
     statModifier: {
       speed: 0.30, // +30% speed
     },
-    unlocked: false,
+    unlocked: true,
     description: 'Fastest land animal legs! Pure speed.',
     color: '#D2691E', // Chocolate
   },
@@ -258,7 +258,7 @@ export const ANIMAL_PARTS: Record<string, AnimalPart> = {
       speed: -0.05, // -5% speed
     },
     ability: 'double_jump',
-    unlocked: false,
+    unlocked: true,
     description: 'Insane jumping power! Enables double jump.',
     color: '#228B22', // Forest green
   },
@@ -271,7 +271,7 @@ export const ANIMAL_PARTS: Record<string, AnimalPart> = {
       speed: 0.15, // +15% speed
       jumpForce: 0.05, // +5% jump
     },
-    unlocked: false,
+    unlocked: true,
     description: 'Eight legs worth of mobility. Great all-rounder.',
     color: '#000000', // Black
   },
@@ -284,7 +284,7 @@ export const ANIMAL_PARTS: Record<string, AnimalPart> = {
       speed: 0.20, // +20% speed
       jumpForce: 0.10, // +10% jump
     },
-    unlocked: false,
+    unlocked: true,
     description: 'Galloping power. Excellent mobility.',
     color: '#8B4513', // Saddle brown
   },
