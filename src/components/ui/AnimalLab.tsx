@@ -49,7 +49,9 @@ export function AnimalLab({ isOpen, onClose }: AnimalLabProps) {
   const stats = calculateStats();
 
   const handleEquip = (partId: string, slot: PartType) => {
+    console.log(`[AnimalLab] Equipping ${partId} to ${slot} slot`);
     equipPart(partId, slot);
+    console.log('[AnimalLab] New loadout:', { ...currentLoadout, [slot]: partId });
   };
 
   return (
