@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { RigidBody } from '@react-three/rapier';
+import { RigidBody, CuboidCollider } from '@react-three/rapier';
 import { Mesh } from 'three';
 import { CoinType } from '../../types/game.types';
 import { useGameStore } from '../../store/useGameStore';
@@ -52,7 +52,9 @@ export function Coin({ id, position, type }: CoinProps) {
       sensor
       position={position}
       onIntersectionEnter={handleCollect}
+      colliders={false}
     >
+      <CuboidCollider args={[0.4, 0.4, 0.2]} />
       {/* Main coin body */}
       <mesh ref={meshRef} castShadow>
         <boxGeometry args={[0.6, 0.6, 0.15]} />

@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { RigidBody } from '@react-three/rapier';
+import { RigidBody, CuboidCollider } from '@react-three/rapier';
 import { Group, Mesh } from 'three';
 import { useGameStore } from '../../store/useGameStore';
 
@@ -132,7 +132,9 @@ export function RotatingHammer({
           onIntersectionEnter={handleCollision}
           position={[radius + hammerLength - 0.4, 0, 0]}
           userData={{ hazard: 'hammer' }}
+          colliders={false}
         >
+          <CuboidCollider args={[0.4, 0.6, 0.6]} />
           <group>
             {/* Main hammer head */}
             <mesh ref={hammerHeadRef} castShadow>

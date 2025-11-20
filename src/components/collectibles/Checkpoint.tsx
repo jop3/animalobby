@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { RigidBody } from '@react-three/rapier';
+import { RigidBody, CuboidCollider } from '@react-three/rapier';
 import { Mesh } from 'three';
 import { useGameStore } from '../../store/useGameStore';
 
@@ -93,10 +93,9 @@ export function Checkpoint({ id, position }: CheckpointProps) {
         sensor
         position={[0, 0, 0]}
         onIntersectionEnter={handleActivate}
+        colliders={false}
       >
-        <mesh visible={false}>
-          <boxGeometry args={[3, 6, 3]} />
-        </mesh>
+        <CuboidCollider args={[1.5, 3, 1.5]} />
       </RigidBody>
 
       {/* Floating rings - always visible, more prominent when active */}
