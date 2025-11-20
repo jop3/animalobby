@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { LevelDefinition } from '../../types/level.types';
 import { EntityFactory } from './EntityFactory';
 import { useGameStore } from '../../store/useGameStore';
+import { AmbientParticles } from '../effects/AmbientParticles';
 
 interface LevelLoaderProps {
   level: LevelDefinition;
@@ -49,6 +50,9 @@ export function LevelLoader({ level }: LevelLoaderProps) {
         shadow-camera-top={30}
         shadow-camera-bottom={-30}
       />
+
+      {/* Ambient particles for atmosphere */}
+      <AmbientParticles levelId={level.id} />
 
       {/* Render all entities */}
       {level.entities.map((entity, index) => (

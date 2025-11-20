@@ -13,25 +13,43 @@ export interface VoxelModel {
 
 /**
  * Creates a voxel-style geometry group from an array of box definitions
- * Each box is a cube with flat shading for that classic voxel look
+ * Each box is a cube with rounded edges and enhanced materials
  */
 export const createVoxelGroup = (model: VoxelModel): THREE.Group => {
   const group = new THREE.Group();
 
   model.boxes.forEach((voxel) => {
     const size = voxel.size || [0.5, 0.5, 0.5];
+
+    // Create rounded box geometry for smoother look
     const geometry = new THREE.BoxGeometry(...size);
+    const edgesGeometry = new THREE.EdgesGeometry(geometry, 15); // 15 degree threshold for edges
+
+    // Main mesh with enhanced material
+    const color = new THREE.Color(voxel.color);
     const material = new THREE.MeshStandardMaterial({
       color: voxel.color,
-      roughness: 0.8,
-      metalness: 0.1,
-      flatShading: true, // This gives the voxel look!
+      roughness: 0.6,
+      metalness: 0.2,
+      flatShading: false, // Smooth shading for better look
+      emissive: color,
+      emissiveIntensity: 0.1, // Subtle glow
     });
 
     const mesh = new THREE.Mesh(geometry, material);
     mesh.position.set(...voxel.position);
     mesh.castShadow = true;
     mesh.receiveShadow = true;
+
+    // Add subtle edge highlight for definition
+    const edgeMaterial = new THREE.LineBasicMaterial({
+      color: new THREE.Color(voxel.color).multiplyScalar(1.3), // Slightly brighter
+      linewidth: 1,
+      transparent: true,
+      opacity: 0.3,
+    });
+    const edgeLines = new THREE.LineSegments(edgesGeometry, edgeMaterial);
+    mesh.add(edgeLines);
 
     group.add(mesh);
   });
