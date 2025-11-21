@@ -112,6 +112,7 @@ export interface GameState {
     speed: number;
     gravity: number;
   };
+  collectedStars: string[]; // IDs of collected stars
   unlockedParts: string[];
   currentLoadout: Loadout;
   characterBase: CharacterBase;
@@ -136,6 +137,7 @@ export interface GameState {
 
   // Actions
   collectCoin: (type: CoinType) => void;
+  collectStar: (starId: string) => void;
   unlockPart: (partId: string) => void;
   equipPart: (partId: string, slot: PartType) => void;
   setCharacterBase: (base: CharacterBase) => void;

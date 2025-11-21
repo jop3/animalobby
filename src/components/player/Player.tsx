@@ -25,6 +25,15 @@ export const Player = forwardRef<any>((props, ref) => {
   const invincibilityTimeRef = useRef(0); // Invincibility frames after respawn
   const [isInvincible, setIsInvincible] = useState(false);
 
+  // New parkour mechanics
+  const wallJumpTimeRef = useRef(0); // Time window for wall jump
+  const lastWallNormalRef = useRef<Vector3 | null>(null); // Direction away from wall
+  const speedBoostTimeRef = useRef(0); // Speed boost duration remaining
+  const speedBoostMultiplierRef = useRef(1); // Current speed multiplier
+  const isOnRailRef = useRef(false); // On grind rail
+  const railDataRef = useRef<any>(null); // Rail curve and progress
+  const windForceRef = useRef<Vector3>(new Vector3(0, 0, 0)); // Accumulated wind forces
+
   const [showDeathParticles, setShowDeathParticles] = useState(false);
   const [deathPosition, setDeathPosition] = useState<[number, number, number]>([0, 0, 0]);
   const [showLandingParticles, setShowLandingParticles] = useState(false);
@@ -108,6 +117,64 @@ export const Player = forwardRef<any>((props, ref) => {
     }
   }, [isDead, checkpointPosition, respawn]);
 
+  // Collision handlers for parkour mechanics
+  const handleIntersectionEnter = (event: any) => {
+    const userData = event.other.rigidBodyObject?.userData;
+    if (!userData) return;
+
+    // Bounce pad collision
+    if (userData.bouncePad && playerRef.current) {
+      const bounceForce = userData.bounceForce || 25;
+      const velocity = playerRef.current.linvel();
+      playerRef.current.setLinvel({
+        x: velocity.x,
+        y: bounceForce,
+        z: velocity.z
+      }, true);
+      jumpCount.current = 0; // Reset jump count
+    }
+
+    // Speed boost collision
+    if (userData.speedBoost) {
+      speedBoostMultiplierRef.current = userData.speedMultiplier || 2;
+      speedBoostTimeRef.current = userData.duration || 3;
+    }
+
+    // Wind zone collision
+    if (userData.windZone && userData.force) {
+      const force = userData.force;
+      windForceRef.current.set(force[0], force[1], force[2]);
+    }
+
+    // Grind rail collision
+    if (userData.grindRail) {
+      isOnRailRef.current = true;
+      railDataRef.current = {
+        curve: userData.curve,
+        points: userData.points,
+        speed: userData.speed || 8,
+        progress: 0
+      };
+      jumpCount.current = 0; // Reset jump count when on rail
+    }
+  };
+
+  const handleIntersectionExit = (event: any) => {
+    const userData = event.other.rigidBodyObject?.userData;
+    if (!userData) return;
+
+    // Exit wind zone
+    if (userData.windZone) {
+      windForceRef.current.set(0, 0, 0);
+    }
+
+    // Exit grind rail
+    if (userData.grindRail) {
+      isOnRailRef.current = false;
+      railDataRef.current = null;
+    }
+  };
+
   // Movement and physics
   useFrame((state, delta) => {
     if (!playerRef.current || isDead) return;
@@ -158,10 +225,70 @@ export const Player = forwardRef<any>((props, ref) => {
       }
     }
 
+    // Speed boost timer
+    if (speedBoostTimeRef.current > 0) {
+      speedBoostTimeRef.current -= delta;
+      if (speedBoostTimeRef.current <= 0) {
+        speedBoostMultiplierRef.current = 1;
+      }
+    }
+
+    // Wall jump timer
+    if (wallJumpTimeRef.current > 0) {
+      wallJumpTimeRef.current -= delta;
+    }
+
     // Death check
     if (position.y < DEATH_Y) {
       die();
       return;
+    }
+
+    // Grind rail movement
+    if (isOnRailRef.current && railDataRef.current) {
+      const railData = railDataRef.current;
+      railData.progress += delta * railData.speed * 0.1;
+
+      // If we have a curve, follow it
+      if (railData.curve) {
+        const t = Math.min(railData.progress, 1);
+        const point = railData.curve.getPoint(t);
+        body.setTranslation({ x: point.x, y: point.y, z: point.z }, true);
+
+        // End of rail
+        if (t >= 1) {
+          isOnRailRef.current = false;
+          railDataRef.current = null;
+        }
+      } else if (railData.points && railData.points.length > 1) {
+        // Fallback: linear interpolation between points
+        const totalPoints = railData.points.length;
+        const segmentProgress = railData.progress * (totalPoints - 1);
+        const currentSegment = Math.floor(segmentProgress);
+
+        if (currentSegment < totalPoints - 1) {
+          const t = segmentProgress - currentSegment;
+          const p1 = railData.points[currentSegment];
+          const p2 = railData.points[currentSegment + 1];
+
+          const x = p1[0] + (p2[0] - p1[0]) * t;
+          const y = p1[1] + (p2[1] - p1[1]) * t;
+          const z = p1[2] + (p2[2] - p1[2]) * t;
+
+          body.setTranslation({ x, y, z }, true);
+        } else {
+          isOnRailRef.current = false;
+          railDataRef.current = null;
+        }
+      }
+
+      // Can jump off rail
+      if (jumpPressed) {
+        isOnRailRef.current = false;
+        railDataRef.current = null;
+      }
+
+      return; // Skip normal movement when on rail
     }
 
     // Calculate movement direction
@@ -170,22 +297,42 @@ export const Player = forwardRef<any>((props, ref) => {
 
     const direction = new Vector3(moveX, 0, moveZ).normalize();
 
-    // Apply speed stat
-    const currentSpeed = sprint ? playerStats.speed * 1.5 : playerStats.speed;
+    // Apply speed stat with boost multiplier
+    let currentSpeed = sprint ? playerStats.speed * 1.5 : playerStats.speed;
+    currentSpeed *= speedBoostMultiplierRef.current;
 
-    // Set horizontal velocity
+    // Apply wind force
+    const windContribution = windForceRef.current.clone().multiplyScalar(delta * 10);
+
+    // Set horizontal velocity with wind
     body.setLinvel(
       {
-        x: direction.x * currentSpeed,
-        y: velocity.y, // Preserve vertical velocity
-        z: direction.z * currentSpeed,
+        x: direction.x * currentSpeed + windContribution.x,
+        y: velocity.y + windContribution.y, // Preserve vertical velocity, add wind
+        z: direction.z * currentSpeed + windContribution.z,
       },
       true
     );
 
+    // Wall detection - simple raycasting in movement directions
+    // Check if player is near a wall (for wall jump)
+    if (!isOnGround.current && jumpCount.current > 0 && jumpCount.current < 2) {
+      // Simple wall detection: check if horizontal velocity is low despite input
+      const horizontalSpeed = Math.sqrt(velocity.x * velocity.x + velocity.z * velocity.z);
+      const isMoving = Math.abs(moveX) > 0.1 || Math.abs(moveZ) > 0.1;
+
+      if (isMoving && horizontalSpeed < 1 && velocity.y < 0) {
+        // Likely touching a wall
+        wallJumpTimeRef.current = 0.2; // 200ms window
+        // Store wall normal (opposite of movement direction)
+        lastWallNormalRef.current = new Vector3(-moveX, 0, -moveZ).normalize();
+      }
+    }
+
     // Jumping logic with coyote time and jump buffering
     const canJump = coyoteTimeRef.current > 0 && jumpCount.current === 0;
     const shouldJump = (jumpPressed || jumpBufferRef.current > 0) && canJump;
+    const canWallJump = wallJumpTimeRef.current > 0 && jumpPressed && jumpCount.current > 0;
 
     if (shouldJump) {
       // First jump (from ground or within coyote time)
@@ -201,6 +348,20 @@ export const Player = forwardRef<any>((props, ref) => {
       jumpBufferRef.current = 0; // Consume the buffered input
       coyoteTimeRef.current = 0; // Consume coyote time
       isJumpingRef.current = true; // Start tracking for variable jump height
+    } else if (canWallJump && lastWallNormalRef.current) {
+      // Wall jump - push away from wall
+      const wallNormal = lastWallNormalRef.current;
+      body.setLinvel(
+        {
+          x: wallNormal.x * playerStats.speed * 1.2,
+          y: playerStats.jumpForce * 0.9,
+          z: wallNormal.z * playerStats.speed * 1.2,
+        },
+        true
+      );
+      jumpCount.current = 1; // Reset to allow another wall jump or double jump
+      wallJumpTimeRef.current = 0; // Consume wall jump
+      isJumpingRef.current = true;
     } else if (jumpPressed && playerStats.canDoubleJump && jumpCount.current === 1) {
       // Double jump (in air, but only if you have the ability)
       body.setLinvel(
@@ -256,6 +417,9 @@ export const Player = forwardRef<any>((props, ref) => {
         linearDamping={0.5}
         angularDamping={1}
         ccd={true} // Continuous Collision Detection - prevents tunneling through platforms
+        onIntersectionEnter={handleIntersectionEnter}
+        onIntersectionExit={handleIntersectionExit}
+        userData={{ player: true }}
       >
         <CapsuleCollider args={[0.5, 0.5]} />
         {!isDead && <PlayerModel loadout={currentLoadout} />}

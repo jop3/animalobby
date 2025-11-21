@@ -56,16 +56,30 @@
       "color": "#FF006E"
     },
     {
+      "type": "speed_boost",
+      "position": [10, 6.6, 10],
+      "size": [2, 0.2, 2],
+      "speedMultiplier": 2.5,
+      "duration": 3
+    },
+    {
       "type": "platform",
       "position": [10, 6.5, 10],
       "size": [2.2, 0.3, 2.2],
       "color": "#00D9FF"
     },
     {
-      "type": "rotating_hammer",
-      "position": [10, 9, 10],
-      "rotationSpeed": 2.5,
-      "hammerLength": 2
+      "type": "pendulum",
+      "position": [10, 12, 10],
+      "length": 3.5,
+      "swingSpeed": 2,
+      "hammerSize": 1
+    },
+    {
+      "type": "star",
+      "id": "star_neon_1",
+      "position": [10, 6.8, 10],
+      "difficulty": "hard"
     },
     {
       "type": "platform",
@@ -164,10 +178,22 @@
       "coinType": "speed"
     },
     {
+      "type": "bounce_pad",
+      "position": [25, 21.8, 30],
+      "bounceForce": 22,
+      "size": 1.2
+    },
+    {
       "type": "platform",
       "position": [25, 21.5, 30],
       "size": [2.5, 0.3, 2.5],
       "color": "#8B00FF"
+    },
+    {
+      "type": "grind_rail",
+      "points": [[25, 25, 30], [25.5, 26, 31], [26, 25.5, 32], [26, 24, 32]],
+      "speed": 10,
+      "radius": 0.12
     },
     {
       "type": "platform",

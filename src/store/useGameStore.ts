@@ -7,6 +7,7 @@ const INITIAL_STATE = {
     speed: 0,
     gravity: 0,
   },
+  collectedStars: [] as string[],
   unlockedParts: [
     // Default parts
     'default_head', 'default_body', 'default_legs',
@@ -52,6 +53,18 @@ export const useGameStore = create<GameState>()(
             [type]: state.coins[type] + 1,
           },
         }));
+      },
+
+      // Star collection
+      collectStar: (starId: string) => {
+        set((state) => {
+          if (state.collectedStars.includes(starId)) {
+            return state;
+          }
+          return {
+            collectedStars: [...state.collectedStars, starId],
+          };
+        });
       },
 
       // Part unlocking
@@ -197,6 +210,7 @@ export const useGameStore = create<GameState>()(
       partialize: (state) => ({
         // Only persist these fields
         coins: state.coins,
+        collectedStars: state.collectedStars,
         unlockedParts: state.unlockedParts,
         currentLoadout: state.currentLoadout,
         characterBase: state.characterBase,

@@ -70,6 +70,18 @@
       "color": "#FFD700"
     },
     {
+      "type": "bounce_pad",
+      "position": [22, 2.3, 2],
+      "bounceForce": 20,
+      "size": 1.5
+    },
+    {
+      "type": "star",
+      "id": "star_green_1",
+      "position": [22, 10, 2],
+      "difficulty": "easy"
+    },
+    {
       "type": "coin",
       "id": "coin_5",
       "position": [22, 3, 2],
@@ -122,16 +134,26 @@
       "coinType": "speed"
     },
     {
+      "type": "speed_boost",
+      "position": [51, 5, 0],
+      "size": [4, 0.3, 2],
+      "speedMultiplier": 1.8,
+      "duration": 2
+    },
+    {
       "type": "platform",
       "position": [54, 5, 0],
       "size": [3, 0.5, 3],
       "color": "#4A90E2"
     },
     {
-      "type": "platform",
+      "type": "moving_platform",
       "position": [58, 6.5, 2],
       "size": [3, 0.5, 3],
-      "color": "#9B59B6"
+      "color": "#9B59B6",
+      "pattern": "linear",
+      "speed": 0.8,
+      "range": [0, 2, 0]
     },
     {
       "type": "platform",

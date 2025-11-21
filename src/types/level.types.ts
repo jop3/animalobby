@@ -32,7 +32,13 @@ export type EntityType =
   | 'vine'
   | 'moving_platform'
   | 'end_goal'
-  | 'spawn_portal';
+  | 'spawn_portal'
+  | 'bounce_pad'
+  | 'speed_boost'
+  | 'grind_rail'
+  | 'wind_zone'
+  | 'pendulum'
+  | 'star';
 
 // Base entity (all entities extend this)
 export interface BaseEntity {
@@ -121,6 +127,53 @@ export interface SpawnPortalEntity extends BaseEntity {
   type: 'spawn_portal';
 }
 
+// Bounce Pad
+export interface BouncePadEntity extends BaseEntity {
+  type: 'bounce_pad';
+  bounceForce?: number; // Upward force (default 25)
+  size?: number; // Radius (default 2)
+}
+
+// Speed Boost Zone
+export interface SpeedBoostEntity extends BaseEntity {
+  type: 'speed_boost';
+  size?: [number, number, number]; // Zone size (default [3, 0.5, 6])
+  speedMultiplier?: number; // Speed multiplier (default 2)
+  duration?: number; // Boost duration in seconds (default 3)
+}
+
+// Grind Rail
+export interface GrindRailEntity extends BaseEntity {
+  type: 'grind_rail';
+  points: [number, number, number][]; // Array of points defining the rail path
+  speed?: number; // Movement speed along rail (default 8)
+  radius?: number; // Rail thickness (default 0.1)
+}
+
+// Wind Zone
+export interface WindZoneEntity extends BaseEntity {
+  type: 'wind_zone';
+  size: [number, number, number]; // Zone dimensions
+  force: [number, number, number]; // Force vector [x, y, z]
+  visualize?: boolean; // Show zone boundaries (default true)
+}
+
+// Pendulum
+export interface PendulumEntity extends BaseEntity {
+  type: 'pendulum';
+  length?: number; // Chain length (default 4)
+  swingAngle?: number; // Max swing angle in radians (default π/3)
+  swingSpeed?: number; // Oscillation speed (default 1.5)
+  hammerSize?: number; // Hammer radius (default 1.2)
+}
+
+// Star Collectible
+export interface StarEntity extends BaseEntity {
+  type: 'star';
+  id: string; // Required for tracking collection
+  difficulty?: 'easy' | 'medium' | 'hard'; // Affects color/appearance
+}
+
 // Union of all entity types
 export type LevelEntity =
   | PlatformEntity
@@ -133,7 +186,13 @@ export type LevelEntity =
   | VineEntity
   | MovingPlatformEntity
   | EndGoalEntity
-  | SpawnPortalEntity;
+  | SpawnPortalEntity
+  | BouncePadEntity
+  | SpeedBoostEntity
+  | GrindRailEntity
+  | WindZoneEntity
+  | PendulumEntity
+  | StarEntity;
 
 // ============================================================================
 // LEVEL DEFINITION

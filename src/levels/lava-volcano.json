@@ -32,20 +32,35 @@
       "color": "#3D1F00"
     },
     {
+      "type": "wind_zone",
+      "position": [4, 3, -2],
+      "size": [3, 8, 3],
+      "force": [0, 12, 0]
+    },
+    {
+      "type": "star",
+      "id": "star_lava_1",
+      "position": [4, 12, -2],
+      "difficulty": "hard"
+    },
+    {
       "type": "coin",
       "id": "coin_1",
       "position": [6, 3.5, 0],
       "coinType": "speed"
     },
     {
-      "type": "platform",
+      "type": "moving_platform",
       "position": [8, 4, 4],
       "size": [2.5, 0.8, 2.5],
-      "color": "#5C2E00"
+      "color": "#5C2E00",
+      "pattern": "linear",
+      "speed": 0.7,
+      "range": [0, 1.5, 0]
     },
     {
       "type": "spike",
-      "position": [8, 5, 4],
+      "position": [8, 5.5, 4],
       "size": 0.6
     },
     {
