@@ -137,6 +137,15 @@ export interface GameState {
 
   // Progress tracking
   completedLevels: string[];
+  levelStats: Record<string, LevelStats>;
+  playerName: string;
+
+  // Current run tracking
+  currentRunStats: {
+    startTime: number | null;
+    deaths: number;
+    coinsCollected: number;
+  };
 
   // Actions
   collectCoin: (type: CoinType) => void;
@@ -158,7 +167,30 @@ export interface GameState {
   toggleMusic: () => void;
   setPaused: (paused: boolean) => void;
   completeLevel: (levelId: string) => void;
+  setPlayerName: (name: string) => void;
+  startLevelTimer: () => void;
+  recordDeath: () => void;
+  recordCoinCollection: () => void;
+  saveLevelStats: (levelId: string, time: number) => void;
   reset: () => void;
+}
+
+// Level Statistics
+export interface LevelStats {
+  bestTime: number;
+  totalDeaths: number;
+  coinsCollected: number;
+  playerName: string;
+  completedAt: number; // timestamp
+}
+
+// Leaderboard Entry
+export interface LeaderboardEntry {
+  playerName: string;
+  time: number;
+  deaths: number;
+  coins: number;
+  date: number;
 }
 
 // Control State

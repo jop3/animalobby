@@ -39,6 +39,13 @@ const INITIAL_STATE = {
   soundEnabled: true,
   musicEnabled: true,
   completedLevels: [] as string[],
+  levelStats: {} as Record<string, any>,
+  playerName: 'Player',
+  currentRunStats: {
+    startTime: null,
+    deaths: 0,
+    coinsCollected: 0,
+  },
 };
 
 export const useGameStore = create<GameState>()(
@@ -52,6 +59,10 @@ export const useGameStore = create<GameState>()(
           coins: {
             ...state.coins,
             [type]: state.coins[type] + 1,
+          },
+          currentRunStats: {
+            ...state.currentRunStats,
+            coinsCollected: state.currentRunStats.coinsCollected + 1,
           },
         }));
       },
@@ -121,7 +132,13 @@ export const useGameStore = create<GameState>()(
         // Don't die if invincible
         if (isInvincible) return;
 
-        set({ isDead: true });
+        set((state) => ({
+          isDead: true,
+          currentRunStats: {
+            ...state.currentRunStats,
+            deaths: state.currentRunStats.deaths + 1,
+          },
+        }));
       },
 
       respawn: () => {
@@ -144,6 +161,11 @@ export const useGameStore = create<GameState>()(
           playerPosition: null,
           checkpointPosition: [0, 2, 0], // Will be overwritten by level's spawn point
           lastCheckpointId: null,
+          currentRunStats: {
+            startTime: Date.now(),
+            deaths: 0,
+            coinsCollected: 0,
+          },
         });
       },
 
@@ -205,6 +227,63 @@ export const useGameStore = create<GameState>()(
         });
       },
 
+      // Player name
+      setPlayerName: (name: string) => {
+        set({ playerName: name });
+      },
+
+      // Level timer
+      startLevelTimer: () => {
+        set((state) => ({
+          currentRunStats: {
+            ...state.currentRunStats,
+            startTime: Date.now(),
+          },
+        }));
+      },
+
+      // Track deaths
+      recordDeath: () => {
+        set((state) => ({
+          currentRunStats: {
+            ...state.currentRunStats,
+            deaths: state.currentRunStats.deaths + 1,
+          },
+        }));
+      },
+
+      // Track coin collection
+      recordCoinCollection: () => {
+        set((state) => ({
+          currentRunStats: {
+            ...state.currentRunStats,
+            coinsCollected: state.currentRunStats.coinsCollected + 1,
+          },
+        }));
+      },
+
+      // Save level stats
+      saveLevelStats: (levelId: string, time: number) => {
+        const { currentRunStats, playerName, levelStats } = get();
+        const existingStats = levelStats[levelId];
+
+        // Only save if it's a new best time or first completion
+        if (!existingStats || time < existingStats.bestTime) {
+          set((state) => ({
+            levelStats: {
+              ...state.levelStats,
+              [levelId]: {
+                bestTime: time,
+                totalDeaths: currentRunStats.deaths,
+                coinsCollected: currentRunStats.coinsCollected,
+                playerName,
+                completedAt: Date.now(),
+              },
+            },
+          }));
+        }
+      },
+
       // Full reset (for debugging)
       reset: () => {
         set(INITIAL_STATE);
@@ -224,6 +303,8 @@ export const useGameStore = create<GameState>()(
         soundEnabled: state.soundEnabled,
         musicEnabled: state.musicEnabled,
         completedLevels: state.completedLevels,
+        levelStats: state.levelStats,
+        playerName: state.playerName,
       }),
     }
   )

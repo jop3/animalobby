@@ -2,13 +2,23 @@ import { useState } from 'react';
 import { useGameStore } from '../../store/useGameStore';
 import { AnimalLab } from './AnimalLab';
 import { PauseMenu } from './PauseMenu';
+import { Timer } from './Timer';
+import { Leaderboard } from './Leaderboard';
+import { CharacterPicker } from './CharacterPicker';
+import { NameEntry } from './NameEntry';
 
 export function HUD() {
   const [isLabOpen, setIsLabOpen] = useState(false);
+  const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
+  const [isCharacterPickerOpen, setIsCharacterPickerOpen] = useState(false);
+  const [isNameEntryOpen, setIsNameEntryOpen] = useState(false);
 
   const coins = useGameStore((state) => state.coins);
   const currentLoadout = useGameStore((state) => state.currentLoadout);
   const prestigeLevel = useGameStore((state) => state.prestigeLevel);
+  const currentLevelId = useGameStore((state) => state.currentLevelId);
+  const playerName = useGameStore((state) => state.playerName);
+  const characterBase = useGameStore((state) => state.characterBase);
 
   return (
     <div className="fixed inset-0 pointer-events-none">
@@ -43,23 +53,58 @@ export function HUD() {
         </div>
       </div>
 
-      {/* Top Left - Animal Lab Button */}
-      <div className="absolute top-4 left-4 pointer-events-auto">
-        <button
-          className="bg-gradient-to-br from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 rounded-chunky px-6 py-3 shadow-lg border-4 border-green-800 transition-all hover:scale-105 active:scale-95"
-          onClick={() => setIsLabOpen(true)}
-        >
-          <span className="text-xl font-game text-stroke text-white">
-            🧪 Animal Lab
-          </span>
-        </button>
+      {/* Top Left - Buttons */}
+      <div className="absolute top-4 left-4 pointer-events-auto flex flex-col gap-2">
+        <div className="flex gap-2">
+          <button
+            className="bg-gradient-to-br from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 rounded-chunky px-6 py-3 shadow-lg border-4 border-green-800 transition-all hover:scale-105 active:scale-95"
+            onClick={() => setIsLabOpen(true)}
+          >
+            <span className="text-xl font-game text-stroke text-white">
+              🧪 Animal Lab
+            </span>
+          </button>
 
-        {/* Prestige Badge */}
-        {prestigeLevel > 0 && (
-          <div className="absolute -top-2 -right-2 bg-purple-600 rounded-full w-8 h-8 flex items-center justify-center border-2 border-purple-900 shadow-lg">
-            <span className="text-white font-game text-sm">{prestigeLevel}</span>
-          </div>
-        )}
+          {/* Leaderboard Button */}
+          <button
+            className="bg-gradient-to-br from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700 rounded-chunky px-6 py-3 shadow-lg border-4 border-purple-800 transition-all hover:scale-105 active:scale-95"
+            onClick={() => setIsLeaderboardOpen(true)}
+          >
+            <span className="text-xl font-game text-stroke text-white">
+              🏆 Records
+            </span>
+          </button>
+
+          {/* Prestige Badge */}
+          {prestigeLevel > 0 && (
+            <div className="absolute -top-2 -right-2 bg-purple-600 rounded-full w-8 h-8 flex items-center justify-center border-2 border-purple-900 shadow-lg">
+              <span className="text-white font-game text-sm">{prestigeLevel}</span>
+            </div>
+          )}
+        </div>
+
+        {/* Second row - Character and Name */}
+        <div className="flex gap-2">
+          <button
+            className="bg-gradient-to-br from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 rounded-chunky px-4 py-2 shadow-lg border-4 border-blue-800 transition-all hover:scale-105 active:scale-95"
+            onClick={() => setIsCharacterPickerOpen(true)}
+            title="Change Character"
+          >
+            <span className="text-lg font-game text-stroke text-white">
+              🎭 Character
+            </span>
+          </button>
+
+          <button
+            className="bg-gradient-to-br from-pink-400 to-pink-600 hover:from-pink-500 hover:to-pink-700 rounded-chunky px-4 py-2 shadow-lg border-4 border-pink-800 transition-all hover:scale-105 active:scale-95"
+            onClick={() => setIsNameEntryOpen(true)}
+            title={playerName || 'Set Your Name'}
+          >
+            <span className="text-lg font-game text-stroke text-white">
+              ✍️ {playerName || 'Name'}
+            </span>
+          </button>
+        </div>
       </div>
 
       {/* Center - Death/Respawn Message */}
@@ -70,6 +115,28 @@ export function HUD() {
 
       {/* Animal Lab Modal */}
       <AnimalLab isOpen={isLabOpen} onClose={() => setIsLabOpen(false)} />
+
+      {/* Leaderboard Modal */}
+      <Leaderboard
+        isOpen={isLeaderboardOpen}
+        onClose={() => setIsLeaderboardOpen(false)}
+        levelId={currentLevelId || undefined}
+      />
+
+      {/* Character Picker Modal */}
+      <CharacterPicker
+        isOpen={isCharacterPickerOpen}
+        onClose={() => setIsCharacterPickerOpen(false)}
+      />
+
+      {/* Name Entry Modal */}
+      <NameEntry
+        isOpen={isNameEntryOpen}
+        onClose={() => setIsNameEntryOpen(false)}
+      />
+
+      {/* Timer (only shows in Normal/Hard) */}
+      <Timer />
 
       {/* Pause Menu */}
       <PauseMenu />

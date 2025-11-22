@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useGameStore } from '../../store/useGameStore';
 
 interface WinScreenProps {
@@ -9,10 +10,33 @@ interface WinScreenProps {
 export function WinScreen({ onNextLevel, onRestart, onMainMenu }: WinScreenProps) {
   const hasWon = useGameStore((state) => state.hasWon);
   const coins = useGameStore((state) => state.coins);
+  const currentLevelId = useGameStore((state) => state.currentLevelId);
+  const currentRunStats = useGameStore((state) => state.currentRunStats);
+  const saveLevelStats = useGameStore((state) => state.saveLevelStats);
+
+  // Save level stats when player wins
+  useEffect(() => {
+    if (hasWon && currentLevelId && currentRunStats.startTime) {
+      const completionTime = Date.now() - currentRunStats.startTime;
+      saveLevelStats(currentLevelId, completionTime);
+    }
+  }, [hasWon, currentLevelId, currentRunStats.startTime, saveLevelStats]);
 
   if (!hasWon) return null;
 
   const totalCoins = coins.speed + coins.gravity;
+
+  // Calculate completion time
+  const completionTime = currentRunStats.startTime
+    ? Date.now() - currentRunStats.startTime
+    : 0;
+
+  const formatTime = (ms: number) => {
+    const seconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50">
@@ -29,20 +53,27 @@ export function WinScreen({ onNextLevel, onRestart, onMainMenu }: WinScreenProps
         {/* Stats */}
         <div className="bg-white/20 rounded-lg p-4 mb-6 backdrop-blur-sm">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-white font-semibold">Total Coins:</span>
-            <span className="text-yellow-200 font-bold text-xl">{totalCoins}</span>
+            <span className="text-white font-semibold flex items-center gap-2">
+              <span>⏱️</span> Time:
+            </span>
+            <span className="text-yellow-200 font-bold text-xl">{formatTime(completionTime)}</span>
           </div>
           <div className="flex justify-between items-center mb-2">
             <span className="text-white font-semibold flex items-center gap-2">
-              <span className="text-blue-300">⚡</span> Speed Coins:
+              <span>💀</span> Deaths:
             </span>
-            <span className="text-yellow-200 font-bold">{coins.speed}</span>
+            <span className="text-yellow-200 font-bold text-xl">{currentRunStats.deaths}</span>
           </div>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center mb-2">
             <span className="text-white font-semibold flex items-center gap-2">
-              <span className="text-purple-300">🌀</span> Gravity Coins:
+              <span>🪙</span> Coins:
             </span>
-            <span className="text-yellow-200 font-bold">{coins.gravity}</span>
+            <span className="text-yellow-200 font-bold text-xl">{currentRunStats.coinsCollected}</span>
+          </div>
+          <div className="h-px bg-white/30 my-3"></div>
+          <div className="flex justify-between items-center">
+            <span className="text-white font-semibold">Total Coins:</span>
+            <span className="text-yellow-200 font-bold text-xl">{totalCoins}</span>
           </div>
         </div>
 
