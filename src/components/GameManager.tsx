@@ -3,6 +3,7 @@ import { useGameStore } from '../store/useGameStore';
 import { getLevelById, getNextLevel } from '../data/levelRegistry';
 import { LevelDefinition } from '../types/level.types';
 import { LevelSelect } from './ui/LevelSelect';
+import { WorldMap } from './ui/WorldMap';
 import { WinScreen } from './ui/WinScreen';
 import { PauseMenu } from './ui/PauseMenu';
 
@@ -16,12 +17,14 @@ interface GameManagerProps {
  */
 export function GameManager({ children }: GameManagerProps) {
   const [gameState, setGameState] = useState<'menu' | 'playing'>('menu');
+  const [viewMode, setViewMode] = useState<'map' | 'grid'>('map');
   const [currentLevel, setCurrentLevel] = useState<LevelDefinition | null>(null);
 
   const currentLevelId = useGameStore((state) => state.currentLevelId);
   const hasWon = useGameStore((state) => state.hasWon);
   const loadLevel = useGameStore((state) => state.loadLevel);
   const resetLevel = useGameStore((state) => state.resetLevel);
+  const completeLevel = useGameStore((state) => state.completeLevel);
 
   // Load level when levelId changes
   useEffect(() => {
@@ -33,6 +36,13 @@ export function GameManager({ children }: GameManagerProps) {
       }
     }
   }, [currentLevelId]);
+
+  // Mark level complete when player wins
+  useEffect(() => {
+    if (hasWon && currentLevelId) {
+      completeLevel(currentLevelId);
+    }
+  }, [hasWon, currentLevelId, completeLevel]);
 
   const handleSelectLevel = (levelId: string) => {
     loadLevel(levelId);
@@ -69,10 +79,48 @@ export function GameManager({ children }: GameManagerProps) {
     <>
       {/* Level Selection Menu */}
       {gameState === 'menu' && (
-        <LevelSelect
-          onSelectLevel={handleSelectLevel}
-          currentLevelId={currentLevelId || undefined}
-        />
+        <>
+          {/* View toggle buttons */}
+          <div className="absolute top-8 left-8 z-[60] flex gap-2">
+            <button
+              onClick={() => setViewMode('map')}
+              className={`
+                px-6 py-3 rounded-lg font-game font-bold transition-all transform hover:scale-105
+                ${viewMode === 'map'
+                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
+                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                }
+              `}
+            >
+              🗺️ Map View
+            </button>
+            <button
+              onClick={() => setViewMode('grid')}
+              className={`
+                px-6 py-3 rounded-lg font-game font-bold transition-all transform hover:scale-105
+                ${viewMode === 'grid'
+                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
+                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                }
+              `}
+            >
+              📋 Grid View
+            </button>
+          </div>
+
+          {/* Show map or grid based on view mode */}
+          {viewMode === 'map' ? (
+            <WorldMap
+              onSelectLevel={handleSelectLevel}
+              currentLevelId={currentLevelId || undefined}
+            />
+          ) : (
+            <LevelSelect
+              onSelectLevel={handleSelectLevel}
+              currentLevelId={currentLevelId || undefined}
+            />
+          )}
+        </>
       )}
 
       {/* 3D Scene Content */}

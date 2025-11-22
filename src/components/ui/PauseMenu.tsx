@@ -12,6 +12,8 @@ export function PauseMenu({ onResume, onRestart, onMainMenu }: PauseMenuProps) {
   const setPaused = useGameStore((state) => state.setPaused);
   const quality = useGameStore((state) => state.quality);
   const setQuality = useGameStore((state) => state.setQuality);
+  const difficulty = useGameStore((state) => state.difficulty);
+  const setDifficulty = useGameStore((state) => state.setDifficulty);
   const soundEnabled = useGameStore((state) => state.soundEnabled);
   const toggleSound = useGameStore((state) => state.toggleSound);
 
@@ -72,7 +74,7 @@ export function PauseMenu({ onResume, onRestart, onMainMenu }: PauseMenuProps) {
           </h2>
 
           {/* Graphics Quality */}
-          <div className="mb-6">
+          <div className="mb-4">
             <label className="text-purple-300 text-sm font-semibold block mb-3">
               Graphics Quality
             </label>
@@ -93,6 +95,38 @@ export function PauseMenu({ onResume, onRestart, onMainMenu }: PauseMenuProps) {
                 </button>
               ))}
             </div>
+          </div>
+
+          {/* Difficulty */}
+          <div className="mb-6">
+            <label className="text-purple-300 text-sm font-semibold block mb-3">
+              Game Difficulty
+            </label>
+            <div className="grid grid-cols-3 gap-2">
+              {(['easy', 'normal', 'hard'] as const).map((d) => (
+                <button
+                  key={d}
+                  onClick={() => setDifficulty(d)}
+                  className={`
+                    py-3 px-4 rounded-xl font-bold capitalize transition-all transform
+                    ${difficulty === d
+                      ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white scale-105 shadow-lg shadow-green-500/50'
+                      : 'bg-gray-700/50 text-gray-300 hover:bg-gray-600/50 hover:scale-105'
+                    }
+                  `}
+                >
+                  {d === 'easy' && '😊 '}
+                  {d === 'normal' && '⚔️ '}
+                  {d === 'hard' && '💀 '}
+                  {d}
+                </button>
+              ))}
+            </div>
+            <p className="text-purple-400 text-xs mt-2">
+              {difficulty === 'easy' && '✨ Slower obstacles, longer timing windows'}
+              {difficulty === 'normal' && '⚖️ Balanced challenge for most players'}
+              {difficulty === 'hard' && '🔥 Faster obstacles, precise timing required'}
+            </p>
           </div>
 
           {/* Sound Toggle */}

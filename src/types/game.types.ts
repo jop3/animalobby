@@ -131,8 +131,12 @@ export interface GameState {
 
   // Settings
   quality: 'low' | 'medium' | 'high';
+  difficulty: 'easy' | 'normal' | 'hard';
   soundEnabled: boolean;
   musicEnabled: boolean;
+
+  // Progress tracking
+  completedLevels: string[];
 
   // Actions
   collectCoin: (type: CoinType) => void;
@@ -149,9 +153,11 @@ export interface GameState {
   resetLevel: () => void;
   prestigeReset: () => void;
   setQuality: (quality: 'low' | 'medium' | 'high') => void;
+  setDifficulty: (difficulty: 'easy' | 'normal' | 'hard') => void;
   toggleSound: () => void;
   toggleMusic: () => void;
   setPaused: (paused: boolean) => void;
+  completeLevel: (levelId: string) => void;
   reset: () => void;
 }
 

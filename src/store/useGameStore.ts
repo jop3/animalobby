@@ -35,8 +35,10 @@ const INITIAL_STATE = {
   isPaused: false,
   hasWon: false,
   quality: 'low' as const, // Default to low for better performance
+  difficulty: 'normal' as const, // Default to normal difficulty
   soundEnabled: true,
   musicEnabled: true,
+  completedLevels: [] as string[],
 };
 
 export const useGameStore = create<GameState>()(
@@ -175,6 +177,10 @@ export const useGameStore = create<GameState>()(
         set({ quality });
       },
 
+      setDifficulty: (difficulty: 'easy' | 'normal' | 'hard') => {
+        set({ difficulty });
+      },
+
       toggleSound: () => {
         set((state) => ({ soundEnabled: !state.soundEnabled }));
       },
@@ -185,6 +191,18 @@ export const useGameStore = create<GameState>()(
 
       setPaused: (paused: boolean) => {
         set({ isPaused: paused });
+      },
+
+      // Level completion
+      completeLevel: (levelId: string) => {
+        set((state) => {
+          if (state.completedLevels.includes(levelId)) {
+            return state;
+          }
+          return {
+            completedLevels: [...state.completedLevels, levelId],
+          };
+        });
       },
 
       // Full reset (for debugging)
@@ -202,8 +220,10 @@ export const useGameStore = create<GameState>()(
         characterBase: state.characterBase,
         prestigeLevel: state.prestigeLevel,
         quality: state.quality,
+        difficulty: state.difficulty,
         soundEnabled: state.soundEnabled,
         musicEnabled: state.musicEnabled,
+        completedLevels: state.completedLevels,
       }),
     }
   )
