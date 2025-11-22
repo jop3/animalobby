@@ -27,6 +27,22 @@ export type AbilityType =
   | 'shield'
   | 'fly';
 
+// Power-up Types
+export type PowerUpType = 'speed_boost' | 'shield' | 'double_jump' | 'invincibility' | 'magnet';
+
+export interface PowerUp {
+  id: string;
+  type: PowerUpType;
+  position: [number, number, number];
+  collected: boolean;
+  duration?: number; // Duration in milliseconds
+}
+
+export interface ActivePowerUp {
+  type: PowerUpType;
+  expiresAt: number; // Timestamp when power-up expires
+}
+
 // Player State
 export interface PlayerStats {
   baseSpeed: number;
@@ -36,6 +52,8 @@ export interface PlayerStats {
   defense: number;
   hasDoubleJump: boolean;
   canFly: boolean;
+  canWallClimb: boolean;
+  canSlide: boolean;
 }
 
 export interface Loadout {
@@ -147,6 +165,11 @@ export interface GameState {
     coinsCollected: number;
   };
 
+  // Power-ups and movement
+  activePowerUps: ActivePowerUp[];
+  isWallClimbing: boolean;
+  isSliding: boolean;
+
   // Actions
   collectCoin: (type: CoinType) => void;
   unlockPart: (partId: string) => void;
@@ -172,6 +195,10 @@ export interface GameState {
   recordDeath: () => void;
   recordCoinCollection: () => void;
   saveLevelStats: (levelId: string, time: number) => void;
+  activatePowerUp: (type: PowerUpType, duration: number) => void;
+  deactivatePowerUp: (type: PowerUpType) => void;
+  setWallClimbing: (climbing: boolean) => void;
+  setSliding: (sliding: boolean) => void;
   reset: () => void;
 }
 

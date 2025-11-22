@@ -44,7 +44,13 @@ export type EntityType =
   | 'wind_tunnel'
   | 'rising_lava'
   | 'dart_trap'
-  | 'swinging_log';
+  | 'swinging_log'
+  | 'power_up'
+  | 'switch'
+  | 'door'
+  | 'pressure_plate'
+  | 'climbable_wall'
+  | 'low_obstacle';
 
 // Base entity (all entities extend this)
 export interface BaseEntity {
@@ -243,6 +249,53 @@ export interface SwingingLogEntity extends BaseEntity {
   logSize?: number; // Log radius (default 0.8)
 }
 
+// Power-up - Temporary buff for player
+export interface PowerUpEntity extends BaseEntity {
+  type: 'power_up';
+  powerUpType: 'speed_boost' | 'shield' | 'double_jump' | 'invincibility' | 'magnet';
+  duration?: number; // Duration in seconds (default 10)
+}
+
+// Switch - Activates doors or platforms
+export interface SwitchEntity extends BaseEntity {
+  type: 'switch';
+  targetId: string; // ID of door/platform to control
+  switchType?: 'button' | 'lever' | 'timed'; // Switch style (default 'button')
+  duration?: number; // For timed switches (default 5 seconds)
+}
+
+// Door - Blocks path until opened
+export interface DoorEntity extends BaseEntity {
+  type: 'door';
+  id: string; // Required to be targeted by switches
+  size: [number, number, number]; // Door dimensions
+  color?: string; // Door color (default '#8B4513')
+  startsOpen?: boolean; // Whether door starts open (default false)
+}
+
+// Pressure Plate - Activates when stepped on
+export interface PressurePlateEntity extends BaseEntity {
+  type: 'pressure_plate';
+  targetId: string; // ID of door/platform to control
+  size?: [number, number, number]; // Plate dimensions
+  requiresWeight?: boolean; // Stay pressed only while player is on it
+}
+
+// Climbable Wall - Wall player can climb
+export interface ClimbableWallEntity extends BaseEntity {
+  type: 'climbable_wall';
+  size: [number, number, number]; // Wall dimensions
+  color?: string; // Wall color (default '#654321')
+  climbSpeed?: number; // How fast player climbs (default 5)
+}
+
+// Low Obstacle - Obstacle player must slide under
+export interface LowObstacleEntity extends BaseEntity {
+  type: 'low_obstacle';
+  size: [number, number, number]; // Obstacle dimensions
+  color?: string; // Color (default '#DC143C')
+}
+
 // Union of all entity types
 export type LevelEntity =
   | PlatformEntity
@@ -267,7 +320,13 @@ export type LevelEntity =
   | WindTunnelEntity
   | RisingLavaEntity
   | DartTrapEntity
-  | SwingingLogEntity;
+  | SwingingLogEntity
+  | PowerUpEntity
+  | SwitchEntity
+  | DoorEntity
+  | PressurePlateEntity
+  | ClimbableWallEntity
+  | LowObstacleEntity;
 
 // ============================================================================
 // LEVEL DEFINITION

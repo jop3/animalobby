@@ -46,6 +46,9 @@ const INITIAL_STATE = {
     deaths: 0,
     coinsCollected: 0,
   },
+  activePowerUps: [],
+  isWallClimbing: false,
+  isSliding: false,
 };
 
 export const useGameStore = create<GameState>()(
@@ -282,6 +285,31 @@ export const useGameStore = create<GameState>()(
             },
           }));
         }
+      },
+
+      // Power-up management
+      activatePowerUp: (type: any, duration: number) => {
+        set((state) => ({
+          activePowerUps: [
+            ...state.activePowerUps.filter((p) => p.type !== type),
+            { type, expiresAt: Date.now() + duration },
+          ],
+        }));
+      },
+
+      deactivatePowerUp: (type: any) => {
+        set((state) => ({
+          activePowerUps: state.activePowerUps.filter((p) => p.type !== type),
+        }));
+      },
+
+      // Movement states
+      setWallClimbing: (climbing: boolean) => {
+        set({ isWallClimbing: climbing });
+      },
+
+      setSliding: (sliding: boolean) => {
+        set({ isSliding: sliding });
       },
 
       // Full reset (for debugging)

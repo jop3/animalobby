@@ -16,6 +16,12 @@ import { CrushingPiston } from '../hazards/CrushingPiston';
 import { SpinningBlade } from '../hazards/SpinningBlade';
 import { MovingWall } from '../hazards/MovingWall';
 import { SwingingLog } from '../hazards/SwingingLog';
+import { PowerUp } from '../environment/PowerUp';
+import { ClimbableWall } from '../environment/ClimbableWall';
+import { LowObstacle } from '../environment/LowObstacle';
+import { Switch } from '../hazards/Switch';
+import { Door } from '../hazards/Door';
+import { PressurePlate } from '../hazards/PressurePlate';
 
 /**
  * EntityFactory - Maps JSON entity definitions to React components
@@ -224,6 +230,72 @@ export function EntityFactory({ entity, index }: EntityFactoryProps) {
           speed={entity.speed}
           swingAngle={entity.swingAngle}
           logSize={entity.logSize}
+        />
+      );
+
+    case 'power_up':
+      return (
+        <PowerUp
+          key={key}
+          id={entity.id || key}
+          position={entity.position}
+          powerUpType={entity.powerUpType}
+          duration={entity.duration}
+        />
+      );
+
+    case 'climbable_wall':
+      return (
+        <ClimbableWall
+          key={key}
+          position={entity.position}
+          size={entity.size}
+          color={entity.color}
+          climbSpeed={entity.climbSpeed}
+        />
+      );
+
+    case 'low_obstacle':
+      return (
+        <LowObstacle
+          key={key}
+          position={entity.position}
+          size={entity.size}
+          color={entity.color}
+        />
+      );
+
+    case 'switch':
+      return (
+        <Switch
+          key={key}
+          position={entity.position}
+          targetId={entity.targetId}
+          switchType={entity.switchType}
+          duration={entity.duration}
+        />
+      );
+
+    case 'door':
+      return (
+        <Door
+          key={key}
+          id={entity.id}
+          position={entity.position}
+          size={entity.size}
+          color={entity.color}
+          startsOpen={entity.startsOpen}
+        />
+      );
+
+    case 'pressure_plate':
+      return (
+        <PressurePlate
+          key={key}
+          position={entity.position}
+          targetId={entity.targetId}
+          size={entity.size}
+          requiresWeight={entity.requiresWeight}
         />
       );
 
