@@ -86,7 +86,6 @@ function App() {
 
           {/* UI Overlays */}
           <HUD />
-          {/* <AnimalLab /> */}
         </div>
       )}
     </GameManager>

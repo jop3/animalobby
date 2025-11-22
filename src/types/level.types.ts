@@ -46,6 +46,12 @@ export interface PlatformEntity extends BaseEntity {
   type: 'platform';
   size: [number, number, number]; // [width, height, depth]
   color: string; // Hex color
+  shape?: 'box' | 'cylinder' | 'sphere'; // Platform shape (default 'box')
+  bouncy?: boolean; // Makes platform bouncy (default false)
+  disappearing?: {
+    interval: number; // Time in seconds for disappear/reappear cycle
+    visibleTime: number; // How long platform is visible
+  };
   moving?: {
     pattern: 'linear' | 'circular' | 'pendulum';
     speed: number;

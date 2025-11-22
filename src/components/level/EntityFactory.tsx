@@ -31,6 +31,10 @@ export function EntityFactory({ entity, index }: EntityFactoryProps) {
           position={entity.position}
           size={entity.size}
           color={entity.color}
+          shape={entity.shape}
+          bouncy={entity.bouncy}
+          disappearing={entity.disappearing}
+          moving={entity.moving}
         />
       );
 
@@ -104,14 +108,17 @@ export function EntityFactory({ entity, index }: EntityFactoryProps) {
       );
 
     case 'moving_platform':
-      // TODO: Implement MovingPlatform component
-      console.warn('Moving platform not yet implemented');
       return (
         <Platform
           key={key}
           position={entity.position}
           size={entity.size}
           color={entity.color}
+          moving={{
+            pattern: entity.pattern,
+            speed: entity.speed,
+            range: entity.range,
+          }}
         />
       );
 

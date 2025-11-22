@@ -1,7 +1,7 @@
 {
   "id": "ice_cavern",
   "name": "Ice Cavern",
-  "description": "Descend into the frozen depths then climb back out",
+  "description": "Navigate slippery ice platforms, disappearing floors, and moving obstacles!",
   "difficulty": 3,
   "theme": {
     "skyColor": "#1C3A52",
@@ -24,7 +24,8 @@
       "type": "platform",
       "position": [-8, -1, 3],
       "size": [4, 1.2, 4],
-      "color": "#74C0FC"
+      "color": "#74C0FC",
+      "shape": "cylinder"
     },
     {
       "type": "coin",
@@ -35,19 +36,29 @@
     {
       "type": "platform",
       "position": [-12, -3, 8],
-      "size": [5, 0.6, 3],
-      "color": "#4DABF7"
+      "size": [3, 0.6, 3],
+      "color": "#FFD700",
+      "disappearing": {
+        "interval": 3.5,
+        "visibleTime": 2
+      }
     },
     {
-      "type": "spike",
-      "position": [-12, -2, 9],
-      "size": 0.8
+      "type": "coin",
+      "id": "coin_2",
+      "position": [-12, -2, 8],
+      "coinType": "gravity"
     },
     {
       "type": "platform",
       "position": [-16, -5, 12],
       "size": [3, 1, 3],
-      "color": "#A5D8FF"
+      "color": "#A5D8FF",
+      "moving": {
+        "pattern": "linear",
+        "speed": 1,
+        "range": [0, 0, 4]
+      }
     },
     {
       "type": "rotating_hammer",
@@ -68,7 +79,7 @@
     },
     {
       "type": "coin",
-      "id": "coin_2",
+      "id": "coin_3",
       "position": [-14, -5, 18],
       "coinType": "gravity"
     },
@@ -76,50 +87,61 @@
       "type": "platform",
       "position": [-8, -6, 22],
       "size": [2.5, 0.5, 2.5],
-      "color": "#4DABF7"
+      "color": "#4DABF7",
+      "bouncy": true
     },
     {
-      "type": "vine",
-      "position": [-8, 0, 22],
-      "height": 5,
-      "attackInterval": 3.5,
-      "attackDuration": 1
+      "type": "coin",
+      "id": "coin_4",
+      "position": [-8, -1, 22],
+      "coinType": "speed"
     },
     {
       "type": "platform",
       "position": [-2, -5, 26],
-      "size": [3.5, 0.7, 3.5],
-      "color": "#A5D8FF"
+      "size": [3, 0.7, 3],
+      "color": "#FFD700",
+      "disappearing": {
+        "interval": 4,
+        "visibleTime": 2.5
+      }
     },
     {
       "type": "coin",
-      "id": "coin_3",
+      "id": "coin_5",
       "position": [-2, -3.5, 26],
       "coinType": "speed"
     },
     {
       "type": "platform",
       "position": [4, -3, 28],
-      "size": [4, 1, 4],
-      "color": "#74C0FC"
+      "size": [2, 0.5, 2],
+      "color": "#74C0FC",
+      "shape": "cylinder",
+      "moving": {
+        "pattern": "circular",
+        "speed": 0.6,
+        "range": [2, 0, 2]
+      }
     },
     {
-      "type": "zeus_lightning",
-      "position": [4, -3, 28],
-      "radius": 2,
-      "interval": 4,
-      "warningDuration": 1.2
+      "type": "coin",
+      "id": "coin_6",
+      "position": [4, -1, 28],
+      "coinType": "gravity"
     },
     {
       "type": "platform",
       "position": [10, -1, 32],
       "size": [3, 0.6, 3],
-      "color": "#4DABF7"
+      "color": "#4DABF7",
+      "bouncy": true
     },
     {
-      "type": "spike",
-      "position": [10, 0, 33],
-      "size": 0.7
+      "type": "coin",
+      "id": "coin_7",
+      "position": [10, 3, 32],
+      "coinType": "speed"
     },
     {
       "type": "platform",
@@ -133,26 +155,29 @@
       "position": [14, 2, 36]
     },
     {
-      "type": "rotating_hammer",
-      "position": [14, 4, 36],
-      "rotationSpeed": 1.2,
-      "hammerLength": 3
-    },
-    {
       "type": "platform",
       "position": [18, 3, 40],
       "size": [2.5, 0.5, 2.5],
-      "color": "#74C0FC"
+      "color": "#FFD700",
+      "disappearing": {
+        "interval": 3,
+        "visibleTime": 1.8
+      }
     },
     {
       "type": "platform",
       "position": [20, 5, 44],
       "size": [3, 0.6, 3],
-      "color": "#4DABF7"
+      "color": "#4DABF7",
+      "moving": {
+        "pattern": "pendulum",
+        "speed": 1,
+        "range": [2, 0, 0]
+      }
     },
     {
       "type": "coin",
-      "id": "coin_4",
+      "id": "coin_8",
       "position": [20, 6.5, 44],
       "coinType": "gravity"
     },
@@ -163,29 +188,15 @@
       "color": "#A5D8FF"
     },
     {
-      "type": "vine",
-      "position": [22, 7, 46],
-      "height": 4,
-      "attackInterval": 2.5,
-      "attackDuration": 0.9
-    },
-    {
-      "type": "vine",
-      "position": [26, 7, 46],
-      "height": 4,
-      "attackInterval": 2.8,
-      "attackDuration": 0.9
-    },
-    {
       "type": "coin",
-      "id": "coin_5",
-      "position": [24, 9, 44],
+      "id": "coin_9",
+      "position": [22, 9, 44],
       "coinType": "speed"
     },
     {
       "type": "coin",
-      "id": "coin_6",
-      "position": [24, 9, 48],
+      "id": "coin_10",
+      "position": [26, 9, 48],
       "coinType": "gravity"
     },
     {

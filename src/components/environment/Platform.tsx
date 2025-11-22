@@ -1,18 +1,40 @@
-import { useMemo } from 'react';
-import { RigidBody } from '@react-three/rapier';
+import { useMemo, useRef, useState } from 'react';
+import { RigidBody, RapierRigidBody } from '@react-three/rapier';
+import { useFrame } from '@react-three/fiber';
 import { textureGenerator } from '../../utils/textureGenerator';
+import * as THREE from 'three';
 
 interface PlatformProps {
   position: [number, number, number];
   size?: [number, number, number];
   color?: string;
+  shape?: 'box' | 'cylinder' | 'sphere';
+  bouncy?: boolean;
+  disappearing?: {
+    interval: number;
+    visibleTime: number;
+  };
+  moving?: {
+    pattern: 'linear' | 'circular' | 'pendulum';
+    speed: number;
+    range: [number, number, number];
+  };
 }
 
 export function Platform({
   position,
   size = [4, 0.5, 4],
   color = '#7FBF7F',
+  shape = 'box',
+  bouncy = false,
+  disappearing,
+  moving,
 }: PlatformProps) {
+  const rigidBodyRef = useRef<RapierRigidBody>(null);
+  const meshRef = useRef<THREE.Mesh>(null);
+  const [isVisible, setIsVisible] = useState(true);
+  const timeRef = useRef(0);
+
   // Generate texture based on color hue
   const texture = useMemo(() => {
     const colorLower = color.toLowerCase();
@@ -56,9 +78,19 @@ export function Platform({
     return textureGenerator.createStoneTexture(color, '#FFFFFF');
   }, [color]);
 
-  // Determine material properties based on color
+  // Determine material properties based on color and properties
   const materialProps = useMemo(() => {
     const colorLower = color.toLowerCase();
+
+    // Bouncy platforms - bright and shiny
+    if (bouncy) {
+      return {
+        roughness: 0.1,
+        metalness: 0.5,
+        emissive: '#FFFF00',
+        emissiveIntensity: 0.2,
+      };
+    }
 
     // Neon materials - emissive
     if (colorLower.includes('#8b00ff') || colorLower.includes('#ff006e') || colorLower.includes('#00d9ff')) {
@@ -97,19 +129,158 @@ export function Platform({
       emissive: '#000000',
       emissiveIntensity: 0,
     };
-  }, [color]);
+  }, [color, bouncy]);
+
+  // Animation frame for moving and disappearing platforms
+  useFrame((_, delta) => {
+    timeRef.current += delta;
+
+    // Handle disappearing platforms
+    if (disappearing) {
+      const cycleTime = timeRef.current % disappearing.interval;
+      const shouldBeVisible = cycleTime < disappearing.visibleTime;
+
+      if (shouldBeVisible !== isVisible) {
+        setIsVisible(shouldBeVisible);
+      }
+
+      // Fade effect
+      if (meshRef.current) {
+        const material = meshRef.current.material as THREE.MeshStandardMaterial;
+        if (shouldBeVisible) {
+          const fadeIn = Math.min(cycleTime / 0.5, 1);
+          material.opacity = fadeIn;
+        } else {
+          const timeInvisible = cycleTime - disappearing.visibleTime;
+          const fadeOut = Math.max(1 - timeInvisible / 0.5, 0);
+          material.opacity = fadeOut;
+        }
+      }
+    }
+
+    // Handle moving platforms
+    if (moving && rigidBodyRef.current) {
+      const basePos = position;
+
+      if (moving.pattern === 'linear') {
+        // Linear back and forth movement
+        const offset = Math.sin(timeRef.current * moving.speed) * 0.5;
+        const newPos = [
+          basePos[0] + moving.range[0] * offset,
+          basePos[1] + moving.range[1] * offset,
+          basePos[2] + moving.range[2] * offset,
+        ] as [number, number, number];
+        rigidBodyRef.current.setTranslation(
+          { x: newPos[0], y: newPos[1], z: newPos[2] },
+          true
+        );
+      } else if (moving.pattern === 'circular') {
+        // Circular movement
+        const angle = timeRef.current * moving.speed;
+        const newPos = [
+          basePos[0] + Math.cos(angle) * moving.range[0],
+          basePos[1] + moving.range[1] * Math.sin(timeRef.current * moving.speed * 0.5),
+          basePos[2] + Math.sin(angle) * moving.range[2],
+        ] as [number, number, number];
+        rigidBodyRef.current.setTranslation(
+          { x: newPos[0], y: newPos[1], z: newPos[2] },
+          true
+        );
+      } else if (moving.pattern === 'pendulum') {
+        // Pendulum swing
+        const swing = Math.sin(timeRef.current * moving.speed);
+        const newPos = [
+          basePos[0] + moving.range[0] * swing,
+          basePos[1],
+          basePos[2] + moving.range[2] * swing,
+        ] as [number, number, number];
+        rigidBodyRef.current.setTranslation(
+          { x: newPos[0], y: newPos[1], z: newPos[2] },
+          true
+        );
+      }
+    }
+  });
+
+  // Render geometry based on shape
+  const renderGeometry = () => {
+    switch (shape) {
+      case 'cylinder':
+        return <cylinderGeometry args={[size[0], size[0], size[1], 32]} />;
+      case 'sphere':
+        return <sphereGeometry args={[size[0], 32, 32]} />;
+      case 'box':
+      default:
+        return <boxGeometry args={size} />;
+    }
+  };
+
+  // Determine collider based on shape
+  const getColliderType = () => {
+    switch (shape) {
+      case 'cylinder':
+        return 'hull' as const;
+      case 'sphere':
+        return 'ball' as const;
+      case 'box':
+      default:
+        return 'cuboid' as const;
+    }
+  };
 
   return (
-    <RigidBody type="fixed" position={position} colliders="cuboid">
-      <mesh receiveShadow castShadow>
-        <boxGeometry args={size} />
+    <RigidBody
+      ref={rigidBodyRef}
+      type={moving ? 'kinematicPosition' : 'fixed'}
+      position={position}
+      colliders={getColliderType()}
+      restitution={bouncy ? 1.5 : 0.1}
+      friction={bouncy ? 0.1 : 1}
+    >
+      <mesh
+        ref={meshRef}
+        receiveShadow
+        castShadow
+        visible={!disappearing || isVisible}
+      >
+        {renderGeometry()}
         <meshStandardMaterial
           map={texture}
           color={color}
           {...materialProps}
           flatShading
+          transparent={!!disappearing}
+          opacity={1}
         />
       </mesh>
+
+      {/* Visual indicator for bouncy platforms */}
+      {bouncy && (
+        <mesh position={[0, size[1] / 2 + 0.1, 0]}>
+          <cylinderGeometry args={[size[0] * 0.8, size[0] * 0.8, 0.1, 16]} />
+          <meshStandardMaterial
+            color="#FFFF00"
+            emissive="#FFFF00"
+            emissiveIntensity={0.5}
+            transparent
+            opacity={0.3}
+          />
+        </mesh>
+      )}
+
+      {/* Visual indicator for disappearing platforms */}
+      {disappearing && isVisible && (
+        <mesh position={[0, size[1] / 2 + 0.05, 0]}>
+          <boxGeometry args={[size[0] * 0.95, 0.05, size[2] * 0.95]} />
+          <meshStandardMaterial
+            color="#00FFFF"
+            emissive="#00FFFF"
+            emissiveIntensity={0.3}
+            transparent
+            opacity={0.5}
+          />
+        </mesh>
+      )}
     </RigidBody>
   );
 }

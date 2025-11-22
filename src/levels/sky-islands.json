@@ -1,7 +1,7 @@
 {
   "id": "sky_islands",
   "name": "Sky Islands",
-  "description": "Hop across floating islands in the clouds",
+  "description": "Hop across floating islands in the clouds with moving and bouncy platforms!",
   "difficulty": 2,
   "theme": {
     "skyColor": "#87CEEB",
@@ -30,7 +30,8 @@
       "type": "platform",
       "position": [5, 1, 5],
       "size": [4, 0.5, 4],
-      "color": "#D4E8F0"
+      "color": "#D4E8F0",
+      "shape": "cylinder"
     },
     {
       "type": "coin",
@@ -42,36 +43,36 @@
       "type": "platform",
       "position": [10, 2, 8],
       "size": [5, 0.5, 5],
-      "color": "#C0DDE8"
-    },
-    {
-      "type": "spike",
-      "position": [10, 2.5, 8],
-      "size": 0.8
+      "color": "#C0DDE8",
+      "bouncy": true
     },
     {
       "type": "coin",
       "id": "coin_3",
-      "position": [12, 3, 8],
+      "position": [10, 5, 8],
       "coinType": "speed"
     },
     {
       "type": "platform",
       "position": [15, 3, 12],
       "size": [4, 0.5, 4],
-      "color": "#E8F4F8"
+      "color": "#E8F4F8",
+      "moving": {
+        "pattern": "linear",
+        "speed": 1.5,
+        "range": [0, 2, 0]
+      }
     },
     {
-      "type": "rotating_hammer",
-      "id": "hammer_1",
-      "position": [15, 6, 12],
-      "rotationSpeed": 1,
-      "hammerLength": 2.5
+      "type": "coin",
+      "id": "coin_4",
+      "position": [15, 5, 12],
+      "coinType": "gravity"
     },
     {
       "type": "checkpoint",
       "id": "sky_mid",
-      "position": [15, 4, 12]
+      "position": [20, 5, 15]
     },
     {
       "type": "platform",
@@ -80,16 +81,14 @@
       "color": "#D4E8F0"
     },
     {
-      "type": "coin",
-      "id": "coin_4",
-      "position": [20, 5, 15],
-      "coinType": "gravity"
-    },
-    {
       "type": "platform",
       "position": [25, 5, 18],
-      "size": [4, 0.5, 4],
-      "color": "#C0DDE8"
+      "size": [3, 0.5, 3],
+      "color": "#FFD700",
+      "disappearing": {
+        "interval": 4,
+        "visibleTime": 2.5
+      }
     },
     {
       "type": "coin",
@@ -98,42 +97,73 @@
       "coinType": "speed"
     },
     {
-      "type": "coin",
-      "id": "coin_6",
-      "position": [27, 6, 18],
-      "coinType": "speed"
-    },
-    {
       "type": "platform",
       "position": [30, 6, 20],
-      "size": [6, 0.5, 6],
-      "color": "#E8F4F8"
+      "size": [2, 0.5, 2],
+      "color": "#C0DDE8",
+      "shape": "cylinder",
+      "moving": {
+        "pattern": "circular",
+        "speed": 0.8,
+        "range": [3, 0, 3]
+      }
     },
     {
-      "type": "lava",
-      "position": [30, 6, 20],
-      "size": [3, 0.2, 3]
+      "type": "coin",
+      "id": "coin_6",
+      "position": [30, 8, 20],
+      "coinType": "gravity"
     },
     {
       "type": "platform",
       "position": [35, 7, 22],
-      "size": [7, 0.5, 7],
-      "color": "#D4E8F0"
-    },
-    {
-      "type": "checkpoint",
-      "id": "sky_end",
-      "position": [35, 8, 22]
+      "size": [4, 0.5, 4],
+      "color": "#E8F4F8",
+      "bouncy": true
     },
     {
       "type": "coin",
       "id": "coin_7",
-      "position": [35, 8.5, 22],
+      "position": [35, 11, 22],
+      "coinType": "speed"
+    },
+    {
+      "type": "platform",
+      "position": [40, 8, 24],
+      "size": [3, 0.5, 3],
+      "color": "#D4E8F0",
+      "moving": {
+        "pattern": "pendulum",
+        "speed": 1.2,
+        "range": [3, 0, 0]
+      }
+    },
+    {
+      "type": "coin",
+      "id": "coin_8",
+      "position": [40, 9, 24],
       "coinType": "gravity"
     },
     {
+      "type": "platform",
+      "position": [45, 9, 26],
+      "size": [6, 0.5, 6],
+      "color": "#E8F4F8"
+    },
+    {
+      "type": "checkpoint",
+      "id": "sky_end",
+      "position": [45, 10, 26]
+    },
+    {
+      "type": "coin",
+      "id": "coin_9",
+      "position": [45, 10.5, 26],
+      "coinType": "speed"
+    },
+    {
       "type": "end_goal",
-      "position": [35, 8, 26]
+      "position": [45, 10, 30]
     }
   ]
 }
