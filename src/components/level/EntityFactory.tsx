@@ -9,6 +9,13 @@ import { RotatingHammer } from '../hazards/RotatingHammer';
 import { ZeusLightning } from '../hazards/ZeusLightning';
 import { Vine } from '../hazards/Vine';
 import { SpawnPortal } from '../entities/SpawnPortal';
+import { FireJet } from '../hazards/FireJet';
+import { PendulumBlade } from '../hazards/PendulumBlade';
+import { LaserBeam } from '../hazards/LaserBeam';
+import { CrushingPiston } from '../hazards/CrushingPiston';
+import { SpinningBlade } from '../hazards/SpinningBlade';
+import { MovingWall } from '../hazards/MovingWall';
+import { SwingingLog } from '../hazards/SwingingLog';
 
 /**
  * EntityFactory - Maps JSON entity definitions to React components
@@ -136,6 +143,87 @@ export function EntityFactory({ entity, index }: EntityFactoryProps) {
         <SpawnPortal
           key={key}
           position={entity.position}
+        />
+      );
+
+    case 'fire_jet':
+      return (
+        <FireJet
+          key={key}
+          position={entity.position}
+          interval={entity.interval}
+          duration={entity.duration}
+          height={entity.height}
+          direction={entity.direction}
+        />
+      );
+
+    case 'pendulum_blade':
+      return (
+        <PendulumBlade
+          key={key}
+          position={entity.position}
+          length={entity.length}
+          speed={entity.speed}
+          swingAngle={entity.swingAngle}
+        />
+      );
+
+    case 'laser_beam':
+      return (
+        <LaserBeam
+          key={key}
+          position={entity.position}
+          length={entity.length}
+          orientation={entity.orientation}
+          sweeping={entity.sweeping}
+          speed={entity.speed}
+        />
+      );
+
+    case 'crushing_piston':
+      return (
+        <CrushingPiston
+          key={key}
+          position={entity.position}
+          height={entity.height}
+          interval={entity.interval}
+          crushDuration={entity.crushDuration}
+        />
+      );
+
+    case 'spinning_blade':
+      return (
+        <SpinningBlade
+          key={key}
+          position={entity.position}
+          size={entity.size}
+          speed={entity.speed}
+          moving={entity.moving}
+        />
+      );
+
+    case 'moving_wall':
+      return (
+        <MovingWall
+          key={key}
+          position={entity.position}
+          size={entity.size}
+          pattern={entity.pattern}
+          speed={entity.speed}
+          range={entity.range}
+        />
+      );
+
+    case 'swinging_log':
+      return (
+        <SwingingLog
+          key={key}
+          position={entity.position}
+          length={entity.length}
+          speed={entity.speed}
+          swingAngle={entity.swingAngle}
+          logSize={entity.logSize}
         />
       );
 

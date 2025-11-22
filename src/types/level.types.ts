@@ -32,7 +32,19 @@ export type EntityType =
   | 'vine'
   | 'moving_platform'
   | 'end_goal'
-  | 'spawn_portal';
+  | 'spawn_portal'
+  | 'fire_jet'
+  | 'pendulum_blade'
+  | 'laser_beam'
+  | 'crushing_piston'
+  | 'spinning_blade'
+  | 'moving_wall'
+  | 'cannon_turret'
+  | 'falling_icicle'
+  | 'wind_tunnel'
+  | 'rising_lava'
+  | 'dart_trap'
+  | 'swinging_log';
 
 // Base entity (all entities extend this)
 export interface BaseEntity {
@@ -127,6 +139,110 @@ export interface SpawnPortalEntity extends BaseEntity {
   type: 'spawn_portal';
 }
 
+// Fire Jet - Shoots flames periodically
+export interface FireJetEntity extends BaseEntity {
+  type: 'fire_jet';
+  interval?: number; // Seconds between bursts (default 3)
+  duration?: number; // How long fire lasts (default 1)
+  height?: number; // Height of flame (default 4)
+  direction?: 'up' | 'down' | 'left' | 'right' | 'forward' | 'back'; // Direction of flame
+}
+
+// Pendulum Blade - Giant swinging blade
+export interface PendulumBladeEntity extends BaseEntity {
+  type: 'pendulum_blade';
+  length?: number; // Chain/arm length (default 4)
+  speed?: number; // Swing speed (default 1)
+  swingAngle?: number; // Maximum swing angle in radians (default Math.PI / 3)
+}
+
+// Laser Beam - Sweeping or static laser
+export interface LaserBeamEntity extends BaseEntity {
+  type: 'laser_beam';
+  length?: number; // Laser length (default 10)
+  orientation?: 'horizontal' | 'vertical'; // Laser orientation
+  sweeping?: boolean; // Whether laser rotates (default false)
+  speed?: number; // Rotation speed if sweeping (default 1)
+}
+
+// Crushing Piston - Smashes down from above
+export interface CrushingPistonEntity extends BaseEntity {
+  type: 'crushing_piston';
+  height?: number; // Distance piston travels (default 5)
+  interval?: number; // Seconds between crushes (default 4)
+  crushDuration?: number; // How long crush takes (default 1.5)
+}
+
+// Spinning Blade - Circular saw that rotates
+export interface SpinningBladeEntity extends BaseEntity {
+  type: 'spinning_blade';
+  size?: number; // Blade radius (default 1.5)
+  speed?: number; // Rotation speed (default 2)
+  moving?: {
+    pattern: 'linear' | 'circular';
+    speed: number;
+    range: [number, number, number];
+  };
+}
+
+// Moving Wall - Wall that slides to block paths
+export interface MovingWallEntity extends BaseEntity {
+  type: 'moving_wall';
+  size: [number, number, number]; // Wall dimensions
+  pattern: 'linear'; // Movement pattern
+  speed: number;
+  range: [number, number, number]; // Movement range
+}
+
+// Cannon Turret - Fires projectiles
+export interface CannonTurretEntity extends BaseEntity {
+  type: 'cannon_turret';
+  interval?: number; // Seconds between shots (default 3)
+  projectileSpeed?: number; // How fast projectiles fly (default 10)
+  direction?: [number, number, number]; // Firing direction
+}
+
+// Falling Icicle - Falls when player gets close
+export interface FallingIcicleEntity extends BaseEntity {
+  type: 'falling_icicle';
+  triggerRadius?: number; // How close player must be (default 3)
+  fallSpeed?: number; // How fast it falls (default 8)
+  respawnTime?: number; // Seconds to respawn (default 5)
+}
+
+// Wind Tunnel - Pushes player
+export interface WindTunnelEntity extends BaseEntity {
+  type: 'wind_tunnel';
+  size: [number, number, number]; // Zone dimensions
+  force: [number, number, number]; // Wind force vector
+}
+
+// Rising Lava - Lava that rises and falls
+export interface RisingLavaEntity extends BaseEntity {
+  type: 'rising_lava';
+  size: [number, number, number];
+  riseHeight?: number; // How high it rises (default 5)
+  interval?: number; // Cycle time (default 8)
+  riseDuration?: number; // How long rise takes (default 3)
+}
+
+// Dart Trap - Shoots darts from walls
+export interface DartTrapEntity extends BaseEntity {
+  type: 'dart_trap';
+  interval?: number; // Seconds between shots (default 2)
+  direction?: [number, number, number]; // Dart direction
+  dartSpeed?: number; // How fast darts fly (default 15)
+}
+
+// Swinging Log - Like a wrecking ball
+export interface SwingingLogEntity extends BaseEntity {
+  type: 'swinging_log';
+  length?: number; // Chain length (default 5)
+  speed?: number; // Swing speed (default 1.2)
+  swingAngle?: number; // Maximum swing angle (default Math.PI / 2)
+  logSize?: number; // Log radius (default 0.8)
+}
+
 // Union of all entity types
 export type LevelEntity =
   | PlatformEntity
@@ -139,7 +255,19 @@ export type LevelEntity =
   | VineEntity
   | MovingPlatformEntity
   | EndGoalEntity
-  | SpawnPortalEntity;
+  | SpawnPortalEntity
+  | FireJetEntity
+  | PendulumBladeEntity
+  | LaserBeamEntity
+  | CrushingPistonEntity
+  | SpinningBladeEntity
+  | MovingWallEntity
+  | CannonTurretEntity
+  | FallingIcicleEntity
+  | WindTunnelEntity
+  | RisingLavaEntity
+  | DartTrapEntity
+  | SwingingLogEntity;
 
 // ============================================================================
 // LEVEL DEFINITION
