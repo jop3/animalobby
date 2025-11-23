@@ -1,8 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --font-game: "Fredoka One", cursive;
+  --radius-chunky: 1.5rem;
+  --color-danger: #FF4444;
+  --color-neon-magenta: #FF00FF;
+  --color-neon-cyan: #00FFFF;
+  --color-neon-pink: #FF1493;
+  --color-safe-green: #2ECC71;
+  --color-safe-gold: #F1C40F;
+}
 
 @layer base {
   * {
