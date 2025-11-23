@@ -8,6 +8,7 @@ interface CharacterPickerProps {
 }
 
 const CHARACTER_INFO: Record<CharacterBase, { emoji: string; name: string; description: string; color: string }> = {
+  // Basic Characters
   human: {
     emoji: '🧑',
     name: 'Human',
@@ -38,12 +39,34 @@ const CHARACTER_INFO: Record<CharacterBase, { emoji: string; name: string; descr
     description: 'Sleek and aerodynamic',
     color: 'from-blue-400 to-blue-600'
   },
+
+  // Royalty & Fantasy
   princess: {
     emoji: '👸',
     name: 'Princess',
     description: 'Royal and graceful',
     color: 'from-pink-400 to-pink-600'
   },
+  prince: {
+    emoji: '🤴',
+    name: 'Prince',
+    description: 'Noble and brave',
+    color: 'from-blue-500 to-blue-700'
+  },
+  elf: {
+    emoji: '🧝',
+    name: 'Elf',
+    description: 'Swift forest guardian',
+    color: 'from-emerald-400 to-emerald-600'
+  },
+  mermaid: {
+    emoji: '🧜',
+    name: 'Mermaid',
+    description: 'Ocean dweller with grace',
+    color: 'from-cyan-400 to-cyan-600'
+  },
+
+  // Animals
   kitty: {
     emoji: '🐱',
     name: 'Kitty',
@@ -56,6 +79,26 @@ const CHARACTER_INFO: Record<CharacterBase, { emoji: string; name: string; descr
     description: 'Super jumper with cute ears',
     color: 'from-purple-400 to-purple-600'
   },
+  panda: {
+    emoji: '🐼',
+    name: 'Panda',
+    description: 'Peaceful bamboo warrior',
+    color: 'from-slate-400 to-slate-600'
+  },
+  fox: {
+    emoji: '🦊',
+    name: 'Fox',
+    description: 'Clever and quick',
+    color: 'from-amber-400 to-amber-600'
+  },
+  bear: {
+    emoji: '🐻',
+    name: 'Bear',
+    description: 'Strong and protective',
+    color: 'from-brown-400 to-brown-600'
+  },
+
+  // Mythical Creatures
   fairy: {
     emoji: '🧚',
     name: 'Fairy',
@@ -67,6 +110,58 @@ const CHARACTER_INFO: Record<CharacterBase, { emoji: string; name: string; descr
     name: 'Unicorn',
     description: 'Mythical and majestic',
     color: 'from-indigo-400 to-indigo-600'
+  },
+  dragon: {
+    emoji: '🐉',
+    name: 'Dragon',
+    description: 'Fierce legendary beast',
+    color: 'from-red-500 to-red-700'
+  },
+  wizard: {
+    emoji: '🧙',
+    name: 'Wizard',
+    description: 'Master of ancient magic',
+    color: 'from-violet-400 to-violet-600'
+  },
+
+  // Warriors & Heroes
+  knight: {
+    emoji: '⚔️',
+    name: 'Knight',
+    description: 'Armored champion',
+    color: 'from-stone-400 to-stone-600'
+  },
+  ninja: {
+    emoji: '🥷',
+    name: 'Ninja',
+    description: 'Silent shadow warrior',
+    color: 'from-gray-700 to-gray-900'
+  },
+  pirate: {
+    emoji: '🏴‍☠️',
+    name: 'Pirate',
+    description: 'Swashbuckling adventurer',
+    color: 'from-sky-600 to-sky-800'
+  },
+
+  // Supernatural
+  vampire: {
+    emoji: '🧛',
+    name: 'Vampire',
+    description: 'Creature of the night',
+    color: 'from-rose-700 to-rose-900'
+  },
+  alien: {
+    emoji: '👽',
+    name: 'Alien',
+    description: 'Visitor from beyond stars',
+    color: 'from-lime-400 to-lime-600'
+  },
+  ghost: {
+    emoji: '👻',
+    name: 'Ghost',
+    description: 'Spooky spirit wanderer',
+    color: 'from-slate-200 to-slate-400'
   },
 };
 
@@ -83,8 +178,18 @@ export function CharacterPicker({ isOpen, onClose }: CharacterPickerProps) {
   };
 
   const characters: CharacterBase[] = [
+    // Basic Characters
     'human', 'robot', 'slime', 'blocky', 'smooth',
-    'princess', 'kitty', 'bunny', 'fairy', 'unicorn'
+    // Royalty & Fantasy
+    'princess', 'prince', 'elf', 'mermaid',
+    // Animals
+    'kitty', 'bunny', 'panda', 'fox', 'bear',
+    // Mythical Creatures
+    'fairy', 'unicorn', 'dragon', 'wizard',
+    // Warriors & Heroes
+    'knight', 'ninja', 'pirate',
+    // Supernatural
+    'vampire', 'alien', 'ghost'
   ];
 
   return (
@@ -111,7 +216,7 @@ export function CharacterPicker({ isOpen, onClose }: CharacterPickerProps) {
 
         {/* Character Grid */}
         <div className="p-8 overflow-y-auto max-h-[calc(90vh-200px)]">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {characters.map((character) => {
               const info = CHARACTER_INFO[character];
               const isSelected = selectedCharacter === character;

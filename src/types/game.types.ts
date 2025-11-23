@@ -121,7 +121,13 @@ export interface PlatformData {
 }
 
 // Character Base Types
-export type CharacterBase = 'human' | 'robot' | 'slime' | 'blocky' | 'smooth' | 'princess' | 'kitty' | 'bunny' | 'fairy' | 'unicorn';
+export type CharacterBase =
+  | 'human' | 'robot' | 'slime' | 'blocky' | 'smooth'
+  | 'princess' | 'prince' | 'elf' | 'mermaid'
+  | 'kitty' | 'bunny' | 'panda' | 'fox' | 'bear'
+  | 'fairy' | 'unicorn' | 'dragon' | 'wizard'
+  | 'knight' | 'ninja' | 'pirate' | 'vampire'
+  | 'alien' | 'ghost';
 
 // Game State (for Zustand Store)
 export interface GameState {

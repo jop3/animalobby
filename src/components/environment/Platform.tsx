@@ -170,9 +170,10 @@ export function Platform({
           basePos[1] + moving.range[1] * offset,
           basePos[2] + moving.range[2] * offset,
         ] as [number, number, number];
-        rigidBodyRef.current.setTranslation(
-          { x: newPos[0], y: newPos[1], z: newPos[2] },
-          true
+        // Use setNextKinematicTranslation instead of setTranslation
+        // This properly imparts velocity to objects standing on the platform
+        rigidBodyRef.current.setNextKinematicTranslation(
+          { x: newPos[0], y: newPos[1], z: newPos[2] }
         );
       } else if (moving.pattern === 'circular') {
         // Circular movement
@@ -182,9 +183,9 @@ export function Platform({
           basePos[1] + moving.range[1] * Math.sin(timeRef.current * moving.speed * 0.5),
           basePos[2] + Math.sin(angle) * moving.range[2],
         ] as [number, number, number];
-        rigidBodyRef.current.setTranslation(
-          { x: newPos[0], y: newPos[1], z: newPos[2] },
-          true
+        // Use setNextKinematicTranslation for proper velocity transfer
+        rigidBodyRef.current.setNextKinematicTranslation(
+          { x: newPos[0], y: newPos[1], z: newPos[2] }
         );
       } else if (moving.pattern === 'pendulum') {
         // Pendulum swing
@@ -194,9 +195,9 @@ export function Platform({
           basePos[1],
           basePos[2] + moving.range[2] * swing,
         ] as [number, number, number];
-        rigidBodyRef.current.setTranslation(
-          { x: newPos[0], y: newPos[1], z: newPos[2] },
-          true
+        // Use setNextKinematicTranslation for proper velocity transfer
+        rigidBodyRef.current.setNextKinematicTranslation(
+          { x: newPos[0], y: newPos[1], z: newPos[2] }
         );
       }
     }
