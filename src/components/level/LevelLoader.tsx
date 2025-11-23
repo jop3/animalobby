@@ -53,7 +53,7 @@ export function LevelLoader({ level }: LevelLoaderProps) {
       />
 
       {/* Ambient particles for atmosphere */}
-      <AmbientParticles levelId={level.id} />
+      <AmbientParticles type="dust" count={300} area={[100, 40, 100]} />
 
       {/* Spawn portal at level start */}
       <EntityFactory

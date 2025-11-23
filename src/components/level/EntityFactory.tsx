@@ -22,6 +22,7 @@ import { LowObstacle } from '../environment/LowObstacle';
 import { Switch } from '../hazards/Switch';
 import { Door } from '../hazards/Door';
 import { PressurePlate } from '../hazards/PressurePlate';
+import { BossEncounter } from '../bosses/BossEncounter';
 
 /**
  * EntityFactory - Maps JSON entity definitions to React components
@@ -296,6 +297,17 @@ export function EntityFactory({ entity, index }: EntityFactoryProps) {
           targetId={entity.targetId}
           size={entity.size}
           requiresWeight={entity.requiresWeight}
+        />
+      );
+
+    case 'boss_encounter':
+      return (
+        <BossEncounter
+          key={key}
+          id={entity.id}
+          position={entity.position}
+          bossType={entity.bossType}
+          arenaSize={entity.arenaSize}
         />
       );
 

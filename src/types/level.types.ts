@@ -50,7 +50,8 @@ export type EntityType =
   | 'door'
   | 'pressure_plate'
   | 'climbable_wall'
-  | 'low_obstacle';
+  | 'low_obstacle'
+  | 'boss_encounter';
 
 // Base entity (all entities extend this)
 export interface BaseEntity {
@@ -296,6 +297,14 @@ export interface LowObstacleEntity extends BaseEntity {
   color?: string; // Color (default '#DC143C')
 }
 
+// Boss Encounter - Epic boss fight
+export interface BossEncounterEntity extends BaseEntity {
+  type: 'boss_encounter';
+  id: string; // Required for boss tracking
+  bossType: 'dragon' | 'golem' | 'wizard' | 'kraken'; // Boss variant
+  arenaSize?: [number, number, number]; // Arena dimensions (default [30, 20, 30])
+}
+
 // Union of all entity types
 export type LevelEntity =
   | PlatformEntity
@@ -326,7 +335,8 @@ export type LevelEntity =
   | DoorEntity
   | PressurePlateEntity
   | ClimbableWallEntity
-  | LowObstacleEntity;
+  | LowObstacleEntity
+  | BossEncounterEntity;
 
 // ============================================================================
 // LEVEL DEFINITION

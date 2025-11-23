@@ -6,6 +6,7 @@ import { Timer } from './Timer';
 import { Leaderboard } from './Leaderboard';
 import { CharacterPicker } from './CharacterPicker';
 import { NameEntry } from './NameEntry';
+import { PowerUpDisplay } from './PowerUpDisplay';
 
 export function HUD() {
   const [isLabOpen, setIsLabOpen] = useState(false);
@@ -137,6 +138,9 @@ export function HUD() {
 
       {/* Timer (only shows in Normal/Hard) */}
       <Timer />
+
+      {/* Active Power-Ups Display */}
+      <PowerUpDisplay />
 
       {/* Pause Menu */}
       <PauseMenu />
