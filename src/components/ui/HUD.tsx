@@ -22,129 +22,129 @@ export function HUD() {
   const characterBase = useGameStore((state) => state.characterBase);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-40">
-      {/* Top Bar */}
-      <div className="absolute top-4 right-4 flex flex-col gap-2 pointer-events-auto">
-        {/* Coin Counters */}
-        <div className="bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-chunky px-6 py-3 shadow-lg border-4 border-yellow-700">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-yellow-300 rounded-lg border-2 border-yellow-800" />
-            <span className="text-2xl font-game text-stroke text-white">
-              {coins.speed}
-            </span>
-          </div>
-        </div>
-
-        <div className="bg-gradient-to-br from-purple-500 to-purple-700 rounded-chunky px-6 py-3 shadow-lg border-4 border-purple-900">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-purple-300 rounded-lg border-2 border-purple-900" />
-            <span className="text-2xl font-game text-stroke text-white">
-              {coins.gravity}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom Left - Controls Hint */}
-      <div className="absolute bottom-4 left-4 bg-black/60 rounded-chunky px-4 py-3 text-white font-game text-sm">
-        <div className="space-y-1">
-          <div><span className="text-yellow-400">WASD/Arrows</span> - Move</div>
-          <div><span className="text-yellow-400">Space</span> - Jump</div>
-          <div><span className="text-yellow-400">Shift</span> - Sprint</div>
-        </div>
-      </div>
-
-      {/* Top Left - Buttons */}
-      <div className="absolute top-4 left-4 pointer-events-auto flex flex-col gap-2">
-        <div className="flex gap-2">
-          <button
-            className="bg-gradient-to-br from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 rounded-chunky px-6 py-3 shadow-lg border-4 border-green-800 transition-all hover:scale-105 active:scale-95"
-            onClick={() => setIsLabOpen(true)}
-          >
-            <span className="text-xl font-game text-stroke text-white">
-              🧪 Animal Lab
-            </span>
-          </button>
-
-          {/* Leaderboard Button */}
-          <button
-            className="bg-gradient-to-br from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700 rounded-chunky px-6 py-3 shadow-lg border-4 border-purple-800 transition-all hover:scale-105 active:scale-95"
-            onClick={() => setIsLeaderboardOpen(true)}
-          >
-            <span className="text-xl font-game text-stroke text-white">
-              🏆 Records
-            </span>
-          </button>
-
-          {/* Prestige Badge */}
-          {prestigeLevel > 0 && (
-            <div className="absolute -top-2 -right-2 bg-purple-600 rounded-full w-8 h-8 flex items-center justify-center border-2 border-purple-900 shadow-lg">
-              <span className="text-white font-game text-sm">{prestigeLevel}</span>
+    <>
+      {/* HUD Elements - pointer-events-none allows clicks to pass through to game */}
+      <div className="fixed inset-0 pointer-events-none z-40">
+        {/* Top Bar */}
+        <div className="absolute top-4 right-4 flex flex-col gap-2 pointer-events-auto">
+          {/* Coin Counters */}
+          <div className="bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-chunky px-6 py-3 shadow-lg border-4 border-yellow-700">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-yellow-300 rounded-lg border-2 border-yellow-800" />
+              <span className="text-2xl font-game text-stroke text-white">
+                {coins.speed}
+              </span>
             </div>
-          )}
+          </div>
+
+          <div className="bg-gradient-to-br from-purple-500 to-purple-700 rounded-chunky px-6 py-3 shadow-lg border-4 border-purple-900">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-purple-300 rounded-lg border-2 border-purple-900" />
+              <span className="text-2xl font-game text-stroke text-white">
+                {coins.gravity}
+              </span>
+            </div>
+          </div>
         </div>
 
-        {/* Second row - Character and Name */}
-        <div className="flex gap-2">
-          <button
-            className="bg-gradient-to-br from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 rounded-chunky px-4 py-2 shadow-lg border-4 border-blue-800 transition-all hover:scale-105 active:scale-95"
-            onClick={() => setIsCharacterPickerOpen(true)}
-            title="Change Character"
-          >
-            <span className="text-lg font-game text-stroke text-white">
-              🎭 Character
-            </span>
-          </button>
-
-          <button
-            className="bg-gradient-to-br from-pink-400 to-pink-600 hover:from-pink-500 hover:to-pink-700 rounded-chunky px-4 py-2 shadow-lg border-4 border-pink-800 transition-all hover:scale-105 active:scale-95"
-            onClick={() => setIsNameEntryOpen(true)}
-            title={playerName || 'Set Your Name'}
-          >
-            <span className="text-lg font-game text-stroke text-white">
-              ✍️ {playerName || 'Name'}
-            </span>
-          </button>
+        {/* Bottom Left - Controls Hint */}
+        <div className="absolute bottom-4 left-4 bg-black/60 rounded-chunky px-4 py-3 text-white font-game text-sm">
+          <div className="space-y-1">
+            <div><span className="text-yellow-400">WASD/Arrows</span> - Move</div>
+            <div><span className="text-yellow-400">Space</span> - Jump</div>
+            <div><span className="text-yellow-400">Shift</span> - Sprint</div>
+          </div>
         </div>
+
+        {/* Top Left - Buttons */}
+        <div className="absolute top-4 left-4 pointer-events-auto flex flex-col gap-2">
+          <div className="flex gap-2">
+            <button
+              className="bg-gradient-to-br from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 rounded-chunky px-6 py-3 shadow-lg border-4 border-green-800 transition-all hover:scale-105 active:scale-95"
+              onClick={() => setIsLabOpen(true)}
+            >
+              <span className="text-xl font-game text-stroke text-white">
+                🧪 Animal Lab
+              </span>
+            </button>
+
+            {/* Leaderboard Button */}
+            <button
+              className="bg-gradient-to-br from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700 rounded-chunky px-6 py-3 shadow-lg border-4 border-purple-800 transition-all hover:scale-105 active:scale-95"
+              onClick={() => setIsLeaderboardOpen(true)}
+            >
+              <span className="text-xl font-game text-stroke text-white">
+                🏆 Records
+              </span>
+            </button>
+
+            {/* Prestige Badge */}
+            {prestigeLevel > 0 && (
+              <div className="absolute -top-2 -right-2 bg-purple-600 rounded-full w-8 h-8 flex items-center justify-center border-2 border-purple-900 shadow-lg">
+                <span className="text-white font-game text-sm">{prestigeLevel}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Second row - Character and Name */}
+          <div className="flex gap-2">
+            <button
+              className="bg-gradient-to-br from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 rounded-chunky px-4 py-2 shadow-lg border-4 border-blue-800 transition-all hover:scale-105 active:scale-95"
+              onClick={() => setIsCharacterPickerOpen(true)}
+              title="Change Character"
+            >
+              <span className="text-lg font-game text-stroke text-white">
+                🎭 Character
+              </span>
+            </button>
+
+            <button
+              className="bg-gradient-to-br from-pink-400 to-pink-600 hover:from-pink-500 hover:to-pink-700 rounded-chunky px-4 py-2 shadow-lg border-4 border-pink-800 transition-all hover:scale-105 active:scale-95"
+              onClick={() => setIsNameEntryOpen(true)}
+              title={playerName || 'Set Your Name'}
+            >
+              <span className="text-lg font-game text-stroke text-white">
+                ✍️ {playerName || 'Name'}
+              </span>
+            </button>
+          </div>
+        </div>
+
+        {/* Center - Death/Respawn Message */}
+        <DeathMessage />
+
+        {/* Center - Checkpoint Saved Message */}
+        <CheckpointMessage />
+
+        {/* Timer (only shows in Normal/Hard) */}
+        <Timer />
+
+        {/* Active Power-Ups Display */}
+        <PowerUpDisplay />
       </div>
 
-      {/* Center - Death/Respawn Message */}
-      <DeathMessage />
-
-      {/* Center - Checkpoint Saved Message */}
-      <CheckpointMessage />
-
-      {/* Animal Lab Modal */}
+      {/* Modals - rendered outside pointer-events-none container so they're fully interactive */}
       <AnimalLab isOpen={isLabOpen} onClose={() => setIsLabOpen(false)} />
 
-      {/* Leaderboard Modal */}
       <Leaderboard
         isOpen={isLeaderboardOpen}
         onClose={() => setIsLeaderboardOpen(false)}
         levelId={currentLevelId || undefined}
       />
 
-      {/* Character Picker Modal */}
       <CharacterPicker
         isOpen={isCharacterPickerOpen}
         onClose={() => setIsCharacterPickerOpen(false)}
       />
 
-      {/* Name Entry Modal */}
       <NameEntry
         isOpen={isNameEntryOpen}
         onClose={() => setIsNameEntryOpen(false)}
       />
 
-      {/* Timer (only shows in Normal/Hard) */}
-      <Timer />
-
-      {/* Active Power-Ups Display */}
-      <PowerUpDisplay />
-
-      {/* Pause Menu */}
+      {/* Pause Menu - also needs to be outside for interaction */}
       <PauseMenu />
-    </div>
+    </>
   );
 }
 
