@@ -4,6 +4,7 @@ import { RigidBody, CuboidCollider } from '@react-three/rapier';
 import { RapierRigidBody } from '@react-three/rapier';
 import { Mesh, Vector3 } from 'three';
 import { useGameStore } from '../../store/useGameStore';
+import { BossProjectile } from './BossProjectile';
 
 interface BossEncounterProps {
   id: string;
@@ -13,42 +14,49 @@ interface BossEncounterProps {
   onDefeat?: () => void;
 }
 
+interface Projectile {
+  id: string;
+  position: [number, number, number];
+  direction: [number, number, number];
+  type: 'fireball' | 'rock' | 'magic_missile' | 'tentacle';
+}
+
 const BOSS_CONFIGS = {
   dragon: {
     name: 'Fire Drake',
     emoji: '🐉',
     color: '#FF4500',
     maxHealth: 100,
-    size: [3, 3, 5],
+    size: [3, 3, 5] as [number, number, number],
     attackInterval: 2,
-    attackTypes: ['fireball', 'sweep', 'ground_slam'],
+    projectileType: 'fireball' as const,
   },
   golem: {
     name: 'Stone Golem',
     emoji: '🗿',
     color: '#808080',
     maxHealth: 150,
-    size: [4, 5, 4],
+    size: [4, 5, 4] as [number, number, number],
     attackInterval: 3,
-    attackTypes: ['smash', 'rock_throw', 'charge'],
+    projectileType: 'rock' as const,
   },
   wizard: {
     name: 'Dark Wizard',
     emoji: '🧙',
     color: '#800080',
     maxHealth: 80,
-    size: [2, 3, 2],
+    size: [2, 3, 2] as [number, number, number],
     attackInterval: 1.5,
-    attackTypes: ['magic_missile', 'teleport', 'lightning'],
+    projectileType: 'magic_missile' as const,
   },
   kraken: {
     name: 'The Kraken',
     emoji: '🐙',
     color: '#006994',
     maxHealth: 120,
-    size: [5, 3, 5],
+    size: [5, 3, 5] as [number, number, number],
     attackInterval: 2.5,
-    attackTypes: ['tentacle_slam', 'ink_spray', 'whirlpool'],
+    projectileType: 'tentacle' as const,
   },
 };
 
@@ -65,10 +73,14 @@ export function BossEncounter({
   const [phase, setPhase] = useState<1 | 2 | 3>(1);
   const [isAttacking, setIsAttacking] = useState(false);
   const [defeated, setDefeated] = useState(false);
+  const [projectiles, setProjectiles] = useState<Projectile[]>([]);
   const [weakSpots, setWeakSpots] = useState<Vector3[]>([]);
+  const [damageZones, setDamageZones] = useState<Array<{ position: Vector3; radius: number; duration: number }>>([]);
   const lastAttackTime = useRef(0);
+  const projectileCounter = useRef(0);
   const playerPosition = useGameStore((state) => state.playerPosition);
-  const setInvincible = useGameStore((state) => state.setInvincible);
+  const die = useGameStore((state) => state.die);
+  const isInvincible = useGameStore((state) => state.isInvincible);
 
   const config = BOSS_CONFIGS[bossType];
   const healthPercent = (health / config.maxHealth) * 100;
@@ -89,11 +101,12 @@ export function BossEncounter({
   useEffect(() => {
     const spots: Vector3[] = [];
     for (let i = 0; i < 3; i++) {
+      const angle = (i / 3) * Math.PI * 2;
       spots.push(
         new Vector3(
-          Math.random() * 2 - 1,
-          Math.random() * 2 + 1,
-          Math.random() * 2 - 1
+          Math.cos(angle) * 1.5,
+          1 + Math.random(),
+          Math.sin(angle) * 1.5
         )
       );
     }
@@ -104,48 +117,139 @@ export function BossEncounter({
     if (!bossRef.current || !playerPosition || defeated) return;
 
     const time = state.clock.elapsedTime;
-
-    // Boss AI - Track player
     const bossPos = bossRef.current.translation();
-    const playerDir = new Vector3(
+
+    // Calculate direction to player
+    const toPlayer = new Vector3(
       playerPosition[0] - bossPos.x,
       0,
       playerPosition[2] - bossPos.z
-    ).normalize();
+    );
+    const distanceToPlayer = toPlayer.length();
+    toPlayer.normalize();
 
     // Rotate boss to face player
-    if (meshRef.current) {
+    if (meshRef.current && distanceToPlayer > 0.1) {
       meshRef.current.lookAt(playerPosition[0], bossPos.y, playerPosition[2]);
     }
 
-    // Attack pattern based on phase and time
-    if (time - lastAttackTime.current > config.attackInterval / phase) {
-      performAttack();
-      lastAttackTime.current = time;
-    }
-
-    // Movement pattern (more aggressive in later phases)
-    if (phase >= 2) {
-      const speed = 0.5 * phase;
+    // Movement (more aggressive in later phases)
+    if (phase >= 2 && distanceToPlayer > 5) {
+      const moveSpeed = 2 * phase;
       bossRef.current.setLinvel(
         {
-          x: playerDir.x * speed,
-          y: bossRef.current.linvel().y,
-          z: playerDir.z * speed,
+          x: toPlayer.x * moveSpeed,
+          y: 0,
+          z: toPlayer.z * moveSpeed,
         },
         true
       );
+    } else {
+      bossRef.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
+    }
+
+    // Attack pattern based on phase and time
+    const attackInterval = config.attackInterval / phase;
+    if (time - lastAttackTime.current > attackInterval) {
+      performAttack(bossPos, toPlayer);
+      lastAttackTime.current = time;
+    }
+
+    // Update damage zones
+    setDamageZones((zones) =>
+      zones
+        .map((zone) => ({ ...zone, duration: zone.duration - delta }))
+        .filter((zone) => zone.duration > 0)
+    );
+
+    // Check if player is in damage zone
+    if (!isInvincible) {
+      damageZones.forEach((zone) => {
+        const distToZone = Math.sqrt(
+          Math.pow(playerPosition[0] - zone.position.x, 2) +
+          Math.pow(playerPosition[2] - zone.position.z, 2)
+        );
+        if (distToZone < zone.radius && Math.abs(playerPosition[1] - zone.position.y) < 2) {
+          die();
+        }
+      });
     }
   });
 
-  const performAttack = () => {
+  const performAttack = (bossPos: any, direction: Vector3) => {
     setIsAttacking(true);
     setTimeout(() => setIsAttacking(false), 500);
-    // Attack logic would trigger projectiles or area effects
+
+    const attackChoice = Math.random();
+    const spawnHeight = bossPos.y + config.size[1] / 2;
+
+    if (attackChoice < 0.5 || phase === 1) {
+      // Projectile attack - more projectiles in later phases
+      const projectileCount = phase;
+      const spreadAngle = phase > 1 ? Math.PI / 6 : 0;
+
+      for (let i = 0; i < projectileCount; i++) {
+        const angle = spreadAngle * ((i - (projectileCount - 1) / 2) / Math.max(1, projectileCount - 1));
+        const rotatedDir = new Vector3(
+          direction.x * Math.cos(angle) - direction.z * Math.sin(angle),
+          0,
+          direction.x * Math.sin(angle) + direction.z * Math.cos(angle)
+        ).normalize();
+
+        const newProjectile: Projectile = {
+          id: `${id}_projectile_${projectileCounter.current++}`,
+          position: [bossPos.x + rotatedDir.x * 2, spawnHeight, bossPos.z + rotatedDir.z * 2],
+          direction: [rotatedDir.x, 0, rotatedDir.z],
+          type: config.projectileType,
+        };
+
+        setProjectiles((prev) => [...prev, newProjectile]);
+      }
+    } else if (attackChoice < 0.8) {
+      // Ground slam / Area attack
+      const slamPosition = new Vector3(
+        bossPos.x + direction.x * 3,
+        bossPos.y,
+        bossPos.z + direction.z * 3
+      );
+
+      setDamageZones((prev) => [
+        ...prev,
+        {
+          position: slamPosition,
+          radius: 4 * phase,
+          duration: 1.5,
+        },
+      ]);
+    } else {
+      // Circular projectile barrage (phase 3 only)
+      if (phase >= 3) {
+        const projectileCount = 8;
+        for (let i = 0; i < projectileCount; i++) {
+          const angle = (i / projectileCount) * Math.PI * 2;
+          const dir = new Vector3(Math.cos(angle), 0, Math.sin(angle)).normalize();
+
+          const newProjectile: Projectile = {
+            id: `${id}_projectile_${projectileCounter.current++}`,
+            position: [bossPos.x + dir.x * 2, spawnHeight, bossPos.z + dir.z * 2],
+            direction: [dir.x, 0, dir.z],
+            type: config.projectileType,
+          };
+
+          setProjectiles((prev) => [...prev, newProjectile]);
+        }
+      }
+    }
   };
 
   const takeDamage = (amount: number) => {
-    setHealth((prev) => Math.max(0, prev - amount));
+    if (!defeated) {
+      setHealth((prev) => Math.max(0, prev - amount));
+    }
+  };
+
+  const removeProjectile = (projectileId: string) => {
+    setProjectiles((prev) => prev.filter((p) => p.id !== projectileId));
   };
 
   if (defeated) {
@@ -153,16 +257,16 @@ export function BossEncounter({
       <group position={position}>
         {/* Victory effect */}
         <mesh position={[0, 2, 0]}>
-          <sphereGeometry args={[2, 16, 16]} />
+          <sphereGeometry args={[3, 16, 16]} />
           <meshStandardMaterial
             color="#FFD700"
             emissive="#FFD700"
-            emissiveIntensity={1}
+            emissiveIntensity={2}
             transparent
             opacity={0.6}
           />
         </mesh>
-        <pointLight color="#FFD700" intensity={5} distance={10} />
+        <pointLight color="#FFD700" intensity={10} distance={15} />
       </group>
     );
   }
@@ -173,7 +277,7 @@ export function BossEncounter({
       <mesh position={[0, arenaSize[1] / 2, 0]} receiveShadow>
         <boxGeometry args={[arenaSize[0], 0.5, arenaSize[2]]} />
         <meshStandardMaterial
-          color="#2F4F4F"
+          color="#2F4F2F"
           roughness={0.8}
           metalness={0.2}
         />
@@ -191,7 +295,7 @@ export function BossEncounter({
           type="fixed"
           position={[wall[0], wall[1], wall[2]] as [number, number, number]}
         >
-          <CuboidCollider args={(wall[3] as [number, number, number]).map(v => v / 2) as [number, number, number]} />
+          <CuboidCollider args={(wall[3] as number[]).map((v) => v / 2) as [number, number, number]} />
         </RigidBody>
       ))}
 
@@ -230,8 +334,8 @@ export function BossEncounter({
         {weakSpots.map((spot, i) => (
           <mesh
             key={i}
-            position={[spot.x * config.size[0] / 2, spot.y, spot.z * config.size[2] / 2]}
-            onClick={() => takeDamage(10)}
+            position={[spot.x, spot.y, spot.z]}
+            onClick={() => takeDamage(15)}
           >
             <sphereGeometry args={[0.3, 8, 8]} />
             <meshStandardMaterial
@@ -249,6 +353,38 @@ export function BossEncounter({
           distance={15}
         />
       </RigidBody>
+
+      {/* Damage zones visualization */}
+      {damageZones.map((zone, i) => (
+        <mesh
+          key={i}
+          position={[zone.position.x, zone.position.y + 0.1, zone.position.z]}
+          rotation={[-Math.PI / 2, 0, 0]}
+        >
+          <ringGeometry args={[zone.radius * 0.8, zone.radius, 32]} />
+          <meshStandardMaterial
+            color="#FF0000"
+            emissive="#FF0000"
+            emissiveIntensity={1.5}
+            transparent
+            opacity={zone.duration / 1.5}
+          />
+        </mesh>
+      ))}
+
+      {/* Projectiles */}
+      {projectiles.map((projectile) => (
+        <BossProjectile
+          key={projectile.id}
+          id={projectile.id}
+          position={projectile.position}
+          direction={projectile.direction}
+          type={projectile.type}
+          speed={15 + phase * 2}
+          onHit={() => removeProjectile(projectile.id)}
+          onExpire={() => removeProjectile(projectile.id)}
+        />
+      ))}
 
       {/* Health bar UI (floating above boss) */}
       <group position={[0, config.size[1] + 3, 0]}>
