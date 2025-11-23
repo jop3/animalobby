@@ -105,7 +105,7 @@ export function WorldMap({ onSelectLevel, currentLevelId }: WorldMapProps) {
   };
 
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 overflow-hidden">
+    <div className="fixed inset-0 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 overflow-hidden z-50">
       {/* Background stars */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {Array.from({ length: 50 }).map((_, i) => (

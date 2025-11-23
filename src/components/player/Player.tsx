@@ -9,7 +9,7 @@ import { getPart } from '../../data/animalParts';
 import { PlayerModel } from './PlayerModel';
 import { DeathParticles } from '../effects/DeathParticles';
 
-const DEATH_Y = -10;
+const DEATH_Y = -30; // Player dies when falling below this Y position
 
 export const Player = forwardRef<any>((props, ref) => {
   const playerRef = useRef<any>(null);
