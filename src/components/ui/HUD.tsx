@@ -22,7 +22,7 @@ export function HUD() {
   const characterBase = useGameStore((state) => state.characterBase);
 
   return (
-    <div className="fixed inset-0 pointer-events-none">
+    <div className="fixed inset-0 pointer-events-none z-40">
       {/* Top Bar */}
       <div className="absolute top-4 right-4 flex flex-col gap-2 pointer-events-auto">
         {/* Coin Counters */}

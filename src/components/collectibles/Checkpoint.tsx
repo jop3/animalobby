@@ -39,6 +39,18 @@ export function Checkpoint({ id, position }: CheckpointProps) {
 
   return (
     <group position={position}>
+      {/* Platform Base - solid surface for player to stand on */}
+      <RigidBody type="fixed" colliders="cuboid" position={[0, -0.5, 0]}>
+        <mesh castShadow receiveShadow>
+          <boxGeometry args={[4, 1, 4]} />
+          <meshStandardMaterial
+            color={isActive ? '#27AE60' : '#95A5A6'}
+            roughness={0.7}
+            metalness={0.3}
+          />
+        </mesh>
+      </RigidBody>
+
       {/* Checkpoint pillar - MUCH taller and thicker */}
       <mesh ref={meshRef} castShadow position={[0, 2, 0]}>
         <boxGeometry args={[0.8, 4, 0.8]} />
