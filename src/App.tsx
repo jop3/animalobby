@@ -37,7 +37,7 @@ function App() {
   return (
     <GameManager>
       {(level) => (
-        <div className="w-full h-full">
+        <div className="relative w-full h-full">
           <KeyboardControls
             map={[
               { name: Controls.forward, keys: ['ArrowUp', 'KeyW'] },
@@ -49,12 +49,14 @@ function App() {
             ]}
           >
             <Canvas
+              className="absolute inset-0"
               shadows={quality !== 'low'}
               camera={{ position: [0, 5, 10], fov: 60 }}
               gl={{
                 antialias: quality === 'high',
                 powerPreference: 'high-performance',
               }}
+              style={{ zIndex: 0 }}
             >
               <Suspense fallback={null}>
                 <color attach="background" args={['#87CEEB']} />
