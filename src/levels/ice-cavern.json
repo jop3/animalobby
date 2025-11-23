@@ -200,6 +200,24 @@
       "coinType": "gravity"
     },
     {
+      "type": "animal_part",
+      "id": "part_wolf_head",
+      "position": [12, 5, 20],
+      "partId": "wolf_head"
+    },
+    {
+      "type": "animal_part",
+      "id": "part_bear_body",
+      "position": [18, 7, 35],
+      "partId": "bear_body"
+    },
+    {
+      "type": "animal_part",
+      "id": "part_rabbit_head",
+      "position": [24, 9, 42],
+      "partId": "rabbit_head"
+    },
+    {
       "type": "end_goal",
       "position": [24, 8, 46],
       "modelType": "portal"

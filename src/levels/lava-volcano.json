@@ -182,6 +182,24 @@
       "coinType": "gravity"
     },
     {
+      "type": "animal_part",
+      "id": "part_dragon_wings",
+      "position": [0, 12, 0],
+      "partId": "dragon_wings"
+    },
+    {
+      "type": "animal_part",
+      "id": "part_rhino_body",
+      "position": [3, 17, 3],
+      "partId": "rhino_body"
+    },
+    {
+      "type": "animal_part",
+      "id": "part_shark_head",
+      "position": [-3, 20, -3],
+      "partId": "shark_head"
+    },
+    {
       "type": "end_goal",
       "position": [0, 22, 0],
       "modelType": "trophy"

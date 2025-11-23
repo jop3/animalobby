@@ -158,6 +158,18 @@
       "coinType": "speed"
     },
     {
+      "type": "animal_part",
+      "id": "part_elephant_body",
+      "position": [6, 8, 15],
+      "partId": "elephant_body"
+    },
+    {
+      "type": "animal_part",
+      "id": "part_kangaroo_legs",
+      "position": [10, 13, 24],
+      "partId": "kangaroo_legs"
+    },
+    {
       "type": "end_goal",
       "position": [14, 18, 32],
       "modelType": "trophy"

@@ -207,6 +207,18 @@
       "coinType": "speed"
     },
     {
+      "type": "animal_part",
+      "id": "part_cheetah_body",
+      "position": [14, 10, 16],
+      "partId": "cheetah_body"
+    },
+    {
+      "type": "animal_part",
+      "id": "part_ostrich_legs",
+      "position": [20, 18, 24],
+      "partId": "ostrich_legs"
+    },
+    {
       "type": "end_goal",
       "position": [26, 24, 32],
       "modelType": "portal"

@@ -222,6 +222,18 @@
       "coinType": "gravity"
     },
     {
+      "type": "animal_part",
+      "id": "part_shark_fins",
+      "position": [5, 8, 30],
+      "partId": "shark_head"
+    },
+    {
+      "type": "animal_part",
+      "id": "part_turtle_shell",
+      "position": [7, 10, 40],
+      "partId": "turtle_body"
+    },
+    {
       "type": "end_goal",
       "position": [7, 13, 52],
       "modelType": "portal"

@@ -175,6 +175,24 @@
       "coinType": "speed"
     },
     {
+      "type": "animal_part",
+      "id": "part_owl_head",
+      "position": [8, 7, 30],
+      "partId": "owl_head"
+    },
+    {
+      "type": "animal_part",
+      "id": "part_turtle_body",
+      "position": [14, 8, 35],
+      "partId": "turtle_body"
+    },
+    {
+      "type": "animal_part",
+      "id": "part_gecko_legs",
+      "position": [10, 10, 45],
+      "partId": "gecko_legs"
+    },
+    {
       "type": "end_goal",
       "position": [14, 12, 50],
       "modelType": "trophy"

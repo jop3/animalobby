@@ -155,6 +155,24 @@
       "coinType": "speed"
     },
     {
+      "type": "animal_part",
+      "id": "part_monkey_body",
+      "position": [16, 3.5, 12],
+      "partId": "monkey_body"
+    },
+    {
+      "type": "animal_part",
+      "id": "part_spider_legs",
+      "position": [24, 4.5, 20],
+      "partId": "spider_legs"
+    },
+    {
+      "type": "animal_part",
+      "id": "part_grasshopper_legs",
+      "position": [32, 5.5, 26],
+      "partId": "grasshopper_legs"
+    },
+    {
       "type": "end_goal",
       "position": [32, 5, 32]
     }

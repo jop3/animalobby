@@ -162,6 +162,12 @@
       "coinType": "speed"
     },
     {
+      "type": "animal_part",
+      "id": "part_eagle_wings",
+      "position": [25, 8, 14],
+      "partId": "dragon_wings"
+    },
+    {
       "type": "end_goal",
       "position": [45, 10, 30]
     }

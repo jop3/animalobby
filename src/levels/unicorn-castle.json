@@ -404,6 +404,18 @@
       "coinType": "gravity"
     },
     {
+      "type": "animal_part",
+      "id": "part_unicorn_horn",
+      "position": [60, 10, 0],
+      "partId": "rabbit_head"
+    },
+    {
+      "type": "animal_part",
+      "id": "part_wings_magic",
+      "position": [90, 15, 0],
+      "partId": "dragon_wings"
+    },
+    {
       "type": "end_goal",
       "position": [124, 21, 0],
       "modelType": "trophy"

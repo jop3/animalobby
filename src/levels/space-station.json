@@ -264,6 +264,12 @@
       "coinType": "speed"
     },
     {
+      "type": "animal_part",
+      "id": "part_robot_body",
+      "position": [0, 15, 0],
+      "partId": "default_body"
+    },
+    {
       "type": "end_goal",
       "position": [0, 29, 0],
       "modelType": "trophy"
