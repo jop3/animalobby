@@ -489,6 +489,36 @@
       "startsOpen": false
     },
     {
+      "type": "animal_part",
+      "id": "part_cheetah_legs",
+      "position": [28, 3.5, 4],
+      "partId": "cheetah_legs"
+    },
+    {
+      "type": "animal_part",
+      "id": "part_eagle_head",
+      "position": [60, 6, 8],
+      "partId": "eagle_head"
+    },
+    {
+      "type": "animal_part",
+      "id": "part_gorilla_body",
+      "position": [100, 11.5, 18],
+      "partId": "gorilla_body"
+    },
+    {
+      "type": "animal_part",
+      "id": "part_fox_head",
+      "position": [45, 4.5, 2],
+      "partId": "fox_head"
+    },
+    {
+      "type": "animal_part",
+      "id": "part_frog_legs",
+      "position": [75, 8.5, 12],
+      "partId": "frog_legs"
+    },
+    {
       "type": "end_goal",
       "position": [160, 21, 34],
       "modelType": "trophy"

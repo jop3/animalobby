@@ -17,6 +17,7 @@ import { SpinningBlade } from '../hazards/SpinningBlade';
 import { MovingWall } from '../hazards/MovingWall';
 import { SwingingLog } from '../hazards/SwingingLog';
 import { PowerUp } from '../environment/PowerUp';
+import { AnimalPartPickup } from '../collectibles/AnimalPartPickup';
 import { ClimbableWall } from '../environment/ClimbableWall';
 import { LowObstacle } from '../environment/LowObstacle';
 import { Switch } from '../hazards/Switch';
@@ -242,6 +243,16 @@ export function EntityFactory({ entity, index }: EntityFactoryProps) {
           position={entity.position}
           powerUpType={entity.powerUpType}
           duration={entity.duration}
+        />
+      );
+
+    case 'animal_part':
+      return (
+        <AnimalPartPickup
+          key={key}
+          id={entity.id || key}
+          position={entity.position}
+          partId={entity.partId}
         />
       );
 

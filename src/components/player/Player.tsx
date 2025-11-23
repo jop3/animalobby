@@ -37,6 +37,7 @@ export const Player = forwardRef<any>((props, ref) => {
   const die = useGameStore((state) => state.die);
   const respawn = useGameStore((state) => state.respawn);
   const setPlayerPosition = useGameStore((state) => state.setPlayerPosition);
+  const setInvincible = useGameStore((state) => state.setInvincible);
 
   // Keyboard controls
   const [, getKeys] = useKeyboardControls<string>();
@@ -104,9 +105,10 @@ export const Player = forwardRef<any>((props, ref) => {
         // Grant invincibility frames after respawn
         invincibilityTimeRef.current = 2.0; // 2 seconds of invincibility
         setIsInvincible(true);
+        setInvincible(true); // Update global store so hazards know
       }, 1000); // Longer delay to show particles
     }
-  }, [isDead, checkpointPosition, respawn]);
+  }, [isDead, checkpointPosition, respawn, setInvincible]);
 
   // Movement and physics
   useFrame((state, delta) => {
@@ -155,6 +157,7 @@ export const Player = forwardRef<any>((props, ref) => {
       invincibilityTimeRef.current -= delta;
       if (invincibilityTimeRef.current <= 0) {
         setIsInvincible(false);
+        setInvincible(false); // Update global store
       }
     }
 

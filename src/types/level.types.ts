@@ -51,7 +51,8 @@ export type EntityType =
   | 'pressure_plate'
   | 'climbable_wall'
   | 'low_obstacle'
-  | 'boss_encounter';
+  | 'boss_encounter'
+  | 'animal_part';
 
 // Base entity (all entities extend this)
 export interface BaseEntity {
@@ -257,6 +258,12 @@ export interface PowerUpEntity extends BaseEntity {
   duration?: number; // Duration in seconds (default 10)
 }
 
+// Animal Part - Collectible to unlock parts in Animal Lab
+export interface AnimalPartEntity extends BaseEntity {
+  type: 'animal_part';
+  partId: string; // ID of the part from animalParts.ts (e.g., 'bunny_legs', 'lion_head')
+}
+
 // Switch - Activates doors or platforms
 export interface SwitchEntity extends BaseEntity {
   type: 'switch';
@@ -331,6 +338,7 @@ export type LevelEntity =
   | DartTrapEntity
   | SwingingLogEntity
   | PowerUpEntity
+  | AnimalPartEntity
   | SwitchEntity
   | DoorEntity
   | PressurePlateEntity
