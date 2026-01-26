@@ -4,6 +4,7 @@ import { RigidBody } from '@react-three/rapier';
 import { Mesh } from 'three';
 import { useGameStore } from '../../store/useGameStore';
 import { getPart } from '../../data/animalParts';
+import { AnimalPartParticles } from '../effects/ParticleSystem';
 
 interface AnimalPartPickupProps {
   id: string;
@@ -14,6 +15,7 @@ interface AnimalPartPickupProps {
 export function AnimalPartPickup({ id, partId, position }: AnimalPartPickupProps) {
   const meshRef = useRef<Mesh>(null);
   const [collected, setCollected] = useState(false);
+  const [showParticles, setShowParticles] = useState(false);
   const unlockPart = useGameStore((state) => state.unlockPart);
 
   const part = getPart(partId);
@@ -30,15 +32,20 @@ export function AnimalPartPickup({ id, partId, position }: AnimalPartPickupProps
     if (collected || !part) return;
 
     setCollected(true);
+    setShowParticles(true);
     unlockPart(partId);
-
-    // Particle burst effect handled by component unmount
   };
 
-  if (collected || !part) return null;
+  // Show particles briefly after collection
+  if (collected) {
+    return showParticles ? <AnimalPartParticles position={position} color={getColor()} /> : null;
+  }
 
-  // Render based on part type
-  const getColor = () => {
+  if (!part) return null;
+
+  // Get color based on part type
+  function getColor() {
+    if (!part) return '#FFFFFF';
     switch (part.type) {
       case 'head':
         return '#FFD700'; // Gold for head parts
@@ -49,7 +56,7 @@ export function AnimalPartPickup({ id, partId, position }: AnimalPartPickupProps
       default:
         return '#FFFFFF';
     }
-  };
+  }
 
   const getEmoji = () => {
     switch (part.type) {

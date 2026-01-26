@@ -2,6 +2,7 @@ import { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useGameStore } from '../../store/useGameStore';
+import { IceCrystals } from './ParticleSystem';
 
 interface LevelBackgroundProps {
   levelId: string;
@@ -412,6 +413,15 @@ function IceCavernBackground({ particleMultiplier = 1.0 }: { particleMultiplier?
         <planeGeometry args={[300, 200]} />
         <meshBasicMaterial color="#1a1a2e" />
       </mesh>
+
+      {/* Floating ice crystals */}
+      {particleMultiplier > 0.3 && (
+        <>
+          <IceCrystals position={[-40, 10, -20]} count={8} />
+          <IceCrystals position={[40, 15, -25]} count={8} />
+          <IceCrystals position={[0, 5, -15]} count={10} />
+        </>
+      )}
     </>
   );
 }

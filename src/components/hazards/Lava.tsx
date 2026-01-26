@@ -3,6 +3,7 @@ import { useFrame } from '@react-three/fiber';
 import { RigidBody } from '@react-three/rapier';
 import { Mesh, ShaderMaterial } from 'three';
 import { useGameStore } from '../../store/useGameStore';
+import { FireEmbers } from '../effects/ParticleSystem';
 
 interface LavaProps {
   position: [number, number, number];
@@ -154,6 +155,11 @@ export function Lava({ position, size = [4, 0.2, 4] }: LavaProps) {
         distance={12}
         color="#FF6600"
       />
+
+      {/* Rising fire embers - only on medium/high quality */}
+      {quality !== 'low' && (
+        <FireEmbers position={[0, size[1], 0]} count={12} />
+      )}
     </RigidBody>
   );
 }

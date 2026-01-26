@@ -1,9 +1,10 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { RigidBody, CuboidCollider } from '@react-three/rapier';
 import { Mesh } from 'three';
 import { useGameStore } from '../../store/useGameStore';
 import { audioManager } from '../../utils/audioManager';
+import { CheckpointParticles } from '../effects/ParticleSystem';
 
 interface CheckpointProps {
   id: string;
@@ -12,7 +13,7 @@ interface CheckpointProps {
 
 export function Checkpoint({ id, position }: CheckpointProps) {
   const meshRef = useRef<Mesh>(null);
-  const [activated, setActivated] = useState(false);
+  const [showParticles, setShowParticles] = useState(false);
   const setCheckpoint = useGameStore((state) => state.setCheckpoint);
   const lastCheckpointId = useGameStore((state) => state.lastCheckpointId);
   const quality = useGameStore((state) => state.quality);
@@ -27,10 +28,18 @@ export function Checkpoint({ id, position }: CheckpointProps) {
     }
   });
 
+  // Hide particles after animation
+  useEffect(() => {
+    if (showParticles) {
+      const timer = setTimeout(() => setShowParticles(false), 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [showParticles]);
+
   const handleActivate = () => {
     if (isActive) return;
 
-    setActivated(true);
+    setShowParticles(true);
     setCheckpoint(position, id);
     audioManager.playCheckpoint();
   };
@@ -122,6 +131,11 @@ export function Checkpoint({ id, position }: CheckpointProps) {
           opacity={isActive ? 0.5 : 0.2}
         />
       </mesh>
+
+      {/* Activation particle burst */}
+      {showParticles && quality !== 'low' && (
+        <CheckpointParticles position={[0, 1, 0]} />
+      )}
     </group>
   );
 }
