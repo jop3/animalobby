@@ -38,6 +38,10 @@ export function LevelBackground({ levelId, skyColor }: LevelBackgroundProps) {
         return <TrainingFacilityBackground />;
       case 'unicorn_castle':
         return <UnicornCastleBackground particleMultiplier={particleMultiplier} />;
+      case 'sky_islands':
+        return <SkyIslandsBackground />;
+      case 'jungle_challenge':
+        return <JungleChallengeBackground particleMultiplier={particleMultiplier} />;
       default:
         return null;
     }
@@ -1042,6 +1046,208 @@ function UnicornCastleBackground({ particleMultiplier = 1.0 }: { particleMultipl
           </mesh>
         );
       })}
+    </>
+  );
+}
+
+// Sky Islands Background - Fluffy clouds and floating islands
+function SkyIslandsBackground() {
+  const cloudsRef = useRef<THREE.Group>(null);
+
+  useFrame((state) => {
+    if (cloudsRef.current) {
+      cloudsRef.current.position.x = Math.sin(state.clock.elapsedTime * 0.05) * 20;
+    }
+  });
+
+  return (
+    <>
+      {/* Bright sun */}
+      <mesh position={[70, 60, -50]}>
+        <sphereGeometry args={[12, 32, 32]} />
+        <meshBasicMaterial color="#FFE066" />
+      </mesh>
+      <mesh position={[70, 60, -50]}>
+        <sphereGeometry args={[18, 32, 32]} />
+        <meshBasicMaterial color="#FFD93D" transparent opacity={0.4} />
+      </mesh>
+
+      {/* Fluffy clouds */}
+      <group ref={cloudsRef}>
+        {Array.from({ length: 12 }).map((_, i) => (
+          <group
+            key={i}
+            position={[
+              (i - 6) * 35,
+              25 + Math.sin(i * 2) * 15,
+              -30 - (i % 3) * 15,
+            ]}
+          >
+            <mesh>
+              <sphereGeometry args={[10 + Math.random() * 5, 16, 16]} />
+              <meshBasicMaterial color="#FFFFFF" transparent opacity={0.85} />
+            </mesh>
+            <mesh position={[8, -2, 0]}>
+              <sphereGeometry args={[7, 16, 16]} />
+              <meshBasicMaterial color="#FFFFFF" transparent opacity={0.85} />
+            </mesh>
+            <mesh position={[-8, -2, 0]}>
+              <sphereGeometry args={[7, 16, 16]} />
+              <meshBasicMaterial color="#FFFFFF" transparent opacity={0.85} />
+            </mesh>
+            <mesh position={[0, -5, 0]}>
+              <sphereGeometry args={[8, 16, 16]} />
+              <meshBasicMaterial color="#FFFFFF" transparent opacity={0.85} />
+            </mesh>
+          </group>
+        ))}
+      </group>
+
+      {/* Distant floating islands */}
+      {Array.from({ length: 5 }).map((_, i) => (
+        <group
+          key={`island-${i}`}
+          position={[(i - 2) * 50, -10 + Math.sin(i * 3) * 10, -60 - i * 5]}
+        >
+          {/* Island base */}
+          <mesh>
+            <coneGeometry args={[15 + Math.random() * 8, 20, 6]} />
+            <meshBasicMaterial color="#8B4513" transparent opacity={0.5} />
+          </mesh>
+          {/* Grass top */}
+          <mesh position={[0, 8, 0]}>
+            <cylinderGeometry args={[12, 15, 5, 6]} />
+            <meshBasicMaterial color="#228B22" transparent opacity={0.5} />
+          </mesh>
+        </group>
+      ))}
+
+      {/* Birds */}
+      {Array.from({ length: 8 }).map((_, i) => (
+        <mesh
+          key={`bird-${i}`}
+          position={[
+            (Math.random() - 0.5) * 120,
+            30 + Math.random() * 20,
+            -20 - Math.random() * 30,
+          ]}
+        >
+          <planeGeometry args={[3, 1]} />
+          <meshBasicMaterial color="#333333" transparent opacity={0.6} side={THREE.DoubleSide} />
+        </mesh>
+      ))}
+    </>
+  );
+}
+
+// Jungle Challenge Background - Dense foliage and ancient ruins
+function JungleChallengeBackground({ particleMultiplier = 1.0 }: { particleMultiplier?: number }) {
+  const leafParticlesRef = useRef<THREE.Points>(null);
+
+  useFrame((state) => {
+    if (leafParticlesRef.current) {
+      // Gentle leaf swaying
+      leafParticlesRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.2) * 0.1;
+
+      // Falling leaves effect
+      const positions = leafParticlesRef.current.geometry.attributes.position.array as Float32Array;
+      for (let i = 0; i < positions.length; i += 3) {
+        positions[i + 1] -= 0.05; // Fall
+        if (positions[i + 1] < -30) {
+          positions[i + 1] = 40 + Math.random() * 20; // Reset to top
+        }
+      }
+      leafParticlesRef.current.geometry.attributes.position.needsUpdate = true;
+    }
+  });
+
+  return (
+    <>
+      {/* Dense jungle canopy */}
+      {Array.from({ length: 15 }).map((_, i) => {
+        const x = (Math.random() - 0.5) * 200;
+        const scale = 0.8 + Math.random() * 0.6;
+        return (
+          <group key={`tree-${i}`} position={[x, -20, -40 - Math.random() * 20]} scale={scale}>
+            {/* Tree trunk */}
+            <mesh position={[0, 15, 0]}>
+              <cylinderGeometry args={[2, 3, 30, 8]} />
+              <meshBasicMaterial color="#4a3728" transparent opacity={0.6} />
+            </mesh>
+            {/* Foliage layers */}
+            <mesh position={[0, 35, 0]}>
+              <sphereGeometry args={[15, 8, 8]} />
+              <meshBasicMaterial color="#1a5c1a" transparent opacity={0.5} />
+            </mesh>
+            <mesh position={[0, 42, 0]}>
+              <sphereGeometry args={[12, 8, 8]} />
+              <meshBasicMaterial color="#228B22" transparent opacity={0.5} />
+            </mesh>
+          </group>
+        );
+      })}
+
+      {/* Ancient temple ruins in background */}
+      <group position={[0, -25, -70]}>
+        {/* Temple base */}
+        <mesh>
+          <boxGeometry args={[40, 20, 30]} />
+          <meshBasicMaterial color="#8B8878" transparent opacity={0.4} />
+        </mesh>
+        {/* Temple steps */}
+        <mesh position={[0, 12, 18]}>
+          <boxGeometry args={[35, 5, 8]} />
+          <meshBasicMaterial color="#8B8878" transparent opacity={0.4} />
+        </mesh>
+        {/* Temple entrance */}
+        <mesh position={[0, 5, 16]}>
+          <boxGeometry args={[8, 10, 2]} />
+          <meshBasicMaterial color="#1a1a1a" transparent opacity={0.6} />
+        </mesh>
+        {/* Temple pillars */}
+        {[-12, -6, 6, 12].map((x, i) => (
+          <mesh key={`pillar-${i}`} position={[x, 15, 12]}>
+            <cylinderGeometry args={[2, 2, 20, 8]} />
+            <meshBasicMaterial color="#A09080" transparent opacity={0.4} />
+          </mesh>
+        ))}
+      </group>
+
+      {/* Falling leaves particles */}
+      <points ref={leafParticlesRef}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            count={Math.floor(100 * particleMultiplier)}
+            array={new Float32Array(
+              Array.from({ length: Math.floor(300 * particleMultiplier) }, (_, i) => {
+                if (i % 3 === 0) return (Math.random() - 0.5) * 150;
+                if (i % 3 === 1) return Math.random() * 60;
+                return (Math.random() - 0.5) * 60;
+              })
+            )}
+            itemSize={3}
+          />
+        </bufferGeometry>
+        <pointsMaterial size={3} color="#228B22" transparent opacity={0.6} />
+      </points>
+
+      {/* Vines hanging from top */}
+      {Array.from({ length: 10 }).map((_, i) => (
+        <mesh
+          key={`vine-${i}`}
+          position={[(Math.random() - 0.5) * 150, 30, -30 - Math.random() * 15]}
+        >
+          <cylinderGeometry args={[0.3, 0.3, 40 + Math.random() * 20, 4]} />
+          <meshBasicMaterial color="#2d5a27" transparent opacity={0.5} />
+        </mesh>
+      ))}
+
+      {/* Mist/fog at bottom */}
+      <mesh position={[0, -35, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[300, 150]} />
+        <meshBasicMaterial color="#a8c090" transparent opacity={0.4} />
+      </mesh>
     </>
   );
 }
