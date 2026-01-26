@@ -3,6 +3,7 @@ import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useGameStore } from '../../store/useGameStore';
 import { IceCrystals } from './ParticleSystem';
+import { InstancedCones, InstancedCubes, generateRandomPositions, generateRandomColors } from './InstancedGeometry';
 
 interface LevelBackgroundProps {
   levelId: string;
@@ -385,6 +386,23 @@ function IceCavernBackground({ particleMultiplier = 1.0 }: { particleMultiplier?
     `,
   }), []);
 
+  // Generate stalactite data using InstancedMesh for better performance
+  const stalactiteData = useMemo(() => {
+    const count = Math.floor(30 * particleMultiplier);
+    const positions = new Float32Array(count * 3);
+    const sizes = new Float32Array(count * 2);
+
+    for (let i = 0; i < count; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 150;
+      positions[i * 3 + 1] = 30 + Math.random() * 20;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 40;
+      sizes[i * 2] = 1 + Math.random() * 2; // radius
+      sizes[i * 2 + 1] = 5 + Math.random() * 10; // height
+    }
+
+    return { count, positions, sizes };
+  }, [particleMultiplier]);
+
   return (
     <>
       {/* Aurora borealis effect */}
@@ -393,20 +411,15 @@ function IceCavernBackground({ particleMultiplier = 1.0 }: { particleMultiplier?
         <shaderMaterial ref={auroraMaterialRef} {...auroraShader} transparent />
       </mesh>
 
-      {/* Ice stalactites */}
-      {Array.from({ length: 15 }).map((_, i) => (
-        <mesh
-          key={i}
-          position={[
-            (Math.random() - 0.5) * 150,
-            30 + Math.random() * 20,
-            (Math.random() - 0.5) * 40,
-          ]}
-        >
-          <coneGeometry args={[1 + Math.random() * 2, 5 + Math.random() * 10, 6]} />
-          <meshBasicMaterial color="#a5d8ff" transparent opacity={0.7} />
-        </mesh>
-      ))}
+      {/* Ice stalactites - using InstancedMesh for performance */}
+      <InstancedCones
+        count={stalactiteData.count}
+        positions={stalactiteData.positions}
+        sizes={stalactiteData.sizes}
+        color="#a5d8ff"
+        transparent
+        opacity={0.7}
+      />
 
       {/* Cave ceiling */}
       <mesh position={[0, 50, 0]} rotation={[0, 0, 0]}>
