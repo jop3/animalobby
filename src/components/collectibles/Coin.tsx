@@ -61,26 +61,38 @@ export function Coin({ id, position, type }: CoinProps) {
         <boxGeometry args={[0.6, 0.6, 0.15]} />
         <meshStandardMaterial
           color={color}
-          roughness={0.3}
-          metalness={0.6}
+          roughness={0.2}
+          metalness={0.7}
           emissive={glowColor}
-          emissiveIntensity={0.3}
+          emissiveIntensity={0.8}
           flatShading
         />
       </mesh>
 
-      {/* Center detail */}
+      {/* Center detail - bright glow core */}
       <mesh position={[0, 0, 0.1]}>
         <boxGeometry args={[0.35, 0.35, 0.05]} />
         <meshStandardMaterial
           color={glowColor}
-          roughness={0.2}
-          metalness={0.8}
+          roughness={0.1}
+          metalness={0.9}
           emissive={glowColor}
-          emissiveIntensity={0.5}
+          emissiveIntensity={1.5}
           flatShading
         />
       </mesh>
+
+      {/* Glow halo - adds extra bloom visibility */}
+      {quality !== 'low' && (
+        <mesh position={[0, 0, 0]}>
+          <sphereGeometry args={[0.5, 8, 8]} />
+          <meshBasicMaterial
+            color={glowColor}
+            transparent
+            opacity={0.15}
+          />
+        </mesh>
+      )}
 
       {/* Collision sensor (invisible) */}
       <mesh visible={false}>

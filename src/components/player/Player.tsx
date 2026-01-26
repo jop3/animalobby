@@ -165,7 +165,6 @@ export const Player = forwardRef<any>((props, ref) => {
 
     // Death check
     if (position.y < DEATH_Y) {
-      audioManager.playDeath();
       die();
       return;
     }

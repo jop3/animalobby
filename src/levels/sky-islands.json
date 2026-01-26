@@ -168,6 +168,18 @@
       "partId": "dragon_wings"
     },
     {
+      "type": "animal_part",
+      "id": "part_eagle_head",
+      "position": [10, 4, 8],
+      "partId": "eagle_head"
+    },
+    {
+      "type": "animal_part",
+      "id": "part_owl_head",
+      "position": [35, 12, 22],
+      "partId": "owl_head"
+    },
+    {
       "type": "end_goal",
       "position": [45, 10, 30]
     }

@@ -265,9 +265,21 @@
     },
     {
       "type": "animal_part",
-      "id": "part_robot_body",
+      "id": "part_turtle_body",
       "position": [0, 15, 0],
-      "partId": "default_body"
+      "partId": "turtle_body"
+    },
+    {
+      "type": "animal_part",
+      "id": "part_spider_legs",
+      "position": [-11, 17, -6],
+      "partId": "spider_legs"
+    },
+    {
+      "type": "animal_part",
+      "id": "part_wolf_head",
+      "position": [8, 23, -11],
+      "partId": "wolf_head"
     },
     {
       "type": "end_goal",

@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { GameState, CoinType, PartType } from '../types/game.types';
+import { audioManager } from '../utils/audioManager';
 
 const INITIAL_STATE = {
   coins: {
@@ -131,9 +132,12 @@ export const useGameStore = create<GameState>()(
 
       // Death and respawn
       die: () => {
-        const { isInvincible } = get();
-        // Don't die if invincible
-        if (isInvincible) return;
+        const { isInvincible, isDead } = get();
+        // Don't die if invincible or already dead
+        if (isInvincible || isDead) return;
+
+        // Play death sound centrally so all death sources trigger it
+        audioManager.playDeath();
 
         set((state) => ({
           isDead: true,

@@ -18,9 +18,9 @@ export function PostProcessing() {
   return (
     <EffectComposer>
       <Bloom
-        luminanceThreshold={needsExtraGlow ? 0.6 : 0.9}
-        luminanceSmoothing={0.9}
-        intensity={needsExtraGlow ? (quality === 'high' ? 2.5 : 2) : (quality === 'high' ? 1.5 : 1)}
+        luminanceThreshold={needsExtraGlow ? 0.5 : 0.7}
+        luminanceSmoothing={0.8}
+        intensity={needsExtraGlow ? (quality === 'high' ? 2.5 : 2) : (quality === 'high' ? 1.8 : 1.2)}
         mipmapBlur={quality === 'high'}
       />
 

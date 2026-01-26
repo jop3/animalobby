@@ -67,13 +67,25 @@ export function Checkpoint({ id, position }: CheckpointProps) {
         <boxGeometry args={[1.2, 1.2, 1.2]} />
         <meshStandardMaterial
           color={isActive ? '#F1C40F' : '#7F8C8D'}
-          roughness={0.3}
-          metalness={0.7}
-          emissive={isActive ? '#F1C40F' : '#666666'}
-          emissiveIntensity={isActive ? 1.0 : 0.3}
+          roughness={0.2}
+          metalness={0.8}
+          emissive={isActive ? '#FFFF00' : '#666666'}
+          emissiveIntensity={isActive ? 2.0 : 0.3}
           flatShading
         />
       </mesh>
+
+      {/* Beacon glow sphere - creates strong bloom when active */}
+      {isActive && quality !== 'low' && (
+        <mesh position={[0, 4.5, 0]}>
+          <sphereGeometry args={[0.8, 8, 8]} />
+          <meshBasicMaterial
+            color="#FFFF00"
+            transparent
+            opacity={0.3}
+          />
+        </mesh>
+      )}
 
       {/* Point light for extra visibility - disabled on low quality */}
       {quality !== 'low' && (

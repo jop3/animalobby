@@ -82,15 +82,25 @@ export function AnimalPartPickup({ id, partId, position }: AnimalPartPickupProps
           />
         </mesh>
 
-        {/* Inner rotating star */}
+        {/* Inner rotating star - bright glow core */}
         <mesh ref={meshRef}>
           <boxGeometry args={[0.6, 0.6, 0.6]} />
           <meshStandardMaterial
             color={getColor()}
             emissive={getColor()}
-            emissiveIntensity={0.5}
-            roughness={0.3}
-            metalness={0.7}
+            emissiveIntensity={1.5}
+            roughness={0.2}
+            metalness={0.8}
+          />
+        </mesh>
+
+        {/* Glow sphere for bloom effect */}
+        <mesh>
+          <sphereGeometry args={[0.7, 8, 8]} />
+          <meshBasicMaterial
+            color={getColor()}
+            transparent
+            opacity={0.25}
           />
         </mesh>
 
