@@ -32,8 +32,7 @@ export function AnimalPartPickup({ id, partId, position }: AnimalPartPickupProps
     setCollected(true);
     unlockPart(partId);
 
-    // Particle burst effect
-    // TODO: Add particle effect
+    // Particle burst effect handled by component unmount
   };
 
   if (collected || !part) return null;

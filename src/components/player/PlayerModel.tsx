@@ -27,7 +27,6 @@ export function PlayerModel({ loadout }: PlayerModelProps) {
     // Head (positioned on top)
     const headModelId = getModelId(loadout.head, 'head');
     const headModel = VOXEL_MODELS[headModelId] || VOXEL_MODELS.human_head;
-    console.log(`[PlayerModel] Rendering head: ${headModelId}`, headModel ? `(${headModel.boxes.length} voxels)` : '(fallback to human)');
 
     const head = createVoxelGroup(headModel);
     head.position.set(0, 1.2, 0);
@@ -36,7 +35,6 @@ export function PlayerModel({ loadout }: PlayerModelProps) {
     // Body (positioned in middle)
     const bodyModelId = getModelId(loadout.body, 'body');
     const bodyModel = VOXEL_MODELS[bodyModelId] || VOXEL_MODELS.human_body;
-    console.log(`[PlayerModel] Rendering body: ${bodyModelId}`, bodyModel ? `(${bodyModel.boxes.length} voxels)` : '(fallback to human)');
 
     const body = createVoxelGroup(bodyModel);
     body.position.set(0, 0.3, 0);
@@ -45,7 +43,6 @@ export function PlayerModel({ loadout }: PlayerModelProps) {
     // Legs (positioned at bottom)
     const legsModelId = getModelId(loadout.legs, 'legs');
     const legsModel = VOXEL_MODELS[legsModelId] || VOXEL_MODELS.human_legs;
-    console.log(`[PlayerModel] Rendering legs: ${legsModelId}`, legsModel ? `(${legsModel.boxes.length} voxels)` : '(fallback to human)');
 
     const legs = createVoxelGroup(legsModel);
     legs.position.set(0, -0.5, 0);

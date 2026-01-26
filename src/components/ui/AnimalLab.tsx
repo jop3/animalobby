@@ -49,9 +49,7 @@ export function AnimalLab({ isOpen, onClose }: AnimalLabProps) {
   const stats = calculateStats();
 
   const handleEquip = (partId: string, slot: PartType) => {
-    console.log(`[AnimalLab] Equipping ${partId} to ${slot} slot`);
     equipPart(partId, slot);
-    console.log('[AnimalLab] New loadout:', { ...currentLoadout, [slot]: partId });
   };
 
   return (
@@ -311,9 +309,7 @@ interface PartCardProps {
   coins: { speed: number; gravity: number };
 }
 
-function PartCard({ part, isUnlocked, isEquipped, onEquip, coins }: PartCardProps) {
-  // Calculate if player can afford this part (placeholder - you'd set actual costs)
-  const canAfford = true; // For now, all unlocked parts are free
+function PartCard({ part, isUnlocked, isEquipped, onEquip }: PartCardProps) {
 
   return (
     <div

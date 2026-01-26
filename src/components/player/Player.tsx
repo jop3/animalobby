@@ -8,6 +8,7 @@ import { useGameStore } from '../../store/useGameStore';
 import { getPart } from '../../data/animalParts';
 import { PlayerModel } from './PlayerModel';
 import { DeathParticles } from '../effects/DeathParticles';
+import { audioManager } from '../../utils/audioManager';
 
 const DEATH_Y = -30; // Player dies when falling below this Y position
 
@@ -132,6 +133,7 @@ export const Player = forwardRef<any>((props, ref) => {
     if (!wasOnGroundRef.current && isOnGround.current && velocity.y < -2) {
       setLandingPosition([position.x, position.y - 0.8, position.z]);
       setShowLandingParticles(true);
+      audioManager.playLand();
       setTimeout(() => setShowLandingParticles(false), 300);
     }
     wasOnGroundRef.current = isOnGround.current;
@@ -163,6 +165,7 @@ export const Player = forwardRef<any>((props, ref) => {
 
     // Death check
     if (position.y < DEATH_Y) {
+      audioManager.playDeath();
       die();
       return;
     }
@@ -204,6 +207,7 @@ export const Player = forwardRef<any>((props, ref) => {
       jumpBufferRef.current = 0; // Consume the buffered input
       coyoteTimeRef.current = 0; // Consume coyote time
       isJumpingRef.current = true; // Start tracking for variable jump height
+      audioManager.playJump();
     } else if (jumpPressed && playerStats.canDoubleJump && jumpCount.current === 1) {
       // Double jump (in air, but only if you have the ability)
       body.setLinvel(
@@ -216,6 +220,7 @@ export const Player = forwardRef<any>((props, ref) => {
       );
       jumpCount.current = 2;
       isJumpingRef.current = true; // Track for variable height on double jump too
+      audioManager.playJump();
     }
 
     // Variable jump height - cut upward velocity if jump released early

@@ -3,6 +3,7 @@ import { useFrame } from '@react-three/fiber';
 import { RigidBody, CuboidCollider } from '@react-three/rapier';
 import { Mesh } from 'three';
 import { useGameStore } from '../../store/useGameStore';
+import { audioManager } from '../../utils/audioManager';
 
 interface CheckpointProps {
   id: string;
@@ -31,10 +32,7 @@ export function Checkpoint({ id, position }: CheckpointProps) {
 
     setActivated(true);
     setCheckpoint(position, id);
-
-    // TODO: Play checkpoint sound
-    // TODO: Show "Checkpoint Saved!" message
-    console.log(`Checkpoint ${id} activated!`);
+    audioManager.playCheckpoint();
   };
 
   return (

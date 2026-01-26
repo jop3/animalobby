@@ -1,6 +1,30 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useMemo } from 'react';
 import { LEVEL_REGISTRY } from '../../data/levelRegistry';
 import { useGameStore } from '../../store/useGameStore';
+
+// Pre-generate star positions to avoid re-randomizing on every render
+function generateStarPositions(count: number) {
+  const stars = [];
+  for (let i = 0; i < count; i++) {
+    // Use deterministic seed based on index
+    const seed = (i * 9301 + 49297) % 233280;
+    const rand1 = seed / 233280;
+    const seed2 = (seed * 9301 + 49297) % 233280;
+    const rand2 = seed2 / 233280;
+    const seed3 = (seed2 * 9301 + 49297) % 233280;
+    const rand3 = seed3 / 233280;
+    const seed4 = (seed3 * 9301 + 49297) % 233280;
+    const rand4 = seed4 / 233280;
+
+    stars.push({
+      left: rand1 * 100,
+      top: rand2 * 100,
+      delay: rand3 * 3,
+      opacity: rand4 * 0.7 + 0.3,
+    });
+  }
+  return stars;
+}
 
 interface WorldMapProps {
   onSelectLevel: (levelId: string) => void;
@@ -22,6 +46,9 @@ const LEVEL_POSITIONS = [
   { x: 15, y: 45 },   // Space Station - back to left
 ];
 
+// Pre-generated star positions (50 stars)
+const STAR_POSITIONS = generateStarPositions(50);
+
 export function WorldMap({ onSelectLevel, currentLevelId }: WorldMapProps) {
   const [hoveredLevel, setHoveredLevel] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -30,7 +57,7 @@ export function WorldMap({ onSelectLevel, currentLevelId }: WorldMapProps) {
   const [zoom, setZoom] = useState(1);
   const mapRef = useRef<HTMLDivElement>(null);
 
-  // Get completed levels from store (you'll need to add this to the store)
+  // Get completed levels from store
   const completedLevels = useGameStore((state) => state.completedLevels || []);
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -60,14 +87,13 @@ export function WorldMap({ onSelectLevel, currentLevelId }: WorldMapProps) {
   const getLevelStatus = (index: number) => {
     const level = LEVEL_REGISTRY[index];
     const isCompleted = completedLevels.includes(level.level.id);
-    const isUnlocked = level.unlocked;
     const isCurrent = level.level.id === currentLevelId;
 
-    // For now, unlock levels progressively
+    // Unlock levels progressively
     const previousCompleted = index === 0 || completedLevels.includes(LEVEL_REGISTRY[index - 1].level.id);
-    const actuallyUnlocked = index === 0 || previousCompleted;
+    const isUnlocked = index === 0 || previousCompleted;
 
-    return { isCompleted, isUnlocked: actuallyUnlocked, isCurrent };
+    return { isCompleted, isUnlocked, isCurrent };
   };
 
   const getThemeColor = (levelId: string) => {
@@ -108,15 +134,15 @@ export function WorldMap({ onSelectLevel, currentLevelId }: WorldMapProps) {
     <div className="fixed inset-0 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 overflow-hidden z-50">
       {/* Background stars */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {Array.from({ length: 50 }).map((_, i) => (
+        {STAR_POSITIONS.map((star, i) => (
           <div
             key={i}
             className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`,
-              opacity: Math.random() * 0.7 + 0.3,
+              left: `${star.left}%`,
+              top: `${star.top}%`,
+              animationDelay: `${star.delay}s`,
+              opacity: star.opacity,
             }}
           />
         ))}
