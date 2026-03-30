@@ -1,7 +1,14 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { GameState, CoinType, PartType } from '../types/game.types';
+import { GameState, CoinType, PartType, AchievementProgress, BossDefeatRecord, LevelStats } from '../types/game.types';
 import { audioManager } from '../utils/audioManager';
+import {
+  ACHIEVEMENTS,
+  ALL_BOSS_TYPES,
+  ALL_LEVEL_IDS,
+  ALL_SECRET_IDS,
+  getAchievementById,
+} from '../data/achievements';
 
 const INITIAL_STATE = {
   coins: {
@@ -35,17 +42,27 @@ const INITIAL_STATE = {
   isDead: false,
   isPaused: false,
   hasWon: false,
-  quality: 'low' as const, // Default to low for better performance
-  difficulty: 'normal' as const, // Default to normal difficulty
+  quality: 'low' as const,
+  difficulty: 'normal' as const,
   soundEnabled: true,
   musicEnabled: true,
   completedLevels: [] as string[],
-  levelStats: {} as Record<string, any>,
+  levelStats: {} as Record<string, LevelStats>,
   playerName: 'Player',
+
+  // Achievement system
+  unlockedAchievements: {} as Record<string, AchievementProgress>,
+  foundSecrets: [] as string[],
+  defeatedBosses: {} as Record<string, BossDefeatRecord>,
+  totalDeaths: 0,
+  totalCompletions: 0,
+  pendingAchievementToast: null as string | null,
+
   currentRunStats: {
     startTime: null,
     deaths: 0,
     coinsCollected: 0,
+    secretsFoundThisRun: [] as string[],
   },
   activePowerUps: [],
   isWallClimbing: false,
@@ -69,6 +86,8 @@ export const useGameStore = create<GameState>()(
             coinsCollected: state.currentRunStats.coinsCollected + 1,
           },
         }));
+        // Check coin-related achievements
+        setTimeout(() => get().checkAchievements(), 0);
       },
 
       // Part unlocking
@@ -81,13 +100,14 @@ export const useGameStore = create<GameState>()(
             unlockedParts: [...state.unlockedParts, partId],
           };
         });
+        // Check part-related achievements
+        setTimeout(() => get().checkAchievements(), 0);
       },
 
       // Part equipping
       equipPart: (partId: string, slot: PartType) => {
         const { unlockedParts } = get();
 
-        // Can only equip unlocked parts
         if (!unlockedParts.includes(partId)) {
           console.warn(`Cannot equip locked part: ${partId}`);
           return;
@@ -114,7 +134,6 @@ export const useGameStore = create<GameState>()(
           checkpointJustSaved: true,
         });
 
-        // Clear notification after 2 seconds
         setTimeout(() => {
           set({ checkpointJustSaved: false });
         }, 2000);
@@ -133,24 +152,25 @@ export const useGameStore = create<GameState>()(
       // Death and respawn
       die: () => {
         const { isInvincible, isDead } = get();
-        // Don't die if invincible or already dead
         if (isInvincible || isDead) return;
 
-        // Play death sound centrally so all death sources trigger it
         audioManager.playDeath();
 
         set((state) => ({
           isDead: true,
+          totalDeaths: state.totalDeaths + 1,
           currentRunStats: {
             ...state.currentRunStats,
             deaths: state.currentRunStats.deaths + 1,
           },
         }));
+
+        // Check death-related achievements
+        setTimeout(() => get().checkAchievements(), 0);
       },
 
       respawn: () => {
         set({ isDead: false, isInvincible: true });
-        // Position is handled by the PlayerController component
       },
 
       // Win condition
@@ -160,19 +180,41 @@ export const useGameStore = create<GameState>()(
 
       // Level management
       loadLevel: (levelId: string) => {
-        set({
-          currentLevelId: levelId,
-          isDead: false,
-          hasWon: false,
-          isPaused: false,
-          playerPosition: null,
-          checkpointPosition: [0, 2, 0], // Will be overwritten by level's spawn point
-          lastCheckpointId: null,
-          currentRunStats: {
-            startTime: Date.now(),
-            deaths: 0,
-            coinsCollected: 0,
-          },
+        set((state) => {
+          // Increment attempts for this level
+          const existingStats = state.levelStats[levelId];
+          const newAttempts = existingStats ? existingStats.attempts + 1 : 1;
+
+          return {
+            currentLevelId: levelId,
+            isDead: false,
+            hasWon: false,
+            isPaused: false,
+            playerPosition: null,
+            checkpointPosition: [0, 2, 0],
+            lastCheckpointId: null,
+            currentRunStats: {
+              startTime: Date.now(),
+              deaths: 0,
+              coinsCollected: 0,
+              secretsFoundThisRun: [],
+            },
+            levelStats: {
+              ...state.levelStats,
+              [levelId]: existingStats
+                ? { ...existingStats, attempts: newAttempts }
+                : {
+                    bestTime: Infinity,
+                    totalDeaths: 0,
+                    coinsCollected: 0,
+                    playerName: state.playerName,
+                    completedAt: 0,
+                    attempts: newAttempts,
+                    secretsFound: [],
+                    allCoinsCollected: false,
+                  },
+            },
+          };
         });
       },
 
@@ -182,23 +224,31 @@ export const useGameStore = create<GameState>()(
           hasWon: false,
           isPaused: false,
           playerPosition: null,
-          checkpointPosition: [0, 2, 0], // Will be overwritten by level's spawn point
+          checkpointPosition: [0, 2, 0],
           lastCheckpointId: null,
         });
       },
 
       // Prestige system
       prestigeReset: () => {
-        const { prestigeLevel } = get();
+        const { prestigeLevel, unlockedAchievements, foundSecrets, defeatedBosses, totalDeaths, totalCompletions } = get();
 
         set({
           ...INITIAL_STATE,
           prestigeLevel: prestigeLevel + 1,
-          // Keep unlocked parts based on prestige
+          // Preserve achievement-related progress
+          unlockedAchievements,
+          foundSecrets,
+          defeatedBosses,
+          totalDeaths,
+          totalCompletions,
           unlockedParts: prestigeLevel >= 0
             ? [...INITIAL_STATE.unlockedParts, 'double_jump_ability']
             : INITIAL_STATE.unlockedParts,
         });
+
+        // Check prestige achievements
+        setTimeout(() => get().checkAchievements(), 0);
       },
 
       // Settings
@@ -225,13 +275,18 @@ export const useGameStore = create<GameState>()(
       // Level completion
       completeLevel: (levelId: string) => {
         set((state) => {
-          if (state.completedLevels.includes(levelId)) {
-            return state;
-          }
+          const newCompletedLevels = state.completedLevels.includes(levelId)
+            ? state.completedLevels
+            : [...state.completedLevels, levelId];
+
           return {
-            completedLevels: [...state.completedLevels, levelId],
+            completedLevels: newCompletedLevels,
+            totalCompletions: state.totalCompletions + 1,
           };
         });
+
+        // Check completion achievements
+        setTimeout(() => get().checkAchievements(), 0);
       },
 
       // Player name
@@ -271,24 +326,37 @@ export const useGameStore = create<GameState>()(
 
       // Save level stats
       saveLevelStats: (levelId: string, time: number) => {
-        const { currentRunStats, playerName, levelStats } = get();
+        const { currentRunStats, playerName, levelStats, defeatedBosses } = get();
         const existingStats = levelStats[levelId];
 
-        // Only save if it's a new best time or first completion
-        if (!existingStats || time < existingStats.bestTime) {
-          set((state) => ({
-            levelStats: {
-              ...state.levelStats,
-              [levelId]: {
-                bestTime: time,
-                totalDeaths: currentRunStats.deaths,
-                coinsCollected: currentRunStats.coinsCollected,
-                playerName,
-                completedAt: Date.now(),
-              },
-            },
-          }));
-        }
+        const newStats: LevelStats = {
+          bestTime: existingStats && existingStats.bestTime < time ? existingStats.bestTime : time,
+          totalDeaths: currentRunStats.deaths,
+          coinsCollected: currentRunStats.coinsCollected,
+          playerName,
+          completedAt: Date.now(),
+          attempts: existingStats?.attempts || 1,
+          secretsFound: existingStats?.secretsFound || currentRunStats.secretsFoundThisRun,
+          bossDefeated: !!Object.values(defeatedBosses).find((b) => b.levelId === levelId),
+          allCoinsCollected: existingStats?.allCoinsCollected || false, // Will be updated by level logic
+        };
+
+        // Merge secrets found this run with previously found secrets
+        const allSecretsFound = [
+          ...(existingStats?.secretsFound || []),
+          ...currentRunStats.secretsFoundThisRun,
+        ];
+        newStats.secretsFound = [...new Set(allSecretsFound)];
+
+        set((state) => ({
+          levelStats: {
+            ...state.levelStats,
+            [levelId]: newStats,
+          },
+        }));
+
+        // Check level completion achievements
+        setTimeout(() => get().checkAchievements(), 0);
       },
 
       // Power-up management
@@ -320,11 +388,127 @@ export const useGameStore = create<GameState>()(
       reset: () => {
         set(INITIAL_STATE);
       },
+
+      // ========================================================================
+      // ACHIEVEMENT SYSTEM ACTIONS
+      // ========================================================================
+
+      unlockAchievement: (achievementId: string) => {
+        const { unlockedAchievements } = get();
+
+        // Don't unlock if already unlocked
+        if (unlockedAchievements[achievementId]) return;
+
+        const achievement = getAchievementById(achievementId);
+        if (!achievement) return;
+
+        set((state) => ({
+          unlockedAchievements: {
+            ...state.unlockedAchievements,
+            [achievementId]: {
+              unlockedAt: Date.now(),
+              rewardClaimed: false,
+            },
+          },
+          pendingAchievementToast: achievementId,
+        }));
+
+        // Play achievement sound
+        audioManager.playCoin();
+      },
+
+      claimAchievementReward: (achievementId: string) => {
+        const { unlockedAchievements } = get();
+        const progress = unlockedAchievements[achievementId];
+
+        if (!progress || progress.rewardClaimed) return;
+
+        const achievement = getAchievementById(achievementId);
+        if (!achievement?.reward) return;
+
+        set((state) => {
+          const newState: Partial<GameState> = {
+            unlockedAchievements: {
+              ...state.unlockedAchievements,
+              [achievementId]: {
+                ...progress,
+                rewardClaimed: true,
+              },
+            },
+          };
+
+          // Apply reward
+          if (achievement.reward!.type === 'coins' && achievement.reward!.amount) {
+            newState.coins = {
+              speed: state.coins.speed + Math.floor(achievement.reward!.amount / 2),
+              gravity: state.coins.gravity + Math.ceil(achievement.reward!.amount / 2),
+            };
+          } else if (achievement.reward!.type === 'part' && achievement.reward!.partId) {
+            if (!state.unlockedParts.includes(achievement.reward!.partId)) {
+              newState.unlockedParts = [...state.unlockedParts, achievement.reward!.partId];
+            }
+          }
+
+          return newState as GameState;
+        });
+      },
+
+      clearAchievementToast: () => {
+        set({ pendingAchievementToast: null });
+      },
+
+      discoverSecret: (secretId: string) => {
+        const { foundSecrets, currentRunStats } = get();
+
+        if (foundSecrets.includes(secretId)) return;
+
+        set((state) => ({
+          foundSecrets: [...state.foundSecrets, secretId],
+          currentRunStats: {
+            ...state.currentRunStats,
+            secretsFoundThisRun: [...currentRunStats.secretsFoundThisRun, secretId],
+          },
+        }));
+
+        // Check secret-related achievements
+        setTimeout(() => get().checkAchievements(), 0);
+      },
+
+      defeatBoss: (bossType: string, levelId: string, deaths: number) => {
+        set((state) => ({
+          defeatedBosses: {
+            ...state.defeatedBosses,
+            [bossType]: {
+              bossType,
+              defeatedAt: Date.now(),
+              deaths,
+              levelId,
+            },
+          },
+        }));
+
+        // Check boss-related achievements
+        setTimeout(() => get().checkAchievements(), 0);
+      },
+
+      checkAchievements: () => {
+        const state = get();
+        const { unlockedAchievements, unlockAchievement } = state;
+
+        for (const achievement of ACHIEVEMENTS) {
+          // Skip if already unlocked
+          if (unlockedAchievements[achievement.id]) continue;
+
+          const isUnlocked = checkAchievementCondition(achievement.condition, state);
+          if (isUnlocked) {
+            unlockAchievement(achievement.id);
+          }
+        }
+      },
     }),
     {
-      name: 'animal-obby-save', // localStorage key
+      name: 'animal-obby-save',
       partialize: (state) => ({
-        // Only persist these fields
         coins: state.coins,
         unlockedParts: state.unlockedParts,
         currentLoadout: state.currentLoadout,
@@ -337,7 +521,84 @@ export const useGameStore = create<GameState>()(
         completedLevels: state.completedLevels,
         levelStats: state.levelStats,
         playerName: state.playerName,
+        // Persist achievement data
+        unlockedAchievements: state.unlockedAchievements,
+        foundSecrets: state.foundSecrets,
+        defeatedBosses: state.defeatedBosses,
+        totalDeaths: state.totalDeaths,
+        totalCompletions: state.totalCompletions,
       }),
     }
   )
 );
+
+// Helper function to check if an achievement condition is met
+function checkAchievementCondition(
+  condition: any,
+  state: GameState
+): boolean {
+  switch (condition.type) {
+    case 'defeat_boss':
+      return !!state.defeatedBosses[condition.bossType];
+
+    case 'defeat_boss_flawless':
+      const bossRecord = state.defeatedBosses[condition.bossType];
+      return bossRecord ? bossRecord.deaths === 0 : false;
+
+    case 'defeat_all_bosses':
+      return ALL_BOSS_TYPES.every((boss) => !!state.defeatedBosses[boss]);
+
+    case 'complete_level':
+      return state.completedLevels.includes(condition.levelId);
+
+    case 'complete_level_time':
+      const levelStats = state.levelStats[condition.levelId];
+      return levelStats ? levelStats.bestTime <= condition.maxTime : false;
+
+    case 'complete_level_flawless':
+      const flawlessStats = state.levelStats[condition.levelId];
+      return flawlessStats ? flawlessStats.totalDeaths === 0 : false;
+
+    case 'complete_level_perfect':
+      const perfectStats = state.levelStats[condition.levelId];
+      return perfectStats
+        ? perfectStats.totalDeaths === 0 && perfectStats.allCoinsCollected
+        : false;
+
+    case 'complete_all_levels':
+      return ALL_LEVEL_IDS.every((level) => state.completedLevels.includes(level));
+
+    case 'find_secret':
+      return state.foundSecrets.includes(condition.secretId);
+
+    case 'find_all_secrets_in_level':
+      const levelSecrets = ALL_SECRET_IDS.filter((s) => s.startsWith(condition.levelId));
+      return levelSecrets.every((s) => state.foundSecrets.includes(s));
+
+    case 'find_all_secrets':
+      return ALL_SECRET_IDS.every((s) => state.foundSecrets.includes(s));
+
+    case 'collect_total_coins':
+      return state.coins.speed + state.coins.gravity >= condition.amount;
+
+    case 'collect_all_coins_in_level':
+      const coinStats = state.levelStats[condition.levelId];
+      return coinStats ? coinStats.allCoinsCollected : false;
+
+    case 'unlock_all_parts':
+      // This would need the full list of parts to check against
+      return state.unlockedParts.length >= 30; // Approximate threshold
+
+    case 'total_deaths':
+      return state.totalDeaths >= condition.count;
+
+    case 'total_completions':
+      return state.totalCompletions >= condition.count;
+
+    case 'prestige_level':
+      return state.prestigeLevel >= condition.level;
+
+    default:
+      return false;
+  }
+}

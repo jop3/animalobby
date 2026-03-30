@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useGameStore } from '../../store/useGameStore';
 import { AnimalLab } from './AnimalLab';
 import { PauseMenu } from './PauseMenu';
@@ -107,6 +108,16 @@ export function HUD() {
                 ✍️ {playerName || 'Name'}
               </span>
             </button>
+
+            <Link
+              to="/editor"
+              className="bg-gradient-to-br from-orange-400 to-orange-600 hover:from-orange-500 hover:to-orange-700 rounded-chunky px-4 py-2 shadow-lg border-4 border-orange-800 transition-all hover:scale-105 active:scale-95"
+              title="Level Editor"
+            >
+              <span className="text-lg font-game text-stroke text-white">
+                🛠️ Editor
+              </span>
+            </Link>
           </div>
         </div>
 

@@ -1,200 +1,406 @@
 {
   "id": "desert_ruins",
   "name": "Desert Ruins",
-  "description": "Leap across crumbling ancient structures scattered in the desert",
+  "description": "Explore ancient temples with crumbling floors! Move fast or fall through the collapsing sandstone structures.",
   "difficulty": 2,
   "theme": {
     "skyColor": "#F4A460",
-    "ambientColor": "#FFD699"
+    "ambientColor": "#FFD699",
+    "fogColor": "#F4A460",
+    "fogDensity": 0.008
   },
-  "spawnPoint": [0, 3.5, 0],
+  "spawnPoint": [0, 2, 0],
   "entities": [
     {
       "type": "platform",
       "position": [0, 0, 0],
-      "size": [10, 2, 10],
+      "size": [10, 0.8, 10],
       "color": "#D2691E"
     },
     {
       "type": "checkpoint",
-      "id": "ruins_start",
-      "position": [0, 4.5, 0]
+      "id": "ruins_entrance",
+      "position": [0, 1, 0]
     },
     {
       "type": "coin",
       "id": "coin_1",
-      "position": [0, 4, 0],
+      "position": [3, 1.5, 0],
       "coinType": "speed"
-    },
-    {
-      "type": "platform",
-      "position": [8, 1, 6],
-      "size": [5, 1.5, 5],
-      "color": "#CD853F"
     },
     {
       "type": "coin",
       "id": "coin_2",
-      "position": [8, 3, 6],
-      "coinType": "gravity"
+      "position": [-3, 1.5, 0],
+      "coinType": "speed"
     },
+
     {
       "type": "platform",
-      "position": [4, 3, 14],
-      "size": [4, 1, 4],
-      "color": "#DEB887"
-    },
-    {
-      "type": "spike",
-      "position": [4, 4.5, 14],
-      "size": 0.9
-    },
-    {
-      "type": "platform",
-      "position": [-4, 2, 18],
-      "size": [6, 1.2, 6],
-      "color": "#D2691E"
-    },
-    {
-      "type": "rotating_hammer",
-      "position": [-4, 5, 18],
-      "rotationSpeed": 1,
-      "hammerLength": 3
-    },
-    {
-      "type": "platform",
-      "position": [6, 5, 22],
-      "size": [3, 0.8, 3],
+      "position": [8, 0.5, 4],
+      "size": [5, 0.8, 5],
       "color": "#CD853F"
-    },
-    {
-      "type": "platform",
-      "position": [12, 4, 28],
-      "size": [7, 1.8, 7],
-      "color": "#DEB887"
-    },
-    {
-      "type": "checkpoint",
-      "id": "ruins_mid",
-      "position": [12, 6, 28]
     },
     {
       "type": "coin",
       "id": "coin_3",
-      "position": [12, 7, 28],
-      "coinType": "speed"
+      "position": [8, 2, 4],
+      "coinType": "gravity"
     },
+
     {
       "type": "platform",
-      "position": [18, 6, 22],
-      "size": [4, 1, 4],
-      "color": "#D2691E"
-    },
-    {
-      "type": "zeus_lightning",
-      "position": [18, 6, 22],
-      "radius": 2,
-      "interval": 5,
-      "warningDuration": 1.5
-    },
-    {
-      "type": "platform",
-      "position": [26, 3, 24],
-      "size": [5, 1.5, 5],
-      "color": "#CD853F"
-    },
-    {
-      "type": "vine",
-      "position": [26, 10, 24],
-      "height": 6,
-      "attackInterval": 4,
-      "attackDuration": 1.2
-    },
-    {
-      "type": "platform",
-      "position": [32, 7, 30],
-      "size": [4, 1, 4],
+      "position": [14, 1, 8],
+      "size": [6, 0.8, 6],
       "color": "#DEB887"
     },
     {
       "type": "coin",
       "id": "coin_4",
-      "position": [32, 8.5, 30],
-      "coinType": "gravity"
+      "position": [14, 2.5, 8],
+      "coinType": "speed"
     },
+
     {
       "type": "platform",
-      "position": [28, 9, 38],
-      "size": [3, 0.8, 3],
+      "position": [20, 1.5, 12],
+      "size": [8, 0.8, 6],
       "color": "#D2691E"
     },
     {
-      "type": "spike",
-      "position": [28, 10, 38],
-      "size": 0.7
-    },
-    {
-      "type": "platform",
-      "position": [22, 8, 44],
-      "size": [6, 1.2, 6],
-      "color": "#CD853F"
-    },
-    {
-      "type": "rotating_hammer",
-      "position": [22, 11, 44],
-      "rotationSpeed": 1.3,
-      "hammerLength": 2.5
-    },
-    {
-      "type": "platform",
-      "position": [14, 10, 50],
-      "size": [8, 2, 8],
-      "color": "#DEB887"
-    },
-    {
       "type": "checkpoint",
-      "id": "ruins_final",
-      "position": [14, 12, 50]
+      "id": "ruins_temple_entry",
+      "position": [20, 2.5, 12]
     },
     {
       "type": "coin",
       "id": "coin_5",
-      "position": [12, 13, 50],
-      "coinType": "speed"
-    },
-    {
-      "type": "coin",
-      "id": "coin_6",
-      "position": [14, 13.5, 50],
+      "position": [18, 3, 12],
       "coinType": "gravity"
     },
     {
       "type": "coin",
+      "id": "coin_6",
+      "position": [22, 3, 12],
+      "coinType": "gravity"
+    },
+
+    {
+      "type": "crumbling_platform",
+      "position": [28, 2, 16],
+      "size": [5, 0.6, 5],
+      "color": "#CD853F",
+      "crumbleDelay": 1.5,
+      "respawnTime": 8
+    },
+    {
+      "type": "coin",
       "id": "coin_7",
-      "position": [16, 13, 50],
+      "position": [28, 3.5, 16],
+      "coinType": "speed"
+    },
+
+    {
+      "type": "platform",
+      "position": [34, 2.5, 20],
+      "size": [6, 0.8, 6],
+      "color": "#DEB887"
+    },
+    {
+      "type": "checkpoint",
+      "id": "ruins_crumble_intro",
+      "position": [34, 3.5, 20]
+    },
+    {
+      "type": "coin",
+      "id": "coin_8",
+      "position": [34, 4, 20],
+      "coinType": "gravity"
+    },
+
+    {
+      "type": "crumbling_platform",
+      "position": [40, 3, 24],
+      "size": [4, 0.6, 4],
+      "color": "#CD853F",
+      "crumbleDelay": 1.2,
+      "respawnTime": 7
+    },
+    {
+      "type": "coin",
+      "id": "coin_9",
+      "position": [40, 4.5, 24],
+      "coinType": "speed"
+    },
+
+    {
+      "type": "crumbling_platform",
+      "position": [46, 3.5, 28],
+      "size": [4, 0.6, 4],
+      "color": "#DEB887",
+      "crumbleDelay": 1.2,
+      "respawnTime": 7
+    },
+
+    {
+      "type": "crumbling_platform",
+      "position": [52, 4, 32],
+      "size": [4, 0.6, 4],
+      "color": "#CD853F",
+      "crumbleDelay": 1,
+      "respawnTime": 6
+    },
+    {
+      "type": "coin",
+      "id": "coin_10",
+      "position": [52, 5.5, 32],
+      "coinType": "gravity"
+    },
+
+    {
+      "type": "platform",
+      "position": [58, 4.5, 36],
+      "size": [8, 0.8, 6],
+      "color": "#D2691E"
+    },
+    {
+      "type": "checkpoint",
+      "id": "ruins_trap_hall",
+      "position": [58, 5.5, 36]
+    },
+    {
+      "type": "power_up",
+      "id": "powerup_shield",
+      "position": [58, 6.5, 36],
+      "powerUpType": "shield",
+      "duration": 12
+    },
+
+    {
+      "type": "platform",
+      "position": [64, 5, 40],
+      "size": [5, 0.8, 5],
+      "color": "#CD853F"
+    },
+    {
+      "type": "fire_jet",
+      "position": [66, 5, 40],
+      "interval": 3,
+      "duration": 1,
+      "height": 3,
+      "direction": "up"
+    },
+    {
+      "type": "coin",
+      "id": "coin_11",
+      "position": [64, 6.5, 40],
+      "coinType": "speed"
+    },
+
+    {
+      "type": "crumbling_platform",
+      "position": [70, 5.5, 44],
+      "size": [4, 0.6, 4],
+      "color": "#DEB887",
+      "crumbleDelay": 1,
+      "respawnTime": 6
+    },
+    {
+      "type": "fire_jet",
+      "position": [70, 5.5, 42],
+      "interval": 2.5,
+      "duration": 0.8,
+      "height": 3,
+      "direction": "up"
+    },
+
+    {
+      "type": "platform",
+      "position": [76, 6, 48],
+      "size": [5, 0.8, 5],
+      "color": "#CD853F"
+    },
+    {
+      "type": "fire_jet",
+      "position": [74, 6, 48],
+      "interval": 2.5,
+      "duration": 0.8,
+      "height": 3,
+      "direction": "up"
+    },
+    {
+      "type": "fire_jet",
+      "position": [78, 6, 48],
+      "interval": 2.5,
+      "duration": 0.8,
+      "height": 3,
+      "direction": "up"
+    },
+    {
+      "type": "coin",
+      "id": "coin_12",
+      "position": [76, 7.5, 48],
+      "coinType": "gravity"
+    },
+
+    {
+      "type": "crumbling_platform",
+      "position": [82, 6.5, 52],
+      "size": [4, 0.6, 4],
+      "color": "#DEB887",
+      "crumbleDelay": 0.8,
+      "respawnTime": 5
+    },
+    {
+      "type": "coin",
+      "id": "coin_13",
+      "position": [82, 8, 52],
+      "coinType": "speed"
+    },
+
+    {
+      "type": "platform",
+      "position": [88, 7, 56],
+      "size": [6, 0.8, 6],
+      "color": "#D2691E"
+    },
+    {
+      "type": "checkpoint",
+      "id": "ruins_treasure_entry",
+      "position": [88, 8, 56]
+    },
+    {
+      "type": "coin",
+      "id": "coin_14",
+      "position": [86, 8.5, 56],
       "coinType": "speed"
     },
     {
+      "type": "coin",
+      "id": "coin_15",
+      "position": [90, 8.5, 56],
+      "coinType": "speed"
+    },
+
+    {
+      "type": "crumbling_platform",
+      "position": [94, 7.5, 60],
+      "size": [5, 0.6, 5],
+      "color": "#FFD700",
+      "crumbleDelay": 0.8,
+      "respawnTime": 5
+    },
+    {
+      "type": "coin",
+      "id": "coin_16",
+      "position": [94, 9, 60],
+      "coinType": "gravity"
+    },
+
+    {
+      "type": "crumbling_platform",
+      "position": [100, 8, 64],
+      "size": [4, 0.6, 4],
+      "color": "#FFD700",
+      "crumbleDelay": 0.7,
+      "respawnTime": 5
+    },
+    {
+      "type": "fire_jet",
+      "position": [100, 8, 62],
+      "interval": 2,
+      "duration": 0.6,
+      "height": 3,
+      "direction": "up"
+    },
+
+    {
+      "type": "crumbling_platform",
+      "position": [106, 8.5, 68],
+      "size": [4, 0.6, 4],
+      "color": "#FFD700",
+      "crumbleDelay": 0.7,
+      "respawnTime": 5
+    },
+    {
+      "type": "coin",
+      "id": "coin_17",
+      "position": [106, 10, 68],
+      "coinType": "speed"
+    },
+
+    {
+      "type": "platform",
+      "position": [112, 9, 72],
+      "size": [12, 0.8, 12],
+      "color": "#FFD700"
+    },
+    {
+      "type": "checkpoint",
+      "id": "ruins_treasure_room",
+      "position": [112, 10, 72]
+    },
+    {
+      "type": "coin",
+      "id": "coin_18",
+      "position": [110, 10.5, 70],
+      "coinType": "gravity"
+    },
+    {
+      "type": "coin",
+      "id": "coin_19",
+      "position": [114, 10.5, 70],
+      "coinType": "gravity"
+    },
+    {
+      "type": "coin",
+      "id": "coin_20",
+      "position": [110, 10.5, 74],
+      "coinType": "speed"
+    },
+    {
+      "type": "coin",
+      "id": "coin_21",
+      "position": [114, 10.5, 74],
+      "coinType": "speed"
+    },
+
+    {
       "type": "animal_part",
-      "id": "part_owl_head",
-      "position": [8, 7, 30],
-      "partId": "owl_head"
+      "id": "part_camel_body",
+      "position": [34, 5, 22],
+      "partId": "camel_body"
     },
     {
       "type": "animal_part",
-      "id": "part_turtle_body",
-      "position": [14, 8, 35],
-      "partId": "turtle_body"
+      "id": "part_scorpion_legs",
+      "position": [58, 7, 38],
+      "partId": "scorpion_legs"
     },
     {
       "type": "animal_part",
-      "id": "part_gecko_legs",
-      "position": [10, 10, 45],
-      "partId": "gecko_legs"
+      "id": "part_hawk_head",
+      "position": [112, 11, 72],
+      "partId": "hawk_head"
+    },
+
+    {
+      "type": "boss_encounter",
+      "id": "golem_boss",
+      "position": [112, 10, 90],
+      "bossType": "golem",
+      "arenaSize": [30, 20, 30]
+    },
+
+    {
+      "type": "platform",
+      "position": [112, 9, 108],
+      "size": [10, 1, 10],
+      "color": "#FFD700"
     },
     {
       "type": "end_goal",
-      "position": [14, 12, 50],
+      "position": [112, 10.5, 108],
       "modelType": "trophy"
     }
   ]

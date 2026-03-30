@@ -52,7 +52,13 @@ export type EntityType =
   | 'climbable_wall'
   | 'low_obstacle'
   | 'boss_encounter'
-  | 'animal_part';
+  | 'animal_part'
+  | 'laser_grid'
+  | 'crumbling_platform'
+  | 'bounce_pad'
+  | 'gravity_zone'
+  | 'secret_area'
+  | 'fake_wall';
 
 // Base entity (all entities extend this)
 export interface BaseEntity {
@@ -312,6 +318,64 @@ export interface BossEncounterEntity extends BaseEntity {
   arenaSize?: [number, number, number]; // Arena dimensions (default [30, 20, 30])
 }
 
+// Laser Grid - Pattern-based laser puzzle
+export interface LaserGridEntity extends BaseEntity {
+  type: 'laser_grid';
+  rows?: number; // Number of rows (default 3)
+  cols?: number; // Number of columns (default 3)
+  spacing?: number; // Space between lasers (default 2)
+  pattern?: number[][]; // 2D array of active laser indices per beat
+  beatDuration?: number; // Seconds per beat (default 1)
+  laserColor?: string; // Color of lasers (default '#FF0000')
+  orientation?: 'horizontal' | 'vertical'; // Laser direction
+}
+
+// Crumbling Platform - Breaks apart when stood on
+export interface CrumblingPlatformEntity extends BaseEntity {
+  type: 'crumbling_platform';
+  size?: [number, number, number]; // Platform dimensions
+  color?: string; // Platform color
+  crumbleDelay?: number; // Seconds before crumbling (default 0.8)
+  respawnTime?: number; // Seconds to respawn (default 5)
+}
+
+// Bounce Pad - Directional launcher
+export interface BouncePadEntity extends BaseEntity {
+  type: 'bounce_pad';
+  launchDirection?: [number, number, number]; // Direction to launch (default [0, 1, 0])
+  launchPower?: number; // Launch strength (default 15)
+  size?: [number, number, number]; // Pad dimensions
+  color?: string; // Pad color (default '#FFD700')
+}
+
+// Gravity Zone - Area with modified gravity
+export interface GravityZoneEntity extends BaseEntity {
+  type: 'gravity_zone';
+  size: [number, number, number]; // Zone dimensions
+  gravityMultiplier?: number; // 0.3 = low, -1 = reversed, 0 = zero-g (default 0.3)
+  color?: string; // Zone color
+}
+
+// Secret Area - Hidden trigger zone that reveals platforms/rewards
+export interface SecretAreaEntity extends BaseEntity {
+  type: 'secret_area';
+  id: string; // Required unique ID for tracking discovery
+  triggerZone: {
+    size: [number, number, number]; // Size of the trigger area
+  };
+  revealedEntities: LevelEntity[]; // Entities that appear when secret is found
+  secretMessage?: string; // Message to display when discovered
+}
+
+// Fake Wall - Walk-through wall that fades on approach
+export interface FakeWallEntity extends BaseEntity {
+  type: 'fake_wall';
+  size: [number, number, number]; // Wall dimensions
+  color: string; // Wall color (matches surrounding)
+  revealRadius?: number; // Distance at which wall starts fading (default 3)
+  linkedSecretId?: string; // Optional: ID of secret area this wall leads to
+}
+
 // Union of all entity types
 export type LevelEntity =
   | PlatformEntity
@@ -344,7 +408,13 @@ export type LevelEntity =
   | PressurePlateEntity
   | ClimbableWallEntity
   | LowObstacleEntity
-  | BossEncounterEntity;
+  | BossEncounterEntity
+  | LaserGridEntity
+  | CrumblingPlatformEntity
+  | BouncePadEntity
+  | GravityZoneEntity
+  | SecretAreaEntity
+  | FakeWallEntity;
 
 // ============================================================================
 // LEVEL DEFINITION

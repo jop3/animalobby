@@ -415,6 +415,116 @@
       "position": [90, 15, 0],
       "partId": "dragon_wings"
     },
+
+    {
+      "type": "platform",
+      "position": [30, 5.5, 8],
+      "size": [3, 0.3, 3],
+      "color": "#FF0000",
+      "disappearing": {
+        "interval": 6,
+        "visibleTime": 3
+      }
+    },
+    {
+      "type": "platform",
+      "position": [34, 6, 10],
+      "size": [3, 0.3, 3],
+      "color": "#FF7F00",
+      "disappearing": {
+        "interval": 6,
+        "visibleTime": 3
+      }
+    },
+    {
+      "type": "platform",
+      "position": [38, 6.5, 12],
+      "size": [3, 0.3, 3],
+      "color": "#FFFF00",
+      "disappearing": {
+        "interval": 6,
+        "visibleTime": 3
+      }
+    },
+    {
+      "type": "platform",
+      "position": [42, 7, 14],
+      "size": [3, 0.3, 3],
+      "color": "#00FF00",
+      "disappearing": {
+        "interval": 6,
+        "visibleTime": 3
+      }
+    },
+    {
+      "type": "platform",
+      "position": [46, 7.5, 16],
+      "size": [3, 0.3, 3],
+      "color": "#0000FF",
+      "disappearing": {
+        "interval": 6,
+        "visibleTime": 3
+      }
+    },
+    {
+      "type": "platform",
+      "position": [50, 8, 18],
+      "size": [3, 0.3, 3],
+      "color": "#8B00FF",
+      "disappearing": {
+        "interval": 6,
+        "visibleTime": 3
+      }
+    },
+
+    {
+      "type": "fake_wall",
+      "position": [48, 8, 5],
+      "size": [2, 4, 1],
+      "color": "#DDA0DD",
+      "revealRadius": 2,
+      "linkedSecretId": "unicorn_castle_stable"
+    },
+    {
+      "type": "secret_area",
+      "id": "unicorn_castle_stable",
+      "position": [48, 9, -2],
+      "triggerZone": {
+        "size": [10, 6, 8]
+      },
+      "secretMessage": "Secret Unicorn Stable Found!",
+      "revealedEntities": [
+        {
+          "type": "platform",
+          "position": [48, 8, -2],
+          "size": [10, 0.5, 8],
+          "color": "#FFB6C1"
+        },
+        {
+          "type": "coin",
+          "position": [45, 9.5, -2],
+          "coinType": "speed"
+        },
+        {
+          "type": "coin",
+          "position": [48, 9.5, -2],
+          "coinType": "gravity"
+        },
+        {
+          "type": "coin",
+          "position": [51, 9.5, -2],
+          "coinType": "speed"
+        },
+        {
+          "type": "power_up",
+          "id": "secret_speed",
+          "position": [48, 10, -4],
+          "powerUpType": "speed_boost",
+          "duration": 15
+        }
+      ]
+    },
+
     {
       "type": "end_goal",
       "position": [124, 21, 0],

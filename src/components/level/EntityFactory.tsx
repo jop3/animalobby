@@ -24,6 +24,15 @@ import { Switch } from '../hazards/Switch';
 import { Door } from '../hazards/Door';
 import { PressurePlate } from '../hazards/PressurePlate';
 import { BossEncounter } from '../bosses/BossEncounter';
+import { FallingIcicle } from '../hazards/FallingIcicle';
+import { LaserGrid } from '../hazards/LaserGrid';
+import { RisingLava } from '../hazards/RisingLava';
+import { WindTunnel } from '../environment/WindTunnel';
+import { CrumblingPlatform } from '../environment/CrumblingPlatform';
+import { BouncePad } from '../environment/BouncePad';
+import { GravityZone } from '../environment/GravityZone';
+import { SecretArea } from '../environment/SecretArea';
+import { FakeWall } from '../environment/FakeWall';
 
 /**
  * EntityFactory - Maps JSON entity definitions to React components
@@ -319,6 +328,112 @@ export function EntityFactory({ entity, index }: EntityFactoryProps) {
           position={entity.position}
           bossType={entity.bossType}
           arenaSize={entity.arenaSize}
+        />
+      );
+
+    case 'falling_icicle':
+      return (
+        <FallingIcicle
+          key={key}
+          position={entity.position}
+          triggerRadius={entity.triggerRadius}
+          respawnTime={entity.respawnTime}
+        />
+      );
+
+    case 'laser_grid':
+      return (
+        <LaserGrid
+          key={key}
+          position={entity.position}
+          rows={entity.rows}
+          cols={entity.cols}
+          spacing={entity.spacing}
+          pattern={entity.pattern}
+          beatDuration={entity.beatDuration}
+          laserColor={entity.laserColor}
+          orientation={entity.orientation}
+        />
+      );
+
+    case 'rising_lava':
+      return (
+        <RisingLava
+          key={key}
+          position={entity.position}
+          size={entity.size}
+          startY={0}
+          endY={entity.riseHeight || 10}
+          riseSpeed={entity.riseDuration ? entity.riseHeight! / entity.riseDuration : 2}
+        />
+      );
+
+    case 'wind_tunnel':
+      return (
+        <WindTunnel
+          key={key}
+          position={entity.position}
+          size={entity.size}
+          direction={entity.force}
+        />
+      );
+
+    case 'crumbling_platform':
+      return (
+        <CrumblingPlatform
+          key={key}
+          position={entity.position}
+          size={entity.size}
+          color={entity.color}
+          crumbleDelay={entity.crumbleDelay}
+          respawnTime={entity.respawnTime}
+        />
+      );
+
+    case 'bounce_pad':
+      return (
+        <BouncePad
+          key={key}
+          position={entity.position}
+          launchDirection={entity.launchDirection}
+          launchPower={entity.launchPower}
+          size={entity.size}
+          color={entity.color}
+        />
+      );
+
+    case 'gravity_zone':
+      return (
+        <GravityZone
+          key={key}
+          position={entity.position}
+          size={entity.size}
+          gravityMultiplier={entity.gravityMultiplier}
+          color={entity.color}
+        />
+      );
+
+    case 'secret_area':
+      return (
+        <SecretArea
+          key={key}
+          id={entity.id}
+          position={entity.position}
+          triggerZone={entity.triggerZone}
+          revealedEntities={entity.revealedEntities}
+          secretMessage={entity.secretMessage}
+        />
+      );
+
+    case 'fake_wall':
+      return (
+        <FakeWall
+          key={key}
+          position={entity.position}
+          size={entity.size}
+          color={entity.color}
+          revealRadius={entity.revealRadius}
+          linkedSecretId={entity.linkedSecretId}
         />
       );
 

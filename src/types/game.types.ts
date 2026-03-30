@@ -164,11 +164,20 @@ export interface GameState {
   levelStats: Record<string, LevelStats>;
   playerName: string;
 
+  // Achievement system
+  unlockedAchievements: Record<string, AchievementProgress>;
+  foundSecrets: string[]; // Global list of all found secrets
+  defeatedBosses: Record<string, BossDefeatRecord>;
+  totalDeaths: number; // Lifetime deaths
+  totalCompletions: number; // Lifetime level completions
+  pendingAchievementToast: string | null; // ID of achievement to show toast for
+
   // Current run tracking
   currentRunStats: {
     startTime: number | null;
     deaths: number;
     coinsCollected: number;
+    secretsFoundThisRun: string[];
   };
 
   // Power-ups and movement
@@ -206,6 +215,14 @@ export interface GameState {
   setWallClimbing: (climbing: boolean) => void;
   setSliding: (sliding: boolean) => void;
   reset: () => void;
+
+  // Achievement system actions
+  unlockAchievement: (achievementId: string) => void;
+  claimAchievementReward: (achievementId: string) => void;
+  clearAchievementToast: () => void;
+  discoverSecret: (secretId: string) => void;
+  defeatBoss: (bossType: string, levelId: string, deaths: number) => void;
+  checkAchievements: () => void;
 }
 
 // Level Statistics
@@ -215,6 +232,24 @@ export interface LevelStats {
   coinsCollected: number;
   playerName: string;
   completedAt: number; // timestamp
+  attempts: number; // Total attempts on this level
+  secretsFound: string[]; // IDs of secrets found in this level
+  bossDefeated?: boolean; // Whether boss was defeated (if level has one)
+  allCoinsCollected: boolean; // Whether all coins were collected
+}
+
+// Achievement Progress
+export interface AchievementProgress {
+  unlockedAt: number; // timestamp when unlocked
+  rewardClaimed: boolean; // whether the reward was claimed
+}
+
+// Boss Defeat Record
+export interface BossDefeatRecord {
+  bossType: string;
+  defeatedAt: number; // timestamp
+  deaths: number; // deaths during the attempt
+  levelId: string;
 }
 
 // Leaderboard Entry

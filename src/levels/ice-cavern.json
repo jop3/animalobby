@@ -1,225 +1,466 @@
 {
   "id": "ice_cavern",
   "name": "Ice Cavern",
-  "description": "Navigate slippery ice platforms, disappearing floors, and moving obstacles!",
+  "description": "Beware of falling icicles! Navigate slippery ice platforms while dodging deadly ice spikes from above.",
   "difficulty": 3,
   "theme": {
     "skyColor": "#1C3A52",
-    "ambientColor": "#5FA8D3"
+    "ambientColor": "#5FA8D3",
+    "fogColor": "#1C3A52",
+    "fogDensity": 0.02
   },
   "spawnPoint": [0, 2, 0],
   "entities": [
     {
       "type": "platform",
       "position": [0, 0, 0],
-      "size": [6, 0.5, 8],
+      "size": [10, 0.5, 10],
       "color": "#A5D8FF"
     },
     {
       "type": "checkpoint",
-      "id": "ice_entrance",
+      "id": "ice_start",
       "position": [0, 1, 0]
-    },
-    {
-      "type": "platform",
-      "position": [-8, -1, 3],
-      "size": [4, 1.2, 4],
-      "color": "#74C0FC",
-      "shape": "cylinder"
     },
     {
       "type": "coin",
       "id": "coin_1",
-      "position": [-8, 1, 3],
+      "position": [3, 1.5, 0],
       "coinType": "speed"
-    },
-    {
-      "type": "platform",
-      "position": [-12, -3, 8],
-      "size": [3, 0.6, 3],
-      "color": "#FFD700",
-      "disappearing": {
-        "interval": 3.5,
-        "visibleTime": 2
-      }
     },
     {
       "type": "coin",
       "id": "coin_2",
-      "position": [-12, -2, 8],
-      "coinType": "gravity"
+      "position": [-3, 1.5, 0],
+      "coinType": "speed"
     },
+
     {
       "type": "platform",
-      "position": [-16, -5, 12],
-      "size": [3, 1, 3],
-      "color": "#A5D8FF",
-      "moving": {
-        "pattern": "linear",
-        "speed": 1,
-        "range": [0, 0, 4]
-      }
-    },
-    {
-      "type": "rotating_hammer",
-      "position": [-16, -2, 12],
-      "rotationSpeed": 1.5,
-      "hammerLength": 2.5
-    },
-    {
-      "type": "platform",
-      "position": [-14, -7, 18],
-      "size": [6, 0.8, 6],
+      "position": [10, 0.5, 4],
+      "size": [5, 0.5, 5],
       "color": "#74C0FC"
-    },
-    {
-      "type": "checkpoint",
-      "id": "ice_bottom",
-      "position": [-14, -6, 18]
     },
     {
       "type": "coin",
       "id": "coin_3",
-      "position": [-14, -5, 18],
+      "position": [10, 2, 4],
       "coinType": "gravity"
     },
+
     {
       "type": "platform",
-      "position": [-8, -6, 22],
-      "size": [2.5, 0.5, 2.5],
-      "color": "#4DABF7",
-      "bouncy": true
+      "position": [18, 1, 8],
+      "size": [6, 0.5, 6],
+      "color": "#A5D8FF"
+    },
+    {
+      "type": "falling_icicle",
+      "position": [18, 8, 8],
+      "triggerRadius": 4,
+      "respawnTime": 6
     },
     {
       "type": "coin",
       "id": "coin_4",
-      "position": [-8, -1, 22],
+      "position": [18, 2.5, 8],
+      "coinType": "speed"
+    },
+
+    {
+      "type": "platform",
+      "position": [26, 1.5, 12],
+      "size": [8, 0.5, 6],
+      "color": "#74C0FC"
+    },
+    {
+      "type": "checkpoint",
+      "id": "ice_icicle_intro",
+      "position": [26, 2, 12]
+    },
+    {
+      "type": "coin",
+      "id": "coin_5",
+      "position": [24, 3, 12],
+      "coinType": "gravity"
+    },
+    {
+      "type": "coin",
+      "id": "coin_6",
+      "position": [28, 3, 12],
+      "coinType": "gravity"
+    },
+
+    {
+      "type": "platform",
+      "position": [34, 2, 16],
+      "size": [5, 0.5, 5],
+      "color": "#A5D8FF"
+    },
+    {
+      "type": "falling_icicle",
+      "position": [32, 10, 16],
+      "triggerRadius": 3,
+      "respawnTime": 5
+    },
+    {
+      "type": "falling_icicle",
+      "position": [36, 10, 16],
+      "triggerRadius": 3,
+      "respawnTime": 5
+    },
+    {
+      "type": "coin",
+      "id": "coin_7",
+      "position": [34, 3.5, 16],
+      "coinType": "speed"
+    },
+
+    {
+      "type": "platform",
+      "position": [42, 2.5, 20],
+      "size": [5, 0.5, 5],
+      "color": "#74C0FC"
+    },
+    {
+      "type": "falling_icicle",
+      "position": [42, 10, 18],
+      "triggerRadius": 3,
+      "respawnTime": 5
+    },
+    {
+      "type": "falling_icicle",
+      "position": [42, 10, 22],
+      "triggerRadius": 3,
+      "respawnTime": 5
+    },
+    {
+      "type": "coin",
+      "id": "coin_8",
+      "position": [42, 4, 20],
+      "coinType": "speed"
+    },
+
+    {
+      "type": "platform",
+      "position": [50, 3, 24],
+      "size": [10, 0.5, 8],
+      "color": "#A5D8FF"
+    },
+    {
+      "type": "checkpoint",
+      "id": "ice_gauntlet",
+      "position": [50, 3.5, 24]
+    },
+    {
+      "type": "power_up",
+      "id": "powerup_shield",
+      "position": [50, 4.5, 24],
+      "powerUpType": "shield",
+      "duration": 10
+    },
+
+    {
+      "type": "platform",
+      "position": [58, 3.5, 28],
+      "size": [4, 0.5, 4],
+      "color": "#74C0FC"
+    },
+    {
+      "type": "falling_icicle",
+      "position": [58, 11, 28],
+      "triggerRadius": 3,
+      "respawnTime": 4
+    },
+    {
+      "type": "coin",
+      "id": "coin_9",
+      "position": [58, 5, 28],
+      "coinType": "gravity"
+    },
+
+    {
+      "type": "platform",
+      "position": [64, 4, 32],
+      "size": [4, 0.5, 4],
+      "color": "#A5D8FF"
+    },
+    {
+      "type": "falling_icicle",
+      "position": [64, 12, 32],
+      "triggerRadius": 3,
+      "respawnTime": 4
+    },
+    {
+      "type": "coin",
+      "id": "coin_10",
+      "position": [64, 5.5, 32],
+      "coinType": "speed"
+    },
+
+    {
+      "type": "platform",
+      "position": [70, 4.5, 36],
+      "size": [4, 0.5, 4],
+      "color": "#74C0FC"
+    },
+    {
+      "type": "falling_icicle",
+      "position": [70, 12, 36],
+      "triggerRadius": 3,
+      "respawnTime": 4
+    },
+
+    {
+      "type": "platform",
+      "position": [76, 5, 40],
+      "size": [4, 0.5, 4],
+      "color": "#A5D8FF"
+    },
+    {
+      "type": "falling_icicle",
+      "position": [76, 12, 40],
+      "triggerRadius": 3,
+      "respawnTime": 4
+    },
+    {
+      "type": "coin",
+      "id": "coin_11",
+      "position": [76, 6.5, 40],
+      "coinType": "gravity"
+    },
+
+    {
+      "type": "platform",
+      "position": [84, 5.5, 44],
+      "size": [10, 0.5, 8],
+      "color": "#74C0FC"
+    },
+    {
+      "type": "checkpoint",
+      "id": "ice_descent",
+      "position": [84, 6, 44]
+    },
+    {
+      "type": "coin",
+      "id": "coin_12",
+      "position": [82, 7, 44],
       "coinType": "speed"
     },
     {
+      "type": "coin",
+      "id": "coin_13",
+      "position": [86, 7, 44],
+      "coinType": "speed"
+    },
+
+    {
       "type": "platform",
-      "position": [-2, -5, 26],
-      "size": [3, 0.7, 3],
-      "color": "#FFD700",
+      "position": [92, 4, 48],
+      "size": [4, 0.5, 4],
+      "color": "#A5D8FF",
       "disappearing": {
         "interval": 4,
         "visibleTime": 2.5
       }
     },
     {
-      "type": "coin",
-      "id": "coin_5",
-      "position": [-2, -3.5, 26],
-      "coinType": "speed"
+      "type": "falling_icicle",
+      "position": [92, 12, 48],
+      "triggerRadius": 4,
+      "respawnTime": 5
     },
+
     {
       "type": "platform",
-      "position": [4, -3, 28],
-      "size": [2, 0.5, 2],
+      "position": [98, 2.5, 52],
+      "size": [4, 0.5, 4],
       "color": "#74C0FC",
-      "shape": "cylinder",
-      "moving": {
-        "pattern": "circular",
-        "speed": 0.6,
-        "range": [2, 0, 2]
+      "disappearing": {
+        "interval": 4,
+        "visibleTime": 2.5
       }
     },
     {
-      "type": "coin",
-      "id": "coin_6",
-      "position": [4, -1, 28],
-      "coinType": "gravity"
+      "type": "falling_icicle",
+      "position": [98, 10, 52],
+      "triggerRadius": 4,
+      "respawnTime": 5
     },
     {
+      "type": "coin",
+      "id": "coin_14",
+      "position": [98, 4, 52],
+      "coinType": "gravity"
+    },
+
+    {
       "type": "platform",
-      "position": [10, -1, 32],
-      "size": [3, 0.6, 3],
+      "position": [104, 1, 56],
+      "size": [4, 0.5, 4],
       "color": "#4DABF7",
       "bouncy": true
     },
     {
       "type": "coin",
-      "id": "coin_7",
-      "position": [10, 3, 32],
+      "id": "coin_15",
+      "position": [104, 4, 56],
       "coinType": "speed"
     },
+
     {
       "type": "platform",
-      "position": [14, 1, 36],
-      "size": [5, 0.8, 5],
+      "position": [110, 5, 60],
+      "size": [6, 0.5, 6],
+      "color": "#A5D8FF"
+    },
+    {
+      "type": "coin",
+      "id": "coin_16",
+      "position": [110, 6.5, 60],
+      "coinType": "gravity"
+    },
+
+    {
+      "type": "platform",
+      "position": [118, 6, 64],
+      "size": [4, 0.5, 4],
+      "color": "#74C0FC",
+      "moving": {
+        "pattern": "linear",
+        "speed": 1,
+        "range": [0, 2, 0]
+      }
+    },
+    {
+      "type": "falling_icicle",
+      "position": [118, 14, 64],
+      "triggerRadius": 4,
+      "respawnTime": 6
+    },
+    {
+      "type": "coin",
+      "id": "coin_17",
+      "position": [118, 9, 64],
+      "coinType": "speed"
+    },
+
+    {
+      "type": "platform",
+      "position": [126, 8, 68],
+      "size": [12, 0.5, 10],
       "color": "#A5D8FF"
     },
     {
       "type": "checkpoint",
-      "id": "ice_climb",
-      "position": [14, 2, 36]
-    },
-    {
-      "type": "platform",
-      "position": [18, 3, 40],
-      "size": [2.5, 0.5, 2.5],
-      "color": "#FFD700",
-      "disappearing": {
-        "interval": 3,
-        "visibleTime": 1.8
-      }
-    },
-    {
-      "type": "platform",
-      "position": [20, 5, 44],
-      "size": [3, 0.6, 3],
-      "color": "#4DABF7",
-      "moving": {
-        "pattern": "pendulum",
-        "speed": 1,
-        "range": [2, 0, 0]
-      }
+      "id": "ice_final",
+      "position": [126, 8.5, 68]
     },
     {
       "type": "coin",
-      "id": "coin_8",
-      "position": [20, 6.5, 44],
-      "coinType": "gravity"
-    },
-    {
-      "type": "platform",
-      "position": [24, 7, 46],
-      "size": [7, 1, 7],
-      "color": "#A5D8FF"
-    },
-    {
-      "type": "coin",
-      "id": "coin_9",
-      "position": [22, 9, 44],
+      "id": "coin_18",
+      "position": [124, 9.5, 66],
       "coinType": "speed"
     },
     {
       "type": "coin",
-      "id": "coin_10",
-      "position": [26, 9, 48],
+      "id": "coin_19",
+      "position": [128, 9.5, 66],
+      "coinType": "speed"
+    },
+    {
+      "type": "coin",
+      "id": "coin_20",
+      "position": [124, 9.5, 70],
       "coinType": "gravity"
     },
     {
+      "type": "coin",
+      "id": "coin_21",
+      "position": [128, 9.5, 70],
+      "coinType": "gravity"
+    },
+
+    {
       "type": "animal_part",
       "id": "part_wolf_head",
-      "position": [12, 5, 20],
+      "position": [50, 5, 26],
       "partId": "wolf_head"
     },
     {
       "type": "animal_part",
       "id": "part_bear_body",
-      "position": [18, 7, 35],
+      "position": [84, 7.5, 46],
       "partId": "bear_body"
     },
     {
       "type": "animal_part",
-      "id": "part_rabbit_head",
-      "position": [24, 9, 42],
-      "partId": "rabbit_head"
+      "id": "part_kangaroo_legs",
+      "position": [110, 7, 60],
+      "partId": "kangaroo_legs"
+    },
+
+    {
+      "type": "fake_wall",
+      "position": [50, 3.5, 22],
+      "size": [1, 4, 4],
+      "color": "#74C0FC",
+      "revealRadius": 2,
+      "linkedSecretId": "ice_cavern_crystal"
     },
     {
+      "type": "secret_area",
+      "id": "ice_cavern_crystal",
+      "position": [50, 4, 14],
+      "triggerZone": {
+        "size": [10, 6, 8]
+      },
+      "secretMessage": "Secret Ice Crystal Cave Found!",
+      "revealedEntities": [
+        {
+          "type": "platform",
+          "position": [50, 3, 14],
+          "size": [10, 0.5, 8],
+          "color": "#A5D8FF"
+        },
+        {
+          "type": "coin",
+          "position": [47, 4.5, 14],
+          "coinType": "speed"
+        },
+        {
+          "type": "coin",
+          "position": [50, 4.5, 14],
+          "coinType": "gravity"
+        },
+        {
+          "type": "coin",
+          "position": [53, 4.5, 14],
+          "coinType": "speed"
+        },
+        {
+          "type": "coin",
+          "position": [50, 4.5, 12],
+          "coinType": "gravity"
+        },
+        {
+          "type": "coin",
+          "position": [50, 4.5, 16],
+          "coinType": "speed"
+        },
+        {
+          "type": "power_up",
+          "id": "secret_shield",
+          "position": [50, 5.5, 14],
+          "powerUpType": "shield",
+          "duration": 20
+        }
+      ]
+    },
+
+    {
       "type": "end_goal",
-      "position": [24, 8, 46],
+      "position": [126, 9.5, 68],
       "modelType": "portal"
     }
   ]

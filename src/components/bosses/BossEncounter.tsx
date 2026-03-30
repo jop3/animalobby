@@ -78,12 +78,33 @@ export function BossEncounter({
   const [damageZones, setDamageZones] = useState<Array<{ position: Vector3; radius: number; duration: number }>>([]);
   const lastAttackTime = useRef(0);
   const projectileCounter = useRef(0);
+  const deathsDuringFight = useRef(0);
+  const fightStarted = useRef(false);
+
   const playerPosition = useGameStore((state) => state.playerPosition);
   const die = useGameStore((state) => state.die);
   const isInvincible = useGameStore((state) => state.isInvincible);
+  const isDead = useGameStore((state) => state.isDead);
+  const currentLevelId = useGameStore((state) => state.currentLevelId);
+  const defeatBoss = useGameStore((state) => state.defeatBoss);
+  const defeatedBosses = useGameStore((state) => state.defeatedBosses);
 
   const config = BOSS_CONFIGS[bossType];
   const healthPercent = (health / config.maxHealth) * 100;
+
+  // Track deaths during boss fight
+  useEffect(() => {
+    if (isDead && fightStarted.current && !defeated) {
+      deathsDuringFight.current += 1;
+    }
+  }, [isDead, defeated]);
+
+  // Check if boss was already defeated in a previous session
+  useEffect(() => {
+    if (defeatedBosses[bossType]) {
+      setDefeated(true);
+    }
+  }, [bossType, defeatedBosses]);
 
   // Determine phase based on health
   useEffect(() => {
@@ -93,9 +114,11 @@ export function BossEncounter({
 
     if (health <= 0 && !defeated) {
       setDefeated(true);
+      // Record boss defeat in achievement system
+      defeatBoss(bossType, currentLevelId || 'unknown', deathsDuringFight.current);
       onDefeat?.();
     }
-  }, [health, healthPercent, defeated, onDefeat]);
+  }, [health, healthPercent, defeated, onDefeat, defeatBoss, bossType, currentLevelId]);
 
   // Initialize weak spots
   useEffect(() => {
@@ -127,6 +150,11 @@ export function BossEncounter({
     );
     const distanceToPlayer = toPlayer.length();
     toPlayer.normalize();
+
+    // Mark fight as started when player enters arena
+    if (!fightStarted.current && distanceToPlayer < arenaSize[0] / 2) {
+      fightStarted.current = true;
+    }
 
     // Rotate boss to face player
     if (meshRef.current && distanceToPlayer > 0.1) {

@@ -1,7 +1,7 @@
 {
   "id": "green_fields",
   "name": "Green Fields",
-  "description": "A sprawling adventure teaching movement, jumping, and obstacle navigation - now with fire jets, swinging logs, and crushing pistons!",
+  "description": "A gentle introduction to platforming. Learn movement, jumping, and basic hazard navigation in this peaceful meadow.",
   "difficulty": 1,
 
   "theme": {
@@ -15,12 +15,12 @@
     {
       "type": "platform",
       "position": [0, 0, 0],
-      "size": [10, 0.5, 10],
+      "size": [12, 0.5, 12],
       "color": "#7FBF7F"
     },
     {
       "type": "checkpoint",
-      "id": "checkpoint_1",
+      "id": "checkpoint_start",
       "position": [0, 1, 0]
     },
     {
@@ -32,495 +32,416 @@
     {
       "type": "coin",
       "id": "coin_2",
-      "position": [-3, 1.5, -2],
+      "position": [-3, 1.5, 0],
       "coinType": "speed"
-    },
-    {
-      "type": "platform",
-      "position": [12, 1, 0],
-      "size": [6, 0.5, 4],
-      "color": "#D4A574"
-    },
-    {
-      "type": "spike",
-      "position": [10, 1.5, 0],
-      "size": 0.8
-    },
-    {
-      "type": "spike",
-      "position": [14, 1.5, 0],
-      "size": 0.8
     },
     {
       "type": "coin",
       "id": "coin_3",
-      "position": [12, 2.5, 0],
-      "coinType": "speed"
+      "position": [0, 1.5, 3],
+      "coinType": "gravity"
     },
+
     {
       "type": "platform",
-      "position": [22, 1.5, 2],
-      "size": [3, 0.5, 3],
-      "color": "#9ACD32",
-      "shape": "cylinder"
+      "position": [10, 0.5, 4],
+      "size": [4, 0.5, 4],
+      "color": "#7FBF7F"
     },
     {
       "type": "coin",
       "id": "coin_4",
-      "position": [22, 2.5, 2],
+      "position": [10, 2, 4],
+      "coinType": "speed"
+    },
+
+    {
+      "type": "platform",
+      "position": [17, 1, 6],
+      "size": [4, 0.5, 4],
+      "color": "#6AAF6A"
+    },
+    {
+      "type": "coin",
+      "id": "coin_5",
+      "position": [17, 2.5, 6],
+      "coinType": "speed"
+    },
+
+    {
+      "type": "platform",
+      "position": [24, 1.5, 4],
+      "size": [6, 0.5, 6],
+      "color": "#7FBF7F"
+    },
+    {
+      "type": "checkpoint",
+      "id": "checkpoint_2",
+      "position": [24, 2, 4]
+    },
+    {
+      "type": "coin",
+      "id": "coin_6",
+      "position": [22, 3, 4],
       "coinType": "gravity"
     },
     {
+      "type": "coin",
+      "id": "coin_7",
+      "position": [26, 3, 4],
+      "coinType": "gravity"
+    },
+
+    {
       "type": "platform",
-      "position": [28, 2, 4],
+      "position": [32, 2, 6],
+      "size": [4, 0.5, 4],
+      "color": "#6AAF6A"
+    },
+    {
+      "type": "spike",
+      "position": [34, 2.5, 8],
+      "size": 0.6
+    },
+    {
+      "type": "coin",
+      "id": "coin_8",
+      "position": [30, 3.5, 6],
+      "coinType": "speed"
+    },
+
+    {
+      "type": "platform",
+      "position": [38, 2.5, 8],
+      "size": [5, 0.5, 5],
+      "color": "#7FBF7F"
+    },
+    {
+      "type": "spike",
+      "position": [36, 3, 8],
+      "size": 0.7
+    },
+    {
+      "type": "spike",
+      "position": [40, 3, 8],
+      "size": 0.7
+    },
+    {
+      "type": "coin",
+      "id": "coin_9",
+      "position": [38, 4, 8],
+      "coinType": "speed"
+    },
+
+    {
+      "type": "platform",
+      "position": [46, 3, 10],
+      "size": [8, 0.5, 6],
+      "color": "#5D9F5D"
+    },
+    {
+      "type": "checkpoint",
+      "id": "checkpoint_3",
+      "position": [46, 3.5, 10]
+    },
+    {
+      "type": "coin",
+      "id": "coin_10",
+      "position": [44, 4.5, 10],
+      "coinType": "gravity"
+    },
+    {
+      "type": "coin",
+      "id": "coin_11",
+      "position": [48, 4.5, 10],
+      "coinType": "gravity"
+    },
+
+    {
+      "type": "platform",
+      "position": [55, 3.5, 12],
+      "size": [4, 0.5, 4],
+      "color": "#7FBF7F",
+      "moving": {
+        "pattern": "linear",
+        "speed": 0.8,
+        "range": [0, 1.5, 0]
+      }
+    },
+    {
+      "type": "coin",
+      "id": "coin_12",
+      "position": [55, 6, 12],
+      "coinType": "speed"
+    },
+
+    {
+      "type": "platform",
+      "position": [62, 4.5, 14],
+      "size": [4, 0.5, 4],
+      "color": "#6AAF6A"
+    },
+    {
+      "type": "coin",
+      "id": "coin_13",
+      "position": [62, 6, 14],
+      "coinType": "speed"
+    },
+
+    {
+      "type": "platform",
+      "position": [69, 5, 16],
+      "size": [4, 0.5, 4],
+      "color": "#7FBF7F",
+      "moving": {
+        "pattern": "linear",
+        "speed": 1,
+        "range": [2, 0, 0]
+      }
+    },
+    {
+      "type": "coin",
+      "id": "coin_14",
+      "position": [69, 6.5, 16],
+      "coinType": "gravity"
+    },
+
+    {
+      "type": "platform",
+      "position": [78, 5.5, 18],
+      "size": [8, 0.5, 8],
+      "color": "#5D9F5D"
+    },
+    {
+      "type": "checkpoint",
+      "id": "checkpoint_4",
+      "position": [78, 6, 18]
+    },
+    {
+      "type": "power_up",
+      "id": "powerup_1",
+      "position": [78, 7, 18],
+      "powerUpType": "speed_boost",
+      "duration": 10
+    },
+
+    {
+      "type": "platform",
+      "position": [86, 6, 20],
       "size": [4, 0.5, 4],
       "color": "#32CD32",
       "bouncy": true
     },
     {
       "type": "coin",
-      "id": "coin_5",
-      "position": [28, 5, 4],
-      "coinType": "speed"
-    },
-    {
-      "type": "fire_jet",
-      "position": [35, 3, 4],
-      "interval": 3,
-      "duration": 1.2,
-      "height": 3,
-      "direction": "up"
-    },
-    {
-      "type": "platform",
-      "position": [35, 3, 4],
-      "size": [3, 0.5, 3],
-      "color": "#D2691E"
-    },
-    {
-      "type": "coin",
-      "id": "coin_6",
-      "position": [35, 4.5, 4],
-      "coinType": "gravity"
-    },
-    {
-      "type": "platform",
-      "position": [42, 3.5, 6],
-      "size": [4, 0.5, 4],
-      "color": "#8B7355",
-      "moving": {
-        "pattern": "linear",
-        "speed": 1.2,
-        "range": [0, 1.5, 0]
-      }
-    },
-    {
-      "type": "coin",
-      "id": "coin_7",
-      "position": [42, 5.5, 6],
-      "coinType": "speed"
-    },
-    {
-      "type": "checkpoint",
-      "id": "checkpoint_2",
-      "position": [50, 4, 8]
-    },
-    {
-      "type": "platform",
-      "position": [50, 4, 8],
-      "size": [8, 0.5, 6],
-      "color": "#228B22"
-    },
-    {
-      "type": "swinging_log",
-      "position": [54, 8, 8],
-      "length": 4,
-      "speed": 1.5,
-      "swingAngle": 1.2,
-      "logSize": 0.7
-    },
-    {
-      "type": "coin",
-      "id": "coin_8",
-      "position": [52, 5, 8],
-      "coinType": "gravity"
-    },
-    {
-      "type": "platform",
-      "position": [62, 4.5, 10],
-      "size": [3, 0.5, 3],
-      "color": "#FFD700",
-      "disappearing": {
-        "interval": 4,
-        "visibleTime": 2.5
-      }
-    },
-    {
-      "type": "platform",
-      "position": [67, 5, 10],
-      "size": [3, 0.5, 3],
-      "color": "#FFD700",
-      "disappearing": {
-        "interval": 4,
-        "visibleTime": 2.5
-      }
-    },
-    {
-      "type": "platform",
-      "position": [72, 5.5, 10],
-      "size": [3, 0.5, 3],
-      "color": "#FFD700",
-      "disappearing": {
-        "interval": 4,
-        "visibleTime": 2.5
-      }
-    },
-    {
-      "type": "coin",
-      "id": "coin_9",
-      "position": [67, 6.5, 10],
-      "coinType": "speed"
-    },
-    {
-      "type": "platform",
-      "position": [80, 6, 12],
-      "size": [6, 0.5, 6],
-      "color": "#7FBF7F"
-    },
-    {
-      "type": "crushing_piston",
-      "position": [80, 12, 12],
-      "height": 5,
-      "interval": 4.5,
-      "crushDuration": 1.8
-    },
-    {
-      "type": "coin",
-      "id": "coin_10",
-      "position": [82, 7, 14],
-      "coinType": "gravity"
-    },
-    {
-      "type": "platform",
-      "position": [88, 6.5, 14],
-      "size": [2, 0.5, 2],
-      "color": "#4A90E2",
-      "shape": "cylinder",
-      "moving": {
-        "pattern": "circular",
-        "speed": 0.9,
-        "range": [2.5, 0, 2.5]
-      }
-    },
-    {
-      "type": "coin",
-      "id": "coin_11",
-      "position": [88, 8, 14],
-      "coinType": "speed"
-    },
-    {
-      "type": "checkpoint",
-      "id": "checkpoint_3",
-      "position": [96, 7, 16]
-    },
-    {
-      "type": "platform",
-      "position": [96, 7, 16],
-      "size": [7, 0.5, 7],
-      "color": "#2ECC71"
-    },
-    {
-      "type": "laser_beam",
-      "position": [96, 7.5, 20],
-      "length": 8,
-      "orientation": "horizontal",
-      "sweeping": true,
-      "speed": 0.8
-    },
-    {
-      "type": "platform",
-      "position": [104, 7.5, 18],
-      "size": [4, 0.5, 4],
-      "color": "#9B59B6",
-      "bouncy": true
-    },
-    {
-      "type": "coin",
-      "id": "coin_12",
-      "position": [104, 11, 18],
-      "coinType": "gravity"
-    },
-    {
-      "type": "platform",
-      "position": [110, 12, 20],
-      "size": [3, 0.5, 3],
-      "color": "#E74C3C",
-      "moving": {
-        "pattern": "pendulum",
-        "speed": 1.3,
-        "range": [3, 0, 0]
-      }
-    },
-    {
-      "type": "coin",
-      "id": "coin_13",
-      "position": [110, 13, 20],
-      "coinType": "speed"
-    },
-    {
-      "type": "platform",
-      "position": [116, 12.5, 22],
-      "size": [5, 0.5, 5],
-      "color": "#3498DB"
-    },
-    {
-      "type": "pendulum_blade",
-      "position": [116, 18, 22],
-      "length": 5,
-      "speed": 1.2,
-      "swingAngle": 1
-    },
-    {
-      "type": "coin",
-      "id": "coin_14",
-      "position": [118, 14, 22],
-      "coinType": "gravity"
-    },
-    {
-      "type": "platform",
-      "position": [124, 13, 24],
-      "size": [4, 0.5, 4],
-      "color": "#1ABC9C",
-      "shape": "cylinder"
-    },
-    {
-      "type": "coin",
       "id": "coin_15",
-      "position": [124, 14.5, 24],
+      "position": [86, 9, 20],
       "coinType": "speed"
     },
+
     {
       "type": "platform",
-      "position": [130, 13.5, 26],
-      "size": [3, 0.5, 8],
-      "color": "#E67E22"
-    },
-    {
-      "type": "moving_wall",
-      "position": [130, 15, 28],
-      "size": [3, 3, 0.5],
-      "pattern": "linear",
-      "speed": 1.5,
-      "range": [0, 0, 3]
+      "position": [92, 9, 22],
+      "size": [5, 0.5, 5],
+      "color": "#6AAF6A"
     },
     {
       "type": "coin",
       "id": "coin_16",
-      "position": [130, 15, 26],
-      "coinType": "gravity"
+      "position": [92, 10.5, 22],
+      "coinType": "speed"
     },
-    {
-      "type": "checkpoint",
-      "id": "checkpoint_4",
-      "position": [138, 14, 28]
-    },
+
     {
       "type": "platform",
-      "position": [138, 14, 28],
-      "size": [8, 0.5, 8],
-      "color": "#16A085"
-    },
-    {
-      "type": "spinning_blade",
-      "position": [142, 15, 28],
-      "size": 1.5,
-      "speed": 2.5
+      "position": [99, 9.5, 24],
+      "size": [4, 0.5, 4],
+      "color": "#FFD700",
+      "disappearing": {
+        "interval": 4,
+        "visibleTime": 3
+      }
     },
     {
       "type": "coin",
       "id": "coin_17",
-      "position": [136, 15.5, 28],
-      "coinType": "speed"
-    },
-    {
-      "type": "coin",
-      "id": "coin_18",
-      "position": [138, 16, 30],
+      "position": [99, 11, 24],
       "coinType": "gravity"
     },
+
     {
       "type": "platform",
-      "position": [146, 14.5, 30],
+      "position": [106, 10, 26],
       "size": [4, 0.5, 4],
-      "color": "#27AE60",
-      "bouncy": true
+      "color": "#FFD700",
+      "disappearing": {
+        "interval": 4,
+        "visibleTime": 3
+      }
     },
-    {
-      "type": "coin",
-      "id": "coin_19",
-      "position": [146, 18, 30],
-      "coinType": "speed"
-    },
+
     {
       "type": "platform",
-      "position": [152, 19, 32],
-      "size": [6, 0.5, 6],
-      "color": "#2980B9"
-    },
-    {
-      "type": "fire_jet",
-      "position": [150, 19, 32],
-      "interval": 2.5,
-      "duration": 1,
-      "height": 2.5,
-      "direction": "right"
-    },
-    {
-      "type": "fire_jet",
-      "position": [154, 19, 32],
-      "interval": 2.5,
-      "duration": 1,
-      "height": 2.5,
-      "direction": "left"
-    },
-    {
-      "type": "coin",
-      "id": "coin_20",
-      "position": [152, 20.5, 32],
-      "coinType": "gravity"
-    },
-    {
-      "type": "platform",
-      "position": [160, 19.5, 34],
-      "size": [7, 0.5, 7],
-      "color": "#FFD700"
+      "position": [113, 10.5, 28],
+      "size": [8, 0.5, 8],
+      "color": "#5D9F5D"
     },
     {
       "type": "checkpoint",
       "id": "checkpoint_5",
-      "position": [160, 20, 34]
+      "position": [113, 11, 28]
     },
     {
       "type": "coin",
-      "id": "coin_21",
-      "position": [158, 21, 34],
+      "id": "coin_18",
+      "position": [111, 12, 28],
       "coinType": "speed"
     },
     {
       "type": "coin",
+      "id": "coin_19",
+      "position": [115, 12, 28],
+      "coinType": "speed"
+    },
+
+    {
+      "type": "platform",
+      "position": [120, 11, 30],
+      "size": [3, 0.5, 3],
+      "color": "#32CD32",
+      "bouncy": true
+    },
+
+    {
+      "type": "platform",
+      "position": [126, 14, 32],
+      "size": [5, 0.5, 5],
+      "color": "#6AAF6A"
+    },
+    {
+      "type": "coin",
+      "id": "coin_20",
+      "position": [126, 15.5, 32],
+      "coinType": "gravity"
+    },
+
+    {
+      "type": "platform",
+      "position": [133, 14.5, 34],
+      "size": [4, 0.5, 4],
+      "color": "#7FBF7F",
+      "moving": {
+        "pattern": "linear",
+        "speed": 1.2,
+        "range": [0, 0, 3]
+      }
+    },
+    {
+      "type": "coin",
+      "id": "coin_21",
+      "position": [133, 16, 34],
+      "coinType": "speed"
+    },
+
+    {
+      "type": "platform",
+      "position": [140, 15, 36],
+      "size": [10, 0.5, 10],
+      "color": "#FFD700"
+    },
+    {
+      "type": "checkpoint",
+      "id": "checkpoint_final",
+      "position": [140, 15.5, 36]
+    },
+    {
+      "type": "coin",
       "id": "coin_22",
-      "position": [162, 21, 34],
+      "position": [138, 16.5, 34],
+      "coinType": "speed"
+    },
+    {
+      "type": "coin",
+      "id": "coin_23",
+      "position": [142, 16.5, 34],
+      "coinType": "speed"
+    },
+    {
+      "type": "coin",
+      "id": "coin_24",
+      "position": [138, 16.5, 38],
       "coinType": "gravity"
     },
     {
-      "type": "power_up",
-      "id": "powerup_1",
-      "position": [20, 3, 0],
-      "powerUpType": "speed_boost",
-      "duration": 10
+      "type": "coin",
+      "id": "coin_25",
+      "position": [142, 16.5, 38],
+      "coinType": "gravity"
     },
-    {
-      "type": "power_up",
-      "id": "powerup_2",
-      "position": [50, 8, 10],
-      "powerUpType": "shield",
-      "duration": 8
-    },
-    {
-      "type": "power_up",
-      "id": "powerup_3",
-      "position": [90, 12, 20],
-      "powerUpType": "double_jump",
-      "duration": 12
-    },
-    {
-      "type": "power_up",
-      "id": "powerup_4",
-      "position": [130, 16, 28],
-      "powerUpType": "invincibility",
-      "duration": 5
-    },
-    {
-      "type": "climbable_wall",
-      "position": [70, 8, 15],
-      "size": [3, 6, 0.5],
-      "color": "#654321",
-      "climbSpeed": 5
-    },
-    {
-      "type": "low_obstacle",
-      "position": [35, 1, 5],
-      "size": [4, 1.2, 3],
-      "color": "#DC143C"
-    },
-    {
-      "type": "low_obstacle",
-      "position": [85, 6, 18],
-      "size": [5, 1.3, 3],
-      "color": "#DC143C"
-    },
-    {
-      "type": "switch",
-      "position": [105, 12, 22],
-      "targetId": "door_1",
-      "switchType": "button"
-    },
-    {
-      "type": "door",
-      "id": "door_1",
-      "position": [110, 13, 22],
-      "size": [1, 3, 4],
-      "color": "#8B4513",
-      "startsOpen": false
-    },
-    {
-      "type": "pressure_plate",
-      "position": [140, 18, 30],
-      "targetId": "door_2",
-      "size": [2, 0.2, 2],
-      "requiresWeight": true
-    },
-    {
-      "type": "door",
-      "id": "door_2",
-      "position": [145, 18, 30],
-      "size": [1, 3, 4],
-      "color": "#4169E1",
-      "startsOpen": false
-    },
+
     {
       "type": "animal_part",
       "id": "part_cheetah_legs",
-      "position": [28, 3.5, 4],
+      "position": [38, 4, 8],
       "partId": "cheetah_legs"
     },
     {
       "type": "animal_part",
       "id": "part_eagle_head",
-      "position": [60, 6, 8],
+      "position": [78, 8, 20],
       "partId": "eagle_head"
     },
+
     {
-      "type": "animal_part",
-      "id": "part_gorilla_body",
-      "position": [100, 11.5, 18],
-      "partId": "gorilla_body"
+      "type": "fake_wall",
+      "position": [46, 3, 4],
+      "size": [1, 3, 4],
+      "color": "#5D9F5D",
+      "revealRadius": 2.5,
+      "linkedSecretId": "green_fields_flower_garden"
     },
     {
-      "type": "animal_part",
-      "id": "part_fox_head",
-      "position": [45, 4.5, 2],
-      "partId": "fox_head"
+      "type": "secret_area",
+      "id": "green_fields_flower_garden",
+      "position": [46, 3.5, -4],
+      "triggerZone": {
+        "size": [8, 4, 6]
+      },
+      "secretMessage": "Secret Flower Garden Found!",
+      "revealedEntities": [
+        {
+          "type": "platform",
+          "position": [46, 3, -4],
+          "size": [8, 0.5, 6],
+          "color": "#90EE90"
+        },
+        {
+          "type": "coin",
+          "position": [44, 4.5, -4],
+          "coinType": "gravity"
+        },
+        {
+          "type": "coin",
+          "position": [46, 4.5, -4],
+          "coinType": "speed"
+        },
+        {
+          "type": "coin",
+          "position": [48, 4.5, -4],
+          "coinType": "gravity"
+        },
+        {
+          "type": "animal_part",
+          "id": "secret_bunny_head",
+          "position": [46, 5, -6],
+          "partId": "rabbit_head"
+        }
+      ]
     },
-    {
-      "type": "animal_part",
-      "id": "part_frog_legs",
-      "position": [75, 8.5, 12],
-      "partId": "frog_legs"
-    },
+
     {
       "type": "end_goal",
-      "position": [160, 21, 34],
+      "position": [140, 16.5, 36],
       "modelType": "trophy"
     }
   ]
